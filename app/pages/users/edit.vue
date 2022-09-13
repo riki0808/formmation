@@ -1,0 +1,3 @@
+<template>
+  <h1>アカウント設定</h1>
+</template>

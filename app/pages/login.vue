@@ -1,9 +1,9 @@
 <template>
-  <h1>ルート画面</h1>
+  <h1>ログインページ</h1>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'InspirePage'
 }
 </script>
