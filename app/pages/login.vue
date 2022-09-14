@@ -1,5 +1,5 @@
 <template>
-  <section class="l-mian_container">
+  <section class="l-main_container">
     <div class="p-login">
       <div class="p-login_textbox">
         <h1 class="p-login_title">ログイン</h1>
