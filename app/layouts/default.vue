@@ -1,11 +1,12 @@
 <template>
-  <v-app dark>
+  <v-app style="background-color: #f4f4f8;">
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
       app
+      color="#2237df"
     >
       <v-list>
         <v-list-item
@@ -21,20 +22,21 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar :clipped-left="clipped" fixed app color="#ffffff">
+      <v-app-bar-nav-icon color="#e2e2e2" @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+        <v-icon color="#e2e2e2">mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
     </v-app-bar>
     <v-main>
-      <!-- <v-container> -->
+      
       <Nuxt />
-      <!-- </v-container> -->
+      
     </v-main>
-    <v-footer :absolute="!fixed" app>
+    <!-- <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -62,6 +64,7 @@ export default {
       ],
       miniVariant: false,
       title: "formmation",
+      color: "#ffffff",
     };
   },
 };

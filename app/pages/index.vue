@@ -1,5 +1,7 @@
 <template>
-  <h1>ルート画面</h1>
+  <section class="l-main_container">
+    <div class="l-padding--type1"></div>
+  </section>
 </template>
 
 <script>

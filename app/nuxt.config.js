@@ -21,7 +21,13 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["~/assets/style.scss"],
+  css: [
+    "~/assets/style.scss",
+    "~/assets/layout.scss",
+    "~/assets/project.scss",
+    "~/assets/common.scss",
+    "~/assets/reset.scss",
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
