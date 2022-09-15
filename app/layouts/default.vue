@@ -27,7 +27,6 @@
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon color="#e2e2e2">mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
     </v-app-bar>
     <v-main>
       

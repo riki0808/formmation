@@ -53,7 +53,7 @@
             <div class="d-flex">
               <v-btn
                 color="main"
-                to="/forms/input"
+                to="/users/edit"
                 nuxt
                 class="mr-3"
                 width="100px"
@@ -62,7 +62,7 @@
               </v-btn>
               <v-btn
                 color="main"
-                to="/forms/workflow"
+                to="/users"
                 nuxt
                 class="mr-3"
                 width="100px"
