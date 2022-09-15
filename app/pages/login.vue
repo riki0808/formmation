@@ -1,21 +1,21 @@
 <template>
   <section class="l-main_container">
-    <div class="p-login">
-      <div class="p-login_textbox">
-        <h1 class="p-login_title">ログイン</h1>
-        <p class="p-login_desc">ログイン情報を入力してください</p>
+    <div class="c-main">
+      <div class="c-textbox">
+        <h1 class="c-title">ログイン</h1>
+        <p class="c-desc">ログイン情報を入力してください</p>
       </div>
-      <div class="p-login_input">
+      <div class="c-input">
         <form action="">
-          <dl class="p-login_input_item">
-            <dt class="p-login_input_item-title">メールアドレス</dt>
-            <dd class="p-login_input_item-form"><input type="text"></dd>
+          <dl class="c-input_item">
+            <dt class="c-input_item-title">メールアドレス</dt>
+            <dd class="c-input_item-form"><input type="text"></dd>
           </dl>
-          <dl class="p-login_input_item">
-            <dt class="p-login_input_item-title">パスワード</dt>
-            <dd class="p-login_input_item-form"><input type="password" name="" id=""></dd>
+          <dl class="c-input_item">
+            <dt class="c-input_item-title">パスワード</dt>
+            <dd class="c-input_item-form"><input type="password" name="" id=""></dd>
           </dl>
-          <input type="submit" value="ログイン" name="" id="" class="p-login_input-submit">
+          <input type="submit" value="ログイン" name="" id="" class="c-input-submit">
         </form>
       </div>
     </div>

@@ -62,7 +62,7 @@
               </v-btn>
               <v-btn
                 color="main"
-                to="/users"
+                to="/"
                 nuxt
                 class="mr-3"
                 width="100px"

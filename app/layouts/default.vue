@@ -6,15 +6,22 @@
       :clipped="clipped"
       fixed
       app
-      color="#2237df"
+      color="primary"
     >
       <v-list>
+        <v-list-item
+          to="/"
+          class="justify-center"
+        >
+          <img src="~/static/img/logo.svg" alt="" width="200">
+        </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
           :to="item.to"
           router
           exact
+          class="white--text"
         >
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
@@ -24,9 +31,9 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app color="#ffffff">
       <v-app-bar-nav-icon color="#e2e2e2" @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
+      <!-- <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon color="#e2e2e2">mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-main>
       
@@ -48,10 +55,6 @@ export default {
       drawer: false,
       fixed: false,
       items: [
-        {
-          title: "Formmation",
-          to: "/",
-        },
         {
           title: "フォーム管理",
           to: "/",

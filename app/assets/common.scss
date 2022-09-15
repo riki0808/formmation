@@ -5,3 +5,55 @@
   border-bottom: 1px solid #f4f4f8;
   padding: 6px 8px;
 }
+
+.c-main {
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.c-textbox {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.c-title {
+  font-size: 24px;
+}
+.c-desc {
+  
+}
+.c-input {
+  background-color: #fff;
+  width: 560px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 10%);
+  padding: 45px 35px;
+}
+.c-input_item {
+  margin-bottom: 30px;
+}
+.c-input_item-w {
+  width: 47%;
+}
+.c-input_item-title {
+  font-size: 10px;
+  margin-bottom: 10px;
+}
+.c-input_item-form input {
+  background-color: #f4f4f8;
+  padding: 10px;
+  width: 100%;
+  border-radius: 2px;
+}
+.c-input-submit {
+  width: 230px;
+  margin: 0 auto;
+  background-color: #2237df;
+  color: #fff!important;
+  font-weight: 600;
+  padding: 10px 0;
+  display: block;
+  margin-top: 50px;
+  border-radius: 2px;
+}
