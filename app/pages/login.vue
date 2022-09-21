@@ -24,6 +24,7 @@
 
 <script>
 export default {
-  name: 'InspirePage'
+  name: 'InspirePage',
+  layout: "login_default"
 }
 </script>

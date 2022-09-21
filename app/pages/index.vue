@@ -49,7 +49,7 @@
                 color="primary"
                 to="/forms/customers"
                 nuxt
-                class="mr-3"
+                class="mr-3 shadow-none"
               >
                 回答者管理
               </v-btn>
@@ -57,7 +57,7 @@
                 color="main"
                 to="/forms/input"
                 nuxt
-                class="mr-3"
+                class="mr-3 shadow-none"
               >
                 フォーム編集
               </v-btn>
@@ -65,7 +65,7 @@
                 color="main"
                 to="/forms/input"
                 nuxt
-                class="mr-3"
+                class="mr-3 shadow-none"
               >
                 自動化設定
               </v-btn>

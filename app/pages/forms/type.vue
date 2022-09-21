@@ -38,6 +38,7 @@
 </template>
 <script>
   export default {
+    layout: "simple_default",
     data() {
       return {
         templates: [
