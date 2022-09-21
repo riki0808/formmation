@@ -57,3 +57,125 @@
   margin-top: 50px;
   border-radius: 2px;
 }
+
+.c-forms_main {
+  height: calc(100vh - 111px);
+}
+.c-forms_side-bar {
+  height: 100%;
+  width: 400px;
+  background-color: #fff;
+}
+.c-forms_container {
+  padding: 30px 30px 0 30px;
+  width: calc(100% - 400px);
+  height: 100%;
+  background-color: #f4f4f8;
+}
+
+
+.c-main-form-edit-contents {
+  width: 100%;
+  height: 100%;
+  outline: 1px solid #c8c8c8;
+  border-radius: 5px;
+}
+.c-main-form-edit-contents-inner {
+  width: 51%;
+  margin: auto;
+  padding-top: 100px;
+}
+.c-form-group {
+  margin-bottom: 20px;
+}
+.c-form-group-item-sub {
+  width: 47%;
+}
+.c-form-group-item-label-flex {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.c-form-group-item-label {
+  font-size: 10px;
+  margin-bottom: 0!important;
+  margin-right: 10px;
+}
+.c-form-group-item-val {
+  color: #fff;
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.c-form-group-item-inp-frame {
+  
+}
+.c-form-group-item-inp {
+  padding: 10px;
+  width: 100%;
+  font-size: 12px;
+}
+.inp--type1 {
+  background-color: #f4f4f8;
+}
+.inp--type2 {
+  background-color: #f4f4f8;
+  border-radius: 3px;
+  border: 1px solid #c8c8c8;
+}
+.inp--type3 {
+  background-color: #fff;
+  border: 1px solid #c8c8c8;
+}
+.inp--type4 {
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid #c8c8c8;
+}
+
+
+
+.c-form_edit_style_design-btn {
+  width: 100%;
+  box-shadow: none!important;
+  border: 1px solid #c8c8c8;
+  // background-color: #fff!important;
+}
+.c-form_edit_style_design-btn-shape {
+  width: 100%;
+  height: 20px;
+}
+.shape--type1 {
+  background-color: #f4f4f8;
+}
+.shape--type2 {
+  background-color: #f4f4f8;
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+}
+.shape--type3 {
+  background-color: #fff;
+  border: 1px solid #c8c8c8;
+}
+.shape--type4 {
+  background-color: #fff;
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+}
+
+
+.c-form_edit_style-color-picker {
+  width: 30px;
+  height: 34px;
+  display: block;
+}
+.c-form_edit_style_color-inp {
+  width: 110px;
+}
+.c-form_edit_style-select {
+  width: 100%;
+}

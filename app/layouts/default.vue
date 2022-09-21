@@ -31,8 +31,44 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app color="#ffffff">
       <v-app-bar-nav-icon color="#e2e2e2" @click.stop="drawer = !drawer" />
-      <!-- <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon color="#e2e2e2">mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+
+      <v-spacer></v-spacer>
+
+      <v-menu
+        bottom
+        :offset-y="offset"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            dark
+            v-bind="attrs"
+            v-on="on"
+            icon
+          >
+            <v-icon color="#c8c8c8">mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-list style="width:200px;">
+          <div class="py-4 px-6 grey--text">
+            <!-- current_userの名前 -->
+            <p class="mb-2 text-caption">佐藤立樹</p>
+            <!-- current_userのメールアドレス -->
+            <p class="mb-0 c-font-10">riki_sato@cone-ntm.com</p>
+          </div>
+          <v-list-item
+            v-for="(item, i) in accountMenuList"
+            :key="i"
+            :to="item.to"
+            nuxt
+            class="pl-10 grey--text"
+          >
+            <v-list-item-title class="text-caption">{{ item.listItem }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <!-- <v-btn icon>
+        <v-icon color="#c8c8c8">mdi-account-circle</v-icon>
       </v-btn> -->
     </v-app-bar>
     <v-main>
@@ -67,6 +103,21 @@ export default {
       miniVariant: false,
       title: "formmation",
       color: "#ffffff",
+      accountMenuList: [
+        { 
+          listItem: 'アカウント設定',
+          to: "/"
+         },
+        { 
+          listItem: '改善要望フォーム',
+          to: "/"
+         },
+        { 
+          listItem: 'ログアウト',
+          to: "/"
+         },
+      ],
+      offset: true,
     };
   },
 };

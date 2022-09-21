@@ -27,6 +27,7 @@ export default {
     "~/assets/project.scss",
     "~/assets/common.scss",
     "~/assets/reset.scss",
+    "~/assets/unity.scss",
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

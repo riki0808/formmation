@@ -5,7 +5,7 @@
      fixed 
      app 
      color="#ffffff" 
-     style="box-shadow:none!important; border-bottom:1px solid #c8c8c8"
+     style="box-shadow:none!important; border-bottom:1px solid #c8c8c8;"
     >
       
       <v-btn

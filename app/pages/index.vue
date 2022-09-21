@@ -8,7 +8,7 @@
       >
         <v-btn
           color="primary"
-          to="/forms/input"
+          to="/forms/type"
         >
           <v-icon 
             left
@@ -44,6 +44,7 @@
             </div>
 
             <div class="d-flex">
+
               <v-btn
                 color="primary"
                 to="/forms/customers"
@@ -62,17 +63,39 @@
               </v-btn>
               <v-btn
                 color="main"
-                to="/forms/workflow"
+                to="/forms/input"
                 nuxt
                 class="mr-3"
               >
                 自動化設定
               </v-btn>
-              <v-btn icon>
-                <v-icon>
-                  mdi-dots-vertical
-                </v-icon>
-              </v-btn>
+              <v-menu
+                left
+                :offset-y="offset"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>
+                      mdi-dots-vertical
+                    </v-icon>
+                  </v-btn>
+                </template>
+
+                <v-list>
+                  <v-list-item
+                    v-for="(item, i) in formItemList"
+                    :key="i"
+                    :to="item.to"
+                  >
+                    <v-list-item-title>{{ item.formItem }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+
             </div>
 
           </div>
@@ -86,6 +109,33 @@
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  data() {
+    return {
+      formItemList: [
+        {
+          formItem: "回答者管理",
+          to: "/forms/customers"
+        },
+        {
+          formItem: "フォームの編集・設定変更",
+          to: "/forms/input"
+        },
+        {
+          formItem: "このフォームを非公開にする",
+          to: "/"
+        },
+        {
+          formItem: "複製",
+          to: "/"
+        },
+        {
+          formItem: "削除",
+          to: "/"
+        }
+      ],
+      offset: true,
+    }
+  }
 }
 </script>
