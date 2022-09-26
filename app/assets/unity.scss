@@ -4,26 +4,28 @@
 .w-100 {
   width: 100%;
 }
-.hissu {
-  background-color: #e91c24;
-}
-.ninni {
-  background-color: rgb(96, 125, 139);
+.required {
+  background-color: #e91c24!important;
 }
 .c-bd-top {
-  border-top: 1px solid #c8c8c8;
+  border-top: 1px solid #c7c7c7!important;
+  border-color: #c7c7c7!important;
 }
 .c-bd-right {
-  border-right: 1px solid #c8c8c8;
+  border-right: 1px solid #c7c7c7;
+  border-color: #c7c7c7!important;
 }
 .c-bd-bottom {
-  border-bottom: 1px solid #c8c8c8;
+  border-bottom: 1px solid #c7c7c7;
+  border-color: #c7c7c7!important;
 }
 .c-bd-left {
-  border-left: 1px solid #c8c8c8;
+  border-left: 1px solid #c7c7c7;
+  border-color: #c7c7c7!important;
 }
 .c-bd-all {
-  border: 1px solid #c8c8c8;
+  border: 1px solid #c7c7c7;
+  border-color: #c7c7c7!important;
 }
 .shadow-none {
   box-shadow: none!important;

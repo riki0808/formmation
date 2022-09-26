@@ -31,7 +31,12 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    {
+      src: "~/plugins/firebase.js",
+      mode: "client",
+    },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -64,7 +69,7 @@ export default {
           primary: "#3042cd",
           grey: "#606060",
           main: "#f4f4f8",
-          white: "#fff"
+          white: "#fff",
         },
         dark: {
           primary: colors.blue.darken2,

@@ -109,33 +109,10 @@
   font-weight: 600;
   border-radius: 3px;
   line-height: 1;
+  background-color: rgb(96, 125, 139);
 }
 
-.c-form-group-item-inp-frame {
-  
-}
-.c-form-group-item-inp {
-  padding: 10px;
-  width: 100%;
-  font-size: 12px;
-}
-.inp--type1 {
-  background-color: #f4f4f8;
-}
-.inp--type2 {
-  background-color: #f4f4f8;
-  border-radius: 3px;
-  border: 1px solid #c8c8c8;
-}
-.inp--type3 {
-  background-color: #fff;
-  border: 1px solid #c8c8c8;
-}
-.inp--type4 {
-  background-color: #fff;
-  border-radius: 3px;
-  border: 1px solid #c8c8c8;
-}
+
 
 
 
@@ -179,3 +156,67 @@
 .c-form_edit_style-select {
   width: 100%;
 }
+
+
+
+.customers-list-tab-active {
+  background-color: #f3f3f7;
+  border-radius: 100px;
+}
+
+
+.c-customers-board-col {
+  width: 300px;
+  height: 100%;
+  padding: 0 14px;
+}
+
+
+// さまざまなinput typeのスタイル
+.c-form-group-item-inp-frame {
+  
+}
+.c-form-group-item-inp-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-form-group-item-inp {
+  padding: 10px;
+  font-size: 12px;
+  display: block;
+}
+.c-form-group-item-inp.type--1 {
+  width: 100%;
+}
+.c-form-group-item-inp.type--2 {
+  width: 48%;
+}
+.c-form-group-item-inp.type--2 input {
+  margin-right: 10px;
+  vertical-align: text-top;
+}
+
+
+.inp--type1 {
+  background-color: #f4f4f8;
+}
+.inp--type2 {
+  background-color: #f4f4f8;
+  border-radius: 3px;
+  border: 1px solid #c8c8c8;
+}
+.inp--type3 {
+  background-color: #fff;
+  border: 1px solid #c8c8c8;
+}
+.inp--type4 {
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid #c8c8c8;
+}
+
+// さまざまなinput typeのスタイル

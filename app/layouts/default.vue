@@ -29,7 +29,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app color="#ffffff">
+    <v-app-bar :clipped-left="clipped" fixed app color="#ffffff" class="shadow-none">
       <v-app-bar-nav-icon color="#e2e2e2" @click.stop="drawer = !drawer" />
 
       <v-spacer></v-spacer>
@@ -106,7 +106,7 @@ export default {
       accountMenuList: [
         { 
           listItem: 'アカウント設定',
-          to: "/"
+          to: "/users/edit"
          },
         { 
           listItem: '改善要望フォーム',
