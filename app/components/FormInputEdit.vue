@@ -1130,7 +1130,7 @@
                 fontSize: submitButton.textSize + 'px'
               }"
             >
-              送信
+              {{submitButton.text}}
             </button>
           </div>
           
@@ -1302,7 +1302,8 @@
         submitButton: {
           bgColor: "#3042cc",
           textColor: "#ffffff",
-          textSize: 12
+          textSize: 12,
+          text: '送信',
         },
         textDesign: {
           fontFamily: '"游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", sans-serif;',
