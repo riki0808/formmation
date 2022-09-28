@@ -246,6 +246,7 @@
           color="grey"
           text
           class="font-weight-black"
+          @click="onClickOpenEditDrawer"
         >
           <v-icon left>
             mdi-chevron-left
@@ -1328,7 +1329,9 @@
         this.editView = !this.editView;
         this.selectItem = item
       },
+      onClickOpenEditDrawer() {
+        this.editView = !this.editView;
+      },
     }
-    
   }//export default
 </script>

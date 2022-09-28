@@ -30,6 +30,7 @@
                 tile
                 class="text-caption justify-start grey--text shadow-none main mb-3"
                 style="width:100%;"
+                @click="onClickThanksItem(formThanksItem)"
               >
                 <v-icon left>
                   {{ formThanksItem.icon }}
@@ -57,6 +58,53 @@
       </v-tabs-items>
     </div><!-- フォーム編集の左サイドバー -->
 
+    <!-- editドロワーメニュー -->
+    <div class="c-forms-select-item-edit" :class="{active:thanksView}">
+      <nav class="c-forms-select-item-edit-nav">
+        <v-btn
+          tile
+          color="grey"
+          text
+          class="font-weight-black"
+          @click="onClickOpenThanksDrawer"
+        >
+          <v-icon left>
+            mdi-chevron-left
+          </v-icon>
+          完了
+        </v-btn>
+      </nav>
+
+      <div class="c-forms-select-item-edit-main" v-if="thanksItem.type == 'contents'">
+        <div class="d-flex align-center mb-4">
+          <span class="mr-6">回答者にダウンロードを許可する</span>
+          <v-switch
+            inset
+          >
+          </v-switch>
+        </div>
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">コンテンツ</p>
+          <input id="file" class="c-form-group-item-inp type--1 inp--type4" type="file" @change="onSelectContent" accept=".pdf">
+          <p class="mt-2">※PDFのみとなっております</p>
+        </div>
+      </div>
+      <div class="c-forms-select-item-edit-main" v-else-if="thanksItem.type == 'inport'">
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">埋め込み</p>
+          <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="html" placeholder="埋め込みコードを入力してください"></textarea>
+        </div>
+      </div>
+      <div class="c-forms-select-item-edit-main" v-else-if="thanksItem.type == 'link'">
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">外部ページのリンク</p>
+          <input v-model="thanksRedirect.url" class="c-form-group-item-inp inp--type3 type--1" type="text" placeholder="URLを入力">
+          <input v-model="thanksRedirect.label" class="c-form-group-item-inp inp--type3 type--1" type="text">
+        </div>
+      </div>
+
+    </div>
+
     <!-- フォーム編集のメイン画面 -->
     <div class="c-forms_container">
 
@@ -71,9 +119,18 @@
               <p class="text-center">
                 お問い合わせいただきありがとうございました。<br>お送りいただきました内容を確認の上、担当者より折り返しご連絡させていただきます。
               </p>
-              <input type="file" @change="onSelectContent" accept=".pdf">
-              <div v-html="html"></div>
-              <input type="text" v-model="html">
+            </div>
+
+            <div v-if="thanksPDF">
+              <div class="mb-4">{{thanksPDF}}</div>
+            </div>
+
+            <div v-if="html">
+              <div class="mb-4" v-html="html"></div>
+            </div>
+
+            <div v-if="thanksRedirect.url" class="text-center">
+              <a class="pa-4" style="display:inline-block;" :href="thanksRedirect.url">{{thanksRedirect.label}}</a>
             </div>
 
           </div><!-- inner -->
@@ -92,14 +149,14 @@
 <script>
 export default {
   data:()=>({
-    html: "<h2>Hello</h2>",
+    html: "",
     formThanks: 0,
     formThanksTabs: ["項目","スタイル"],
     formThanksItems: [
       {
         icon: "mdi-file-plus-outline",
         text: "コンテンツ(資料)",
-        type:"contents"
+        type: "contents"
       },
       {
         icon: "mdi-code-braces",
@@ -112,13 +169,29 @@ export default {
         type: "link"
       },
     ],
+    thanksItem: "",
     innerWidth: 50,
+    thanksView: false,
+    thanksPDF: "",
+    thanksRedirect: {
+      url: "",
+      label: "ホームページへ戻る"
+    },
   }),
   methods: {
+    onClickThanksItem(item) {
+      this.thanksView = !this.thanksView
+      this.thanksItem = item
+    },
+    onClickOpenThanksDrawer() {
+      this.thanksView = !this.thanksView
+    },
     //ストレージにアップロードしてるんだぞっ
     async onSelectContent(e){
+      console.log(e);
       const file = e.target.files[0]
       if (file) {
+        this.thanksPDF = file
         const reader = new FileReader()
         reader.readAsDataURL(file)
         const storageRef = this.$fireStorage.ref().child("file.png")
