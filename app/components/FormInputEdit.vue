@@ -1326,11 +1326,11 @@
         })
       },
       onSelectEditFormItem(item){
-        this.editView = !this.editView;
+        this.editView = !this.editView
         this.selectItem = item
       },
       onClickOpenEditDrawer() {
-        this.editView = !this.editView;
+        this.editView = !this.editView
       },
     }
   }//export default

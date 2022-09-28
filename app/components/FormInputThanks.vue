@@ -1,7 +1,7 @@
 <template>
   <div class="c-forms_main d-flex">
     <!-- フォーム編集の左サイドバー -->
-    <div class="c-forms_side-bar">
+    <div class="c-forms_side-bar c-bd-right">
 
       <v-tabs
         v-model="formThanks"
@@ -121,16 +121,61 @@
               </p>
             </div>
 
-            <div v-if="thanksPDF">
+            <div v-if="thanksPDF" style="position:relative;" @click="onClickThanksItem(formThanksItems[0])">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
               <div class="mb-4">{{thanksPDF}}</div>
             </div>
 
-            <div v-if="html">
+            <div v-if="html" style="position:relative;" @click="onClickThanksItem(formThanksItems[1])">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
               <div class="mb-4" v-html="html"></div>
             </div>
 
-            <div v-if="thanksRedirect.url" class="text-center">
-              <a class="pa-4" style="display:inline-block;" :href="thanksRedirect.url">{{thanksRedirect.label}}</a>
+            <div v-if="thanksRedirect.url" class="text-center" style="position:relative;" @click="onClickThanksItem(formThanksItems[2])">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <a class="pa-4 font-weight-bold" style="display:inline-block;" :href="thanksRedirect.url">{{thanksRedirect.label}}</a>
             </div>
 
           </div><!-- inner -->
