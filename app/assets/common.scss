@@ -81,7 +81,6 @@
   border-radius: 5px;
 }
 .c-main-form-edit-contents-inner {
-  width: 51%;
   margin: auto;
   padding-top: 100px;
 }
@@ -112,7 +111,35 @@
   background-color: rgb(96, 125, 139);
 }
 
-
+.c-form-group-item {
+  position: relative;
+}
+.c-form-group-item-overray {
+  position: absolute;
+  width: calc(100% + 30px);
+  height: calc(100% + 30px);
+  top: 0;
+  left: -15px;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  opacity: 0;
+}
+.c-form-group-item-overray:hover {
+  opacity: 1;
+  background-color: rgba(127, 165, 198, 0.3);
+  border: 1px solid #3042cc;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.c-form-group-item-overray-sub {
+  position: relative;
+}
+.c-form-group-item-overray-icon {
+  position: absolute;
+  top: -21px;
+  right: 0;
+}
 
 
 
@@ -120,7 +147,11 @@
   width: 100%;
   box-shadow: none!important;
   border: 1px solid #c8c8c8;
-  // background-color: #fff!important;
+  height: 44px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .c-form_edit_style_design-btn-shape {
   width: 100%;
@@ -143,6 +174,36 @@
   border: 1px solid #c8c8c8;
   border-radius: 3px;
 }
+
+.inline-radio {
+  overflow: hidden;
+  div {
+    position: relative;
+  }
+  input {
+    width: 100%;
+    height: 60px;
+    opacity: 0;
+  }
+  label {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    pointer-events: none;
+  }
+  input:checked + label .c-form_edit_style_design-btn {
+    border: 1px solid #3042cc;
+  }
+}
+
+
+
 
 
 .c-form_edit_style-color-picker {
@@ -179,7 +240,7 @@
 .c-form-group-item-inp-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px 0;
+  gap: 8px 0;
   justify-content: space-between;
   align-items: center;
 }
@@ -189,34 +250,66 @@
   font-size: 12px;
   display: block;
 }
+.c-form-group-item-inp input {
+  margin-right: 10px;
+  vertical-align: text-top;
+}
 .c-form-group-item-inp.type--1 {
   width: 100%;
 }
 .c-form-group-item-inp.type--2 {
-  width: 48%;
-}
-.c-form-group-item-inp.type--2 input {
-  margin-right: 10px;
-  vertical-align: text-top;
+  width: 49%;
 }
 
 
 .inp--type1 {
-  background-color: #f4f4f8;
+  background-color: #f4f4f8!important;
 }
 .inp--type2 {
-  background-color: #f4f4f8;
-  border-radius: 3px;
-  border: 1px solid #c8c8c8;
+  background-color: #f4f4f8!important;
+  border-radius: 3px!important;
+  border: 1px solid #c8c8c8!important;
 }
 .inp--type3 {
-  background-color: #fff;
-  border: 1px solid #c8c8c8;
+  background-color: #fff!important;
+  border: 1px solid #c8c8c8!important;
 }
 .inp--type4 {
-  background-color: #fff;
-  border-radius: 3px;
-  border: 1px solid #c8c8c8;
+  background-color: #fff!important;
+  border-radius: 3px!important;
+  border: 1px solid #c8c8c8!important;
 }
 
 // さまざまなinput typeのスタイル
+
+
+
+.c-forms-select-item-edit.active {
+  transform: translateX(0px);
+}
+.c-forms-select-item-edit {
+  position: fixed;
+  top: 112px;
+  z-index: 999;
+  background-color: #fff;
+  width: 400px;
+  height: calc(100vh - 112px);
+  transform: translateX(-400px);
+  border-right: 1px solid #c8c8c8;
+  transition: .3s;
+}
+.c-forms-select-item-edit-nav {
+  background-color: #f3f3f7;
+  border-top: 1px solid #c8c8c8;
+  border-bottom: 1px solid #c8c8c8;
+}
+.c-forms-select-item-edit-main {
+  padding: 30px 36px;
+  height: 100%;
+  overflow: auto;
+}
+.c-forms-select-item-edit-main-item {
+  margin-bottom: 25px;
+}
+
+

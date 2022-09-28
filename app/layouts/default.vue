@@ -56,13 +56,28 @@
             <p class="mb-0 c-font-10">riki_sato@cone-ntm.com</p>
           </div>
           <v-list-item
-            v-for="(item, i) in accountMenuList"
-            :key="i"
-            :to="item.to"
-            nuxt
             class="pl-10 grey--text"
+            to="/users/edit"
           >
-            <v-list-item-title class="text-caption">{{ item.listItem }}</v-list-item-title>
+            <v-list-item-title class="text-caption">
+              アカウント設定
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            class="pl-10 grey--text"
+            to="/"
+          >
+            <v-list-item-title class="text-caption">
+              改善要望フォーム
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            class="pl-10 grey--text"
+            @click="signOut"
+          >
+            <v-list-item-title class="text-caption">
+              ログアウト
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -103,22 +118,26 @@ export default {
       miniVariant: false,
       title: "formmation",
       color: "#ffffff",
-      accountMenuList: [
-        { 
-          listItem: 'アカウント設定',
-          to: "/users/edit"
-         },
-        { 
-          listItem: '改善要望フォーム',
-          to: "/"
-         },
-        { 
-          listItem: 'ログアウト',
-          to: "/"
-         },
-      ],
       offset: true,
     };
   },
+  middleware({ app, redirect }) {
+    app.$fireAuth.onAuthStateChanged((user) => {
+      if (user) {
+        //認証済の処理
+      } else {
+        //未認証時の処理
+        // if(route.path !== '/'){     //リダイレクト先のページでは判定しないようにしないと無限にリダイレクトされる
+        //開発中は一旦リダイレクトしないようにしておく
+        redirect("/login");
+        // }
+      }
+    });
+  },
+  methods:{
+    signOut(){
+      this.$fireAuth.signOut();
+    }
+  }
 };
 </script>

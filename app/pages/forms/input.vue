@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section style="overflow: hidden;position: fixed;width: 100%;">
 
     <div class="white">
       <div class="l-tab-container">
