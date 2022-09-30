@@ -1325,7 +1325,7 @@
           suppleText: '',
         })
       },
-      onSelectEditFormItem(item){
+      onSelectEditFormItem(item) {
         this.editView = !this.editView
         this.selectItem = item
       },

@@ -226,13 +226,38 @@
   background-color: #f3f3f7;
   border-radius: 100px;
 }
-
-
 .c-customers-board-col {
-  width: 300px;
+  min-width: 300px;
   height: 100%;
   padding: 0 14px;
 }
+.c-sutomers-list {
+  font-size: 12px;
+}
+.c-sutomers-list-head {
+  background-color: #495963;
+  color: #fff;
+}
+.c-sutomers-list-head-frame {
+  text-align: center;
+}
+.c-sutomers-list-body {
+  background-color: #fff;
+}
+.c-sutomers-list-body-frame {
+  text-align: left;
+}
+
+.c-sutomers-list-item {
+  min-width: 100px;
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 12px 24px;
+  white-space: nowrap;
+}
+
+
 
 
 // さまざまなinput typeのスタイル
@@ -333,4 +358,20 @@
   margin: auto;
   background-color: #fff;
   border: 1px solid #c7c7c7;
+}
+
+.c-workflow-trash-btn {
+  position: absolute!important;
+  top: -18px;
+  right: -20px;
+  opacity: 0;
+  transition: .3s;
+  z-index: 500;
+}
+
+.workflow-main-card:hover .c-workflow-trash-btn  {
+  opacity: 1;
+}
+.workflow-main-card:hover {
+  outline: 1px solid #3042cc!important;
 }
