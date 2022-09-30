@@ -276,7 +276,7 @@
           type: "mail",
           icon: "mdi-email-fast-outline",
           name: "メールを送信",
-          title: "新規作成",
+          title: "Eメール名を決めてください",
           sender: "",
           senderAddress: "",
           subject: "",

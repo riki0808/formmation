@@ -237,6 +237,43 @@
       </v-tabs-items>
       
     </div>
+
+    <!-- タイトルとリード分用のドロワー -->
+    <div class="c-forms-select-item-edit" :class="{active:editTitleView}">
+      <nav class="c-forms-select-item-edit-nav">
+        <v-btn
+          tile
+          color="grey"
+          text
+          class="font-weight-black"
+          @click="openEditTitleDrawer"
+        >
+          <v-icon left>
+            mdi-chevron-left
+          </v-icon>
+          完了
+        </v-btn>
+      </nav>
+      <div class="c-forms-select-item-edit-main">
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">タイトル</p>
+          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formHead.title">
+        </div>
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">補足説明</p>
+          <textarea
+            class="c-form-group-item-inp type--1 inp--type4"
+            :class="inpType"
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+            v-model="formHead.lead"
+          >
+          </textarea>
+        </div>
+      </div>
+    </div>
     
     <!-- editドロワーメニュー -->
     <div class="c-forms-select-item-edit" :class="{active:editView}">
@@ -303,9 +340,10 @@
 
         <div class="c-main-form-edit-contents-inner mb-15" :style="{width: innerWidth + '%'}">
 
-          <div>
-            <h2 class="text-center mb-5">お問い合わせ</h2>
-            <p class="text-center">お気軽にご相談ください</p>
+          <div class="p-form-input-title" @click="openEditTitleDrawer">
+            <div class="p-form-input-title-overray"></div>
+            <h2 class="text-center mb-5">{{formHead.title}}</h2>
+            <p class="text-center">{{formHead.lead}}</p>
           </div>
 
           <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
@@ -1298,6 +1336,7 @@
         industrys: ["選択してください","小売(店舗・通販を含む)","メーカー","医療・福祉・介護","建築・設計・塗装","コンサルティング","人材サービス","冠婚葬祭","飲食","運輸","教育・スクール","士業","システム開発","Web・アプリ制作","IT・通信","マスコミ・メディア","広告代理店","出版・印刷","公的機関","美容・エステ","スポーツ・レジャー・観光","金融・保険","不動産","農業・林業・漁業","電気・ガス・水道"],
         sources: ["テレビ","ラジオ","新聞","雑誌","Webメディア","企業HP","ネット広告","メルマガ","SNS・ブログ","交通広告・看板","知人・友人"],
         editView: false,
+        editTitleView: false,
         innerWidth: 50,
         inpType: "inp--type2",
         submitButton: {
@@ -1313,6 +1352,10 @@
           suppleColor: "#606060",
           suppleSize: 12
         },
+        formHead: {
+          title: "お問い合わせ",
+          lead: "お気軽にご相談ください"
+        }
       }//return
     },//data()
     methods: {
@@ -1331,6 +1374,9 @@
       },
       onClickOpenEditDrawer() {
         this.editView = !this.editView
+      },
+      openEditTitleDrawer() {
+        this.editTitleView = !this.editTitleView
       },
     }
   }//export default

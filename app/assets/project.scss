@@ -6,6 +6,27 @@
   height: 300px;
 }
 
+.p-form-input-title {
+  position: relative;
+}
+.p-form-input-title-overray {
+  position: absolute;
+  width: calc(100% + 30px);
+  height: calc(100% + 30px);
+  top: 0;
+  left: -15px;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  opacity: 0;
+}
+.p-form-input-title-overray:hover {
+  opacity: 1;
+  background-color: rgba(127, 165, 198, 0.3);
+  border: 1px solid #3042cc;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
 
 
@@ -72,3 +93,4 @@
 .p-workflow-delay-side-bar.active {
   transform: translateX(0px);
 }
+
