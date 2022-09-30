@@ -1,0 +1,15 @@
+@emulatorUrl = http://localhost:5001/formmation-e54bb/asia-northeast2/
+@baseUrl = https://us-central1-formmation-e54bb.cloudfunctions.net/
+
+###
+# @name createTeamAccount
+POST {{emulatorUrl}}createTeamAccount HTTP/1.1
+content-type: application/json
+
+{
+  "teamName": "valuup",
+  "email": "kinoko.sd@gmail.com",
+  "password": "kin0k0daichi",
+  "mei" : "daichi",
+  "sei": "kinoshita"
+}
