@@ -37,7 +37,7 @@
             <div class="d-flex">
               <v-btn
                 color="main"
-                to="/users/edit"
+                :to="`/users/edit/${user.id}/`"
                 nuxt
                 class="mr-3"
                 width="100px"
@@ -75,6 +75,7 @@ export default {
     return {
       teamInfo: res.data.res,
     };
+    
   },
   data() {
     return {

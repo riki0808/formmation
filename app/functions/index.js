@@ -142,3 +142,52 @@ exports.deleteUserFromTeam = functions.https.onCall(async (data, context) => {
     };
   }
 });
+
+exports.getUser = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { userId } = data;
+
+      const doc = await db.collection("users").doc(userId).get();
+      const user = doc.data();
+
+      return {
+        status: 200,
+        res: user,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
+exports.updateUser = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { userId, sei, mei } = data;
+
+      await db.collection("users").doc(userId).update({
+        sei: sei,
+        mei: mei,
+      });
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
