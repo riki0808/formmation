@@ -1,5 +1,5 @@
 <template>
-  <v-app style="background-color: #f4f4f8;">
+  <v-app style="background-color: #f4f4f8">
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -9,11 +9,8 @@
       color="primary"
     >
       <v-list>
-        <v-list-item
-          to="/"
-          class="justify-center"
-        >
-          <img src="~/static/img/logo.svg" alt="" width="200">
+        <v-list-item to="/" class="justify-center">
+          <img src="~/static/img/logo.svg" alt="" width="200" />
         </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
@@ -29,52 +26,43 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app color="#ffffff" class="shadow-none">
+    <v-app-bar
+      :clipped-left="clipped"
+      fixed
+      app
+      color="#ffffff"
+      class="shadow-none"
+    >
       <v-app-bar-nav-icon color="#e2e2e2" @click.stop="drawer = !drawer" />
 
       <v-spacer></v-spacer>
 
-      <v-menu
-        bottom
-        :offset-y="offset"
-      >
+      <v-menu bottom :offset-y="offset">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            dark
-            v-bind="attrs"
-            v-on="on"
-            icon
-          >
+          <v-btn dark v-bind="attrs" v-on="on" icon>
             <v-icon color="#c8c8c8">mdi-account-circle</v-icon>
           </v-btn>
         </template>
-        <v-list style="width:200px;">
+        <v-list style="width: 200px">
           <div class="py-4 px-6 grey--text">
             <!-- current_userの名前 -->
-            <p class="mb-2 text-caption">佐藤立樹</p>
+            <p class="mb-2 text-caption">
+              {{ $store.state.user.sei }} {{ $store.state.user.mei }}
+            </p>
             <!-- current_userのメールアドレス -->
             <p class="mb-0 c-font-10">riki_sato@cone-ntm.com</p>
           </div>
-          <v-list-item
-            class="pl-10 grey--text"
-            to="/users/edit"
-          >
+          <v-list-item class="pl-10 grey--text" to="/users/edit">
             <v-list-item-title class="text-caption">
               アカウント設定
             </v-list-item-title>
           </v-list-item>
-          <v-list-item
-            class="pl-10 grey--text"
-            to="/"
-          >
+          <v-list-item class="pl-10 grey--text" to="/">
             <v-list-item-title class="text-caption">
               改善要望フォーム
             </v-list-item-title>
           </v-list-item>
-          <v-list-item
-            class="pl-10 grey--text"
-            @click="signOut"
-          >
+          <v-list-item class="pl-10 grey--text" @click="signOut">
             <v-list-item-title class="text-caption">
               ログアウト
             </v-list-item-title>
@@ -87,9 +75,7 @@
       </v-btn> -->
     </v-app-bar>
     <v-main>
-      
       <Nuxt />
-      
     </v-main>
     <!-- <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
@@ -98,6 +84,9 @@
 </template>
 
 <script>
+const sleep = (msecond) =>
+  new Promise((resolve) => setTimeout(resolve, msecond));
+
 export default {
   name: "DefaultLayout",
   data() {
@@ -121,23 +110,10 @@ export default {
       offset: true,
     };
   },
-  middleware({ app, redirect }) {
-    app.$fireAuth.onAuthStateChanged((user) => {
-      if (user) {
-        //認証済の処理
-      } else {
-        //未認証時の処理
-        // if(route.path !== '/'){     //リダイレクト先のページでは判定しないようにしないと無限にリダイレクトされる
-        //開発中は一旦リダイレクトしないようにしておく
-        redirect("/login");
-        // }
-      }
-    });
-  },
-  methods:{
-    signOut(){
+  methods: {
+    signOut() {
       this.$fireAuth.signOut();
-    }
-  }
+    },
+  },
 };
 </script>

@@ -4,6 +4,10 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  router: {
+    middleware: "auth",
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: "%s - formmation",
@@ -36,6 +40,7 @@ export default {
       src: "~/plugins/firebase.js",
       mode: "client",
     },
+    "@/plugins/initialize",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

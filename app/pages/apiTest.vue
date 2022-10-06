@@ -23,7 +23,8 @@ export default {
         password: "qweqweqwe",
         sei: "ささの",
         mei: "りき",
-        teamId: "YUFizJuA1SfDl0EAgbPf",
+        teamId: "bsGDgkwlqdwpKsNgiTG5",
+        userId: "UtNiyGZ5pmhufAV1Vg95eiqWqKo2",
       });
     },
   },

@@ -107,3 +107,38 @@ exports.addUser2Team = functions.https.onCall(async (data, context) => {
     };
   }
 });
+
+exports.deleteUserFromTeam = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { teamId, userId } = data;
+
+      const promises = [];
+
+      promises.push(db.collection("users").doc(userId).delete());
+      promises.push(
+        db
+          .collection("teams")
+          .doc(teamId)
+          .update({
+            users: admin.firestore.FieldValue.arrayRemove(userId),
+          })
+      );
+      promises.push(auth.deleteUser(userId));
+
+      await Promise.all(promises);
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
