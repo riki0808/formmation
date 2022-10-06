@@ -49,8 +49,7 @@ export default {
         .then(async (userCredential) => {
           // Signed in
           alert("成功");
-          // console.log(userCredential);
-          await this.$store.dispatch("initializeUser", userCredential.uid);
+          await this.$store.dispatch("initializeUser", userCredential.user.uid);
           this.$router.push("/");
         })
         .catch((err) => {
