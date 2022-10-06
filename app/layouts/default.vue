@@ -50,7 +50,7 @@
               {{ $store.state.user.sei }} {{ $store.state.user.mei }}
             </p>
             <!-- current_userのメールアドレス -->
-            <p class="mb-0 c-font-10">riki_sato@cone-ntm.com</p>
+            <p class="mb-0 c-font-10">{{ $store.state.user.email }}</p>
           </div>
           <v-list-item class="pl-10 grey--text" to="/users/edit">
             <v-list-item-title class="text-caption">
