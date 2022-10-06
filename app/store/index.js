@@ -2,12 +2,16 @@ import { db } from "~/plugins/firebase";
 
 export const state = () => ({
   user: null,
+  loadingDialog: false,
 });
 //stateでデータを設定します。月別での記事を検索する前は月は選ばれていないのでnullと設定しました。
 
 export const mutations = {
   setUser(state, user) {
     state.user = user;
+  },
+  setLoadingDialog(state, flag) {
+    state.loadingDialog = flag;
   },
 };
 //setSelectedDay(state, selectedDay) の第1引数で状態（state）を取得します。
@@ -20,6 +24,12 @@ export const actions = {
     const doc = await db.collection("users").doc(userId).get();
     const data = doc.data();
     commit("setUser", { uid: userId, ...data });
+  },
+  async activateLoadingDialog({ commit }) {
+    commit("setLoadingDialog", true);
+  },
+  async deactivateLoadingDialog({ commit }) {
+    commit("setLoadingDialog", false);
   },
   //setSelectedDay({ commit }, selectedDay)の第1引数でmutationsとcommitします。
   //Actions は、状態は変更せず、 Mutations を commitし、Mutations を commit することで状態(State)を更新します。：引用（参考記事/[Vue.js] Vuexの使い方を知る）

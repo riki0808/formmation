@@ -10,7 +10,7 @@
           <dl class="c-input_item">
             <dt class="c-input_item-title">メールアドレス</dt>
             <dd class="c-input_item-form">
-              <input v-model="email" disabled type="text"/>
+              <input v-model="email" disabled type="text" />
             </dd>
           </dl>
 
@@ -46,36 +46,37 @@
 
 <script>
 export default {
-  data: () => ({
-  }),
+  data: () => ({}),
   async asyncData(ctx) {
+    const res = await ctx.$functions.httpsCallable("getUser")({
+      userId: ctx.params.id,
+    });
 
-    const res = await ctx.$functions.httpsCallable('getUser')({
-      userId: ctx.params.id
-    })
-
-    console.log(res.data.res)
+    console.log(res.data.res);
 
     return {
-      id:ctx.params.id,
+      id: ctx.params.id,
       ...res.data.res,
     };
   },
   methods: {
     async updateUser() {
-      const res = await this.$functions.httpsCallable('updateUser')({
+      this.$store.dispatch("activateLoadingDialog");
+      const res = await this.$functions.httpsCallable("updateUser")({
         userId: this.id,
         sei: this.sei,
-        mei: this.mei
+        mei: this.mei,
       });
 
       if (res.data.status == 200) {
         alert("成功");
+        this.$store.dispatch("deactivateLoadingDialog");
         this.$router.push("/users");
       } else {
         alert("失敗");
+        this.$store.dispatch("deactivateLoadingDialog");
       }
-    }
-  }
+    },
+  },
 };
 </script>
