@@ -1,3 +1,5 @@
+import { db } from "~/plugins/firebase";
+
 export const state = () => ({
   user: null,
 });
@@ -14,8 +16,10 @@ export const mutations = {
 //selectedDayがnullだったものを４月とデータを更新していることになります（state.selectedDay = selectedDayがそれ）。
 
 export const actions = {
-  setUser({ commit }, user) {
-    commit("setUser", user);
+  async initializeUser({ commit }, userId) {
+    const doc = await db.collection("users").doc(userId).get();
+    const data = doc.data();
+    commit("setUser", { uid: userId, ...data });
   },
   //setSelectedDay({ commit }, selectedDay)の第1引数でmutationsとcommitします。
   //Actions は、状態は変更せず、 Mutations を commitし、Mutations を commit することで状態(State)を更新します。：引用（参考記事/[Vue.js] Vuexの使い方を知る）

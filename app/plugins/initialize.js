@@ -8,8 +8,6 @@ export default async ({ store, route, app }) => {
   });
 
   if (user) {
-    const doc = await app.$firestore.collection("users").doc(user.uid).get();
-    const data = doc.data();
-    await store.dispatch("setUser", { uid: user.uid, ...data });
+    await store.dispatch("initializeUser", user.uid);
   }
 };
