@@ -71,6 +71,7 @@ export default {
 
       if (res.data.status == 200) {
         alert("成功");
+        this.$router.push("/users");
       } else {
         alert("失敗");
       }
