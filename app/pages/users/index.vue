@@ -15,7 +15,7 @@
         <v-card
           flat
           elevation="1"
-          class="pa-8"
+          class="pa-8 mb-4"
           v-for="(user, i) in teamInfo.users"
           :key="i"
         >
@@ -75,7 +75,7 @@ export default {
     return {
       teamInfo: res.data.res,
     };
-    
+
   },
   data() {
     return {

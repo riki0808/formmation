@@ -69,7 +69,6 @@ export default {
       });
 
       if (res.data.status == 200) {
-        alert("成功");
         this.$store.dispatch("deactivateLoadingDialog");
         this.$router.push("/users");
       } else {

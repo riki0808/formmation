@@ -55,6 +55,7 @@ export default {
   }),
   methods: {
     async submit() {
+      this.$store.dispatch("activateLoadingDialog");
       const res = await this.$functions.httpsCallable("addUser2Team")({
         teamId: this.$store.state.user.teamId,
         email: this.email,
@@ -65,9 +66,11 @@ export default {
 
       if (res.data.status == 200) {
         alert("成功");
+        this.$store.dispatch("deactivateLoadingDialog");
         this.$router.push("/users");
       } else {
         alert("失敗");
+        this.$store.dispatch("deactivateLoadingDialog");
       }
     },
   },
