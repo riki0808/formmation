@@ -25,7 +25,7 @@
           </div>
           <div class="text-caption mb-2">
             <p class="mb-2">Eメール名</p>
-            <input v-model="workflowItems[currentIndex].title" type="text" class="c-form-group-item-inp inp--type2 type--1">
+            <input v-model="workflowItems[currentIndex].description" type="text" class="c-form-group-item-inp inp--type2 type--1">
           </div>
           <div class="text-caption mb-2">
             <p class="mb-2">送信社名</p>
@@ -146,6 +146,12 @@
 
     <div class="p-workflow_container pt-13" :class="{nonActive: mainView}">
 
+      <v-btn
+        @click="submitsave"
+      >
+        保存ボタン
+      </v-btn>
+
       <div v-for="(workflowItem, i) in workflowItems" :key="i">
 
         <!-- デフォルト用のカード -->
@@ -157,10 +163,10 @@
           >
             <v-card-title class="text-caption c-bd-bottom py-2 px-4 font-weight-bold grey--text">
               <v-icon left>{{workflowItem.icon}}</v-icon>
-              {{workflowItem.name}}
+              {{workflowItem.title}}
             </v-card-title>
             <v-card-text class="pa-4 c-font-10">
-              {{workflowItem.title}}
+              {{workflowItem.description}}
             </v-card-text>
           </v-card>
         </div>
@@ -178,7 +184,7 @@
             </v-btn>
             <v-card-title class="text-caption c-bd-bottom py-2 px-4 font-weight-bold grey--text">
               <v-icon left>{{workflowItem.icon}}</v-icon>
-              {{workflowItem.name}}
+              {{workflowItem.title}}
             </v-card-title>
             <v-card-text class="pa-4 c-font-10">
               {{workflowItem.day}}日-{{workflowItem.hour}}時間後
@@ -199,10 +205,10 @@
             </v-btn>
             <v-card-title class="text-caption c-bd-bottom py-2 px-4 font-weight-bold grey--text">
               <v-icon left>{{workflowItem.icon}}</v-icon>
-              {{workflowItem.name}}
+              {{workflowItem.title}}
             </v-card-title>
             <v-card-text class="pa-4 c-font-10">
-              {{workflowItem.title}}
+              {{workflowItem.description}}
             </v-card-text>
           </v-card>
         </div>
@@ -236,8 +242,8 @@
           {
             type: "default",
             icon: "mdi-power-standby",
-            name: "トリガー",
-            title: "訪問者がこの【お問い合わせ】フォームを送信したとき",
+            title: "トリガー",
+            description: "訪問者がこの【お問い合わせ】フォームを送信したとき",
           },
         ],
       }
@@ -266,8 +272,8 @@
         this.workflowItems.splice(this.currentIndex,0,{
           type: "new",
           icon: "mdi-plus-circle-outline",
-          name: "新規作成",
-          title: "アクションの選択"
+          title: "新規作成",
+          description: "アクションの選択"
         })
         console.log(this.currentIndex)
       },
@@ -275,8 +281,8 @@
         this.workflowItems.splice(this.currentIndex,1,{
           type: "mail",
           icon: "mdi-email-fast-outline",
-          name: "メールを送信",
-          title: "Eメール名を決めてください",
+          title: "メールを送信",
+          description: "Eメール名を決めてください",
           sender: "",
           senderAddress: "",
           subject: "",
@@ -288,7 +294,7 @@
         this.workflowItems.splice(this.currentIndex,1,{
           type: "delay",
           icon: "mdi-timer-sand-empty",
-          name: "次のタイミングまで時間を遅延",
+          title: "次のタイミングまで時間を遅延",
           day: 0,
           hour: 0,
         })
@@ -322,6 +328,29 @@
         this.workflowItems.splice(this.currentIndex, 1)
         this.sideMainView = false
         this.mainView = false
+      },
+      async submitsave() {
+        const actions = []
+        for ( const workflowItem of this.workflowItems ) {
+          console.log("workflowItem",workflowItem)
+          actions.push({
+            ...workflowItem,
+            targetDomId: "",
+            next: "",
+            notThenNext: "",
+            checkValue: "",
+          })
+        }
+
+        console.log("actions",actions)
+        const res = await this.$functions.httpsCallable("addWorkflows2Forms")(
+          {
+            postData:{
+              actions:actions
+            }
+          }
+        )
+        console.log(actions)
       }
 
     },

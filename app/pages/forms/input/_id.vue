@@ -29,7 +29,7 @@
       
       <!-- 以下【完了画面】のUI -->
       <v-tab-item transition="fade-transition">
-        <form-input-thanks></form-input-thanks>  
+        <form-input-thanks></form-input-thanks>
       </v-tab-item><!-- 以上【完了画面】のUI -->
 
       <!-- 以下【自動化】のUI -->

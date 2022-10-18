@@ -58,6 +58,42 @@
       </v-tabs-items>
     </div><!-- フォーム編集の左サイドバー -->
 
+    <!-- タイトルとリード分用のドロワー -->
+    <div class="c-forms-select-item-edit" :class="{active:editTitleView}">
+      <nav class="c-forms-select-item-edit-nav">
+        <v-btn
+          tile
+          color="grey"
+          text
+          class="font-weight-black"
+          @click="openEditTitleDrawer"
+        >
+          <v-icon left>
+            mdi-chevron-left
+          </v-icon>
+          完了
+        </v-btn>
+      </nav>
+      <div class="c-forms-select-item-edit-main">
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">タイトル</p>
+          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formHead.title">
+        </div>
+        <div class="c-forms-select-item-edit-main-item">
+          <p class="mb-1">補足説明</p>
+          <textarea
+            class="c-form-group-item-inp type--1 inp--type4"
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+            v-model="formHead.lead"
+          >
+          </textarea>
+        </div>
+      </div>
+    </div>
+
     <!-- editドロワーメニュー -->
     <div class="c-forms-select-item-edit" :class="{active:thanksView}">
       <nav class="c-forms-select-item-edit-nav">
@@ -80,6 +116,7 @@
           <span class="mr-6">回答者にダウンロードを許可する</span>
           <v-switch
             inset
+            @click="allowDownload = !allowDownload"
           >
           </v-switch>
         </div>
@@ -107,6 +144,11 @@
 
     <!-- フォーム編集のメイン画面 -->
     <div class="c-forms_container">
+      <v-btn
+        @click="submitSave"
+      >
+        保存ボタン
+      </v-btn>
 
       <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
 
@@ -114,10 +156,11 @@
 
           <div>
 
-            <div>
-              <h2 class="text-center mb-5">お問い合わせいただきありがとうございます</h2>
+            <div class="p-form-input-title" @click="openEditTitleDrawer">
+              <div class="p-form-input-title-overray"></div>
+              <h2 class="text-center mb-5">{{ formHead.title }}</h2>
               <p class="text-center">
-                お問い合わせいただきありがとうございました。<br>お送りいただきました内容を確認の上、担当者より折り返しご連絡させていただきます。
+                {{ formHead.lead }}
               </p>
             </div>
 
@@ -215,12 +258,18 @@ export default {
       },
     ],
     thanksItem: "",
+    allowDownload: false,
     innerWidth: 50,
     thanksView: false,
+    editTitleView: false,
     thanksPDF: "",
     thanksRedirect: {
       url: "",
       label: "ホームページへ戻る"
+    },
+    formHead: {
+      title: "お問い合わせいただきありがとございます",
+      lead: "お問い合わせいただきありがとうございました\nお送りした内容をご確認の上、担当者より折り返しご連絡させていただきます。"
     },
   }),
   methods: {
@@ -230,6 +279,9 @@ export default {
     },
     onClickOpenThanksDrawer() {
       this.thanksView = !this.thanksView
+    },
+    openEditTitleDrawer() {
+      this.editTitleView = !this.editTitleView
     },
     //ストレージにアップロードしてるんだぞっ
     async onSelectContent(e){
@@ -244,6 +296,36 @@ export default {
         const url = await storageRef.getDownloadURL()
         console.log(url)
       }
+    },
+    async submitSave() {
+      const formItems = [
+        {
+          type: "contents",
+          allowDownload: this.allowDownload,
+          fileUrl: this.thanksPDF,
+        },
+        {
+          type: "inport",
+          html: this.html,
+        },
+        {
+          type: "link",
+          href: this.thanksRedirect.url,
+          linkText: this.thanksRedirect.label,
+        },
+      ]
+      const postData = {
+        title: this.formHead.title,
+        description: this.formHead.lead,
+        width: this.innerWidth,
+        formItems: formItems,
+      }
+      const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
+        {
+          postData:postData
+        }
+      )
+      console.log(postData);
     }
   }
 }

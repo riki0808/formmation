@@ -336,6 +336,12 @@
     <!-- フォーム編集のメイン画面 -->
     <div class="c-forms_container">
 
+      <v-btn
+        @click="submitSave"
+      >
+        保存ボタン
+      </v-btn>
+
       <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
 
         <div class="c-main-form-edit-contents-inner mb-15" :style="{width: innerWidth + '%'}">
@@ -345,6 +351,7 @@
             <h2 class="text-center mb-5">{{formHead.title}}</h2>
             <p class="text-center">{{formHead.lead}}</p>
           </div>
+
 
           <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
 
@@ -1378,6 +1385,41 @@
       openEditTitleDrawer() {
         this.editTitleView = !this.editTitleView
       },
+      async submitSave() {
+        const formItems = []
+        for(const editItem of this.editItems){
+          formItems.push({
+            placeholder: editItem.placeholder,
+            title: editItem.text,
+            type: editItem.type,
+            imageUrl: "",
+            description: editItem.suppleText
+          })
+        }
+        const postData = {
+          title: this.formHead.title,
+          description: this.formHead.lead,
+          width: this.innerWidth,
+          styleTemplate: this.inpType,
+          buttonColor: this.submitButton.bgColor,
+          buttonFontColor: this.submitButton.textColor,
+          buttonFontSize: this.submitButton.textSize,
+          buttonText: this.submitButton.text,
+          textFont: this.textDesign.fontFamily,
+          labelFontColor: this.textDesign.labelColor,
+          labelFontSize: this.textDesign.labelSize,
+          descriptionColor: this.textDesign.suppleColor,
+          descriptionSize: this.textDesign.suppleSize,
+          formItems: formItems
+        }
+        const res = await this.$functions.httpsCallable("addInputForms2Forms")(
+          {
+            postData:postData
+          }
+        )
+        console.log(postData)
+        alert('ボタンが押されました');
+      }
     }
   }//export default
 </script>
