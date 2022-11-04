@@ -47,11 +47,14 @@ exports.getTeamInfo = functions.https.onCall(async (data, context) => {
       const ref = db.collection("teams").doc(teamId);
 
       const res = await firestoreJoin2ArrayRefSingle(
-        ref,
-        "users",
-        "users",
-        "id"
+        ref, //データをjoinするドキュメントのリファレンス
+        "users", //データをjoinして欲しいIDが配列として格納されているフィールドの名前
+        "users", //joinしたいコレクションの名前
+        "id" //IDが格納されているフィールドの名前
       );
+
+      // console.log(ref);
+      console.log(res);
 
       return {
         status: 200,
@@ -216,6 +219,70 @@ exports.addInputForms2Forms = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.updateInputForms = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { inputFormId, postData } = data;
+
+      await db
+        .collection("inputForms")
+        .doc(inputFormId)
+        .update({
+          ...postData,
+        });
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
+// exports.updateInputForms = functions.https.onCall(async (data, context) => {
+//   try {
+//     if (context.auth) {
+//       const {
+//         inputFormId,
+//         formHaed,
+//         width,
+//         styleTemplate,
+//         submitButtton,
+//         textDesign,
+//         formItems,
+//       } = data;
+
+//       await db.collection("inputForms").doc(inputFormId).update({
+//         formHaed: formHaed,
+//         width: width,
+//         styleTemplate: styleTemplate,
+//         submitButtton: submitButtton,
+//         textDesign: textDesign,
+//         formItems: formItems,
+//       });
+
+//       return {
+//         status: 200,
+//       };
+//     } else {
+//       throw new functions.https.HttpsError("permission-denied", "Auth Error");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     return {
+//       status: 999,
+//       error: err,
+//     };
+//   }
+// });
+
 exports.addCompleteForms2Forms = functions.https.onCall(
   async (data, context) => {
     try {
@@ -250,6 +317,50 @@ exports.addWorkflows2Forms = functions.https.onCall(async (data, context) => {
 
       return {
         status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
+exports.getForms = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      // formsのデータを取得
+      const { formId } = data;
+      const doc = await db.collection("forms").doc(formId).get();
+      let form = doc.data();
+
+      // inputFormsのデータを取得
+      if (form.inputFormId) {
+        const inputDoc = await db
+          .collection("inputForms")
+          .doc(form.inputFormId)
+          .get();
+        const inputForm = inputDoc.data();
+        form["inputForm"] = inputForm;
+      }
+
+      // completeFormsのデータを取得
+      if (form.completeFormId) {
+        const completeDoc = await db
+          .collection("completeForms")
+          .doc(form.completeFormId)
+          .get();
+        const completeForm = completeDoc.data();
+        form["completeForm"] = completeForm;
+      }
+
+      return {
+        status: 200,
+        res: form,
       };
     } else {
       throw new functions.https.HttpsError("permission-denied", "Auth Error");

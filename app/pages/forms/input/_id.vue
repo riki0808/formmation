@@ -24,7 +24,7 @@
 
       <!-- 以下【入力画面】のUI -->
       <v-tab-item transition="fade-transition">
-        <form-input-edit></form-input-edit>
+        <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId"></form-input-edit>
       </v-tab-item><!-- 以上【入力画面】のUI -->
       
       <!-- 以下【完了画面】のUI -->
@@ -67,6 +67,25 @@ export default {
           name: "その他設定"
         },
       ],
+    }
+  },
+  async asyncData(ctx) {
+
+    if(ctx.params.id){
+      const res = await ctx.$functions.httpsCallable("getForms")({
+        formId: ctx.params.id,
+      });
+      return {
+        formId: ctx.params.id,
+        inputFormId: res.data.res.inputFormId,
+        inputForms: res.data.res.inputForm,
+      };
+    }else{
+      return {
+        formId:"",
+        inputFormId: "",
+        inputForms: ""
+      }
     }
   },
   methods:{

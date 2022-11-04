@@ -93,7 +93,7 @@
               <p class="font-weight-bold text-body-2">全体</p>
               <div class="c-font-10">
                 <p style="margin-bottom:4px!important">幅</p>
-                <input v-model.number="innerWidth" class="px-2 py-1  c-bd-all mr-2 text-caption" type="number" min="1" max="100"><span>％</span>
+                <input v-model.number="width" class="px-2 py-1  c-bd-all mr-2 text-caption" type="number" min="1" max="100"><span>％</span>
               </div>
             </div><!-- 「全体」部分 -->
 
@@ -103,7 +103,7 @@
               <div class="c-font-10 d-flex flex-wrap justify-space-between inline-radio">
 
                 <div style="width:48%;">
-                  <input type="radio" name="visits" value="inp--type1" v-model="inpType">
+                  <input type="radio" name="visits" value="inp--type1" v-model="styleTemplate">
                   <label>角・グレー
                     <div class="c-form_edit_style_design-btn mb-2">
                       <div class="c-form_edit_style_design-btn-shape shape--type1"></div>
@@ -111,7 +111,7 @@
                   </label>
                 </div>
                 <div style="width:48%;">
-                  <input type="radio" name="visits" value="inp--type3" v-model="inpType">
+                  <input type="radio" name="visits" value="inp--type3" v-model="styleTemplate">
                   <label>角・白
                     <div class="c-form_edit_style_design-btn mb-2">
                       <div class="c-form_edit_style_design-btn-shape shape--type3"></div>
@@ -119,7 +119,7 @@
                   </label>
                 </div>
                 <div style="width:48%;">
-                  <input type="radio" name="visits" value="inp--type2" v-model="inpType">
+                  <input type="radio" name="visits" value="inp--type2" v-model="styleTemplate">
                   <label>丸・グレー
                     <div class="c-form_edit_style_design-btn mb-2">
                       <div class="c-form_edit_style_design-btn-shape shape--type2"></div>
@@ -127,7 +127,7 @@
                   </label>
                 </div>
                 <div style="width:48%;">
-                  <input type="radio" name="visits" value="inp--type4" v-model="inpType">
+                  <input type="radio" name="visits" value="inp--type4" v-model="styleTemplate">
                   <label>丸・白
                     <div class="c-form_edit_style_design-btn mb-2">
                       <div class="c-form_edit_style_design-btn-shape shape--type4"></div>
@@ -146,8 +146,8 @@
                 <p style="margin-bottom:4px!important">ボタンの色</p>
                 <div class="d-flex justify-left align-center">
                   <span>#</span>
-                  <input v-model="submitButton.bgColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
-                  <input v-model="submitButton.bgColor" class="c-form_edit_style-color-picker" type="color">
+                  <input v-model="submitButton.buttonColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
+                  <input v-model="submitButton.buttonColor" class="c-form_edit_style-color-picker" type="color">
                 </div>
               </div>
 
@@ -157,15 +157,15 @@
                   <p style="margin-bottom:4px!important">テキストの色</p>
                   <div class="d-flex justify-left align-center">
                     <span>#</span>
-                    <input v-model="submitButton.textColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
-                    <input v-model="submitButton.textColor" class="c-form_edit_style-color-picker" type="color">
+                    <input v-model="submitButton.buttonFontColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
+                    <input v-model="submitButton.buttonFontColor" class="c-form_edit_style-color-picker" type="color">
                   </div>
                 </div>
 
                 <div class="c-font-10">
                   <p style="margin-bottom:4px!important">サイズ</p>
                   <div class="d-flex justify-left align-center">
-                    <input v-model="submitButton.textSize" class="px-2 py-1 c-bd-all text-caption" type="number">
+                    <input v-model="submitButton.buttonFontSize" class="px-2 py-1 c-bd-all text-caption" type="number">
                   </div>
                 </div>
 
@@ -195,15 +195,15 @@
                   <p style="margin-bottom:4px!important">ラベルの色</p>
                   <div class="d-flex justify-left align-center">
                     <span>#</span>
-                    <input v-model="textDesign.labelColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
-                    <input v-model="textDesign.labelColor" class="c-form_edit_style-color-picker" type="color">
+                    <input v-model="textDesign.labelFontColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
+                    <input v-model="textDesign.labelFontColor" class="c-form_edit_style-color-picker" type="color">
                   </div>
                 </div>
 
                 <div class="c-font-10">
                   <p style="margin-bottom:4px!important">サイズ</p>
                   <div class="d-flex justify-left align-center">
-                    <input v-model="textDesign.labelSize" class="px-2 py-1 c-bd-all text-caption" type="number">
+                    <input v-model="textDesign.labelFontSize" class="px-2 py-1 c-bd-all text-caption" type="number">
                   </div>
                 </div>
 
@@ -215,15 +215,15 @@
                   <p style="margin-bottom:4px!important">補足説明の色</p>
                   <div class="d-flex justify-left align-center">
                     <span>#</span>
-                    <input v-model="textDesign.suppleColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
-                    <input v-model="textDesign.suppleColor" class="c-form_edit_style-color-picker" type="color">
+                    <input v-model="textDesign.descriptionColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
+                    <input v-model="textDesign.descriptionColor" class="c-form_edit_style-color-picker" type="color">
                   </div>
                 </div>
 
                 <div class="c-font-10">
                   <p style="margin-bottom:4px!important">サイズ</p>
                   <div class="d-flex justify-left align-center">
-                    <input v-model="textDesign.suppleSize" class="px-2 py-1 c-bd-all text-caption" type="number">
+                    <input v-model="textDesign.descriptionSize" class="px-2 py-1 c-bd-all text-caption" type="number">
                   </div>
                 </div>
 
@@ -263,12 +263,12 @@
           <p class="mb-1">補足説明</p>
           <textarea
             class="c-form-group-item-inp type--1 inp--type4"
-            :class="inpType"
+            :class="styleTemplate"
             name=""
             id=""
             cols="30"
             rows="10"
-            v-model="formHead.lead"
+            v-model="formHead.description"
           >
           </textarea>
         </div>
@@ -305,7 +305,7 @@
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">タイトル</p>
           <div v-if="selectItem">
-            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.text">
+            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
           </div>
         </div>
         <div class="c-forms-select-item-edit-main-item">
@@ -313,12 +313,12 @@
           <div v-if="selectItem">
             <textarea
               class="c-form-group-item-inp type--1 inp--type4"
-              :class="inpType"
+              :class="styleTemplate"
               name=""
               id=""
               cols="30"
               rows="10"
-              v-model="selectItem.suppleText"
+              v-model="selectItem.description"
             >
             </textarea>
           </div>
@@ -344,12 +344,12 @@
 
       <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
 
-        <div class="c-main-form-edit-contents-inner mb-15" :style="{width: innerWidth + '%'}">
+        <div class="c-main-form-edit-contents-inner mb-15" :style="{width: width + '%'}">
 
           <div class="p-form-input-title" @click="openEditTitleDrawer">
             <div class="p-form-input-title-overray"></div>
             <h2 class="text-center mb-5">{{formHead.title}}</h2>
-            <p class="text-center">{{formHead.lead}}</p>
+            <p class="text-center">{{formHead.description}}</p>
           </div>
 
 
@@ -374,9 +374,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -389,14 +389,14 @@
                 <input
                 type="email"
                 class="c-form-group-item-inp type--1"
-                :class="inpType"
+                :class="styleTemplate"
                 :placeholder="editItem.placeholder">
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
-                {{editItem.suppleText}}
+                {{editItem.description}}
               </div>
             </div>
 
@@ -419,9 +419,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -434,12 +434,12 @@
                 <input
                 type="tel"
                 class="c-form-group-item-inp type--1"
-                :class="inpType"
+                :class="styleTemplate"
                 :placeholder="editItem.placeholder">
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -463,9 +463,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -478,14 +478,14 @@
                 <div class="c-form-group-item-inp-wrap">
                   <label
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="radio" name="gender" value="男性">
                     男性
                   </label>
                   <label
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="radio" name="gender" value="女性">
                     女性
@@ -494,7 +494,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -518,9 +518,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -533,12 +533,12 @@
                 <input
                 type="date"
                 class="c-form-group-item-inp type--1"
-                :class="inpType"
+                :class="styleTemplate"
                 :placeholder="editItem.placeholder">
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -562,9 +562,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -577,12 +577,12 @@
                 <input
                 type="text"
                 class="c-form-group-item-inp type--1"
-                :class="inpType"
+                :class="styleTemplate"
                 :placeholder="editItem.placeholder">
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -606,9 +606,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -620,7 +620,7 @@
               <div class="c-form-group-item-inp-frame">
                 <select
                 class="c-form-group-item-inp type--1"
-                :class="inpType"
+                :class="styleTemplate"
                 name=""
                 id=""
                 >
@@ -635,7 +635,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -659,9 +659,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -676,7 +676,7 @@
                     v-for="(job, i) in jobs"
                     :key="i"
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="radio" name="job" :value="job">
                     {{job}}
@@ -685,7 +685,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -709,9 +709,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -723,7 +723,7 @@
               <div class="c-form-group-item-inp-frame">
                 <select
                 class="c-form-group-item-inp type--1"
-                :class="inpType"
+                :class="styleTemplate"
                 name=""
                 id=""
                 >
@@ -738,7 +738,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -762,9 +762,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -779,7 +779,7 @@
                     v-for="(source, i) in sources"
                     :key="i"
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="checkbox" name="source" :value="source">
                     {{source}}
@@ -788,7 +788,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -812,9 +812,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -828,7 +828,7 @@
                 <div class="c-form-group-item-inp-wrap">
                   <label
                     class="c-form-group-item-inp type--1"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="checkbox" name="source" value="同意する">
                     同意する
@@ -837,7 +837,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -861,9 +861,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -876,7 +876,7 @@
               <div class="c-form-group-item-inp-frame">
                 <input
                   class="c-form-group-item-inp type--1"
-                  :class="inpType"
+                  :class="styleTemplate"
                   type="text"
                   name="source"
                   :placeholder="editItem.placeholder"
@@ -884,7 +884,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -908,9 +908,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -923,7 +923,7 @@
               <div class="c-form-group-item-inp-frame">
                 <textarea
                   class="c-form-group-item-inp type--1"
-                  :class="inpType"
+                  :class="styleTemplate"
                   name=""
                   id=""
                   cols="30"
@@ -934,7 +934,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -958,9 +958,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -973,14 +973,14 @@
               <div class="c-form-group-item-inp-frame">
                 <input
                   class="c-form-group-item-inp type--1"
-                  :class="inpType"
+                  :class="styleTemplate"
                   type="number"
                   :placeholder="editItem.placeholder"
                 >
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -989,16 +989,16 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span class="c-form-group-item-val">{{editItem.required ? "必須" : "任意"}}</span>
               </div>
               <div class="c-form-group-item-inp-frame">
                 <input
                   class="c-form-group-item-inp type--1"
-                  :class="inpType"
+                  :class="styleTemplate"
                   type="number"
                   :placeholder="editItem.placeholder"
                 >
@@ -1024,9 +1024,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -1040,21 +1040,21 @@
                 <div class="c-form-group-item-inp-wrap">
                   <label
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="radio" name="choice" >
                     選択肢１
                   </label>
                   <label
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="radio" name="choice" >
                     選択肢２
                   </label>
                   <label
                     class="c-form-group-item-inp type--2"
-                    :class="inpType"
+                    :class="styleTemplate"
                   >
                     <input type="radio" name="choice" >
                     選択肢３
@@ -1063,7 +1063,7 @@
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -1087,9 +1087,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -1102,13 +1102,13 @@
               <div class="c-form-group-item-inp-frame">
                 <input
                   class="c-form-group-item-inp type--1"
-                  :class="inpType"
+                  :class="styleTemplate"
                   type="date"
                 >
               </div>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -1132,9 +1132,9 @@
               <div class="c-form-group-item-label-flex">
                 <p
                   class="c-form-group-item-label"
-                  :style="{color:textDesign.labelColor, fontSize:textDesign.labelSize + 'px'}"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                 >
-                  {{editItem.text}}
+                  {{editItem.title}}
                 </p>
                 <span
                   class="c-form-group-item-val"
@@ -1147,14 +1147,14 @@
               <div class="c-form-group-item-inp-frame">
                 <input
                   class="c-form-group-item-inp type--1"
-                  :class="inpType"
+                  :class="styleTemplate"
                   type="file"
                 >
               </div>
               <p class="c-form-group-item-label mt-2">ファイルサイズは50MB以下</p>
               <div
                 class="mt-2"
-                :style="{color:textDesign.suppleColor, fontSize:textDesign.suppleSize + 'px'}"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
               </div>
             </div>
@@ -1171,12 +1171,12 @@
               type="submit"
               class="w-100 d-flex justify-center py-2 font-weight-bold"
               :style="{
-                background: submitButton.bgColor,
-                color: submitButton.textColor,
-                fontSize: submitButton.textSize + 'px'
+                background: submitButton.buttonColor,
+                color: submitButton.buttonFontColor,
+                fontSize: submitButton.buttonFontSize + 'px'
               }"
             >
-              {{submitButton.text}}
+              {{submitButton.buttonText}}
             </button>
           </div>
           
@@ -1190,6 +1190,19 @@
 </template>
 <script>
   export default {
+    props: ["inputForms", "formId", "inputFormId"],
+    mounted(){
+      if (this.inputForms) {
+        this.formHead = this.inputForms.formHead
+        this.styleTemplate = this.inputForms.styleTemplate
+        this.submitButton = this.inputForms.submitButton
+        this.textDesign = this.inputForms.textDesign
+        this.width = this.inputForms.width
+        this.editItems = this.inputForms.formItems
+      } else {
+        console.log("formsのid取れてないんちゃう？");
+      }
+    },
     data() {
       return {
         formEdit: 0,
@@ -1335,8 +1348,6 @@
             },
           ]
         },// formEditItems
-        editItems:[],
-        selectItem: null,
         prefectures: ["選択してください","北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県","新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県","徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","宮崎県","鹿児島県","沖縄県"
         ],
         jobs: ["会社員","会社役員","公務員","自営業","主夫/主婦","アルバイト","学生"],
@@ -1344,24 +1355,28 @@
         sources: ["テレビ","ラジオ","新聞","雑誌","Webメディア","企業HP","ネット広告","メルマガ","SNS・ブログ","交通広告・看板","知人・友人"],
         editView: false,
         editTitleView: false,
-        innerWidth: 50,
-        inpType: "inp--type2",
+
+        selectItem: null,
+        // ここから保存したいデータ
+        editItems:[],
+        width: 50,
+        styleTemplate: "inp--type2",
         submitButton: {
-          bgColor: "#3042cc",
-          textColor: "#ffffff",
-          textSize: 12,
-          text: '送信',
+          buttonColor: "#3042cc",
+          buttonFontColor: "#ffffff",
+          buttonFontSize: 12,
+          buttonText: '送信',
         },
         textDesign: {
-          fontFamily: '"游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", sans-serif;',
-          labelColor: "#606060",
-          labelSize: 12,
-          suppleColor: "#606060",
-          suppleSize: 12
+          textFont: '"游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", sans-serif;',
+          labelFontColor: "#606060",
+          labelFontSize: 12,
+          descriptionColor: "#606060",
+          descriptionSize: 12
         },
         formHead: {
           title: "お問い合わせ",
-          lead: "お気軽にご相談ください"
+          description: "お気軽にご相談ください"
         }
       }//return
     },//data()
@@ -1369,10 +1384,11 @@
       onClickFormItem(cardItem){
         this.editItems.push({
           type: cardItem.type,
-          text: cardItem.text,
+          title: cardItem.text,
+          description: '',
           required: false,
           placeholder: cardItem.placeholder,
-          suppleText: '',
+          imgUrl:"",
         })
       },
       onSelectEditFormItem(item) {
@@ -1389,35 +1405,50 @@
         const formItems = []
         for(const editItem of this.editItems){
           formItems.push({
-            placeholder: editItem.placeholder,
-            title: editItem.text,
             type: editItem.type,
-            imageUrl: "",
-            description: editItem.suppleText
+            title: editItem.title,
+            description: editItem.description,
+            required: editItem.required,
+            placeholder: editItem.placeholder,
+            imageUrl: editItem.imgUrl,
           })
         }
         const postData = {
-          title: this.formHead.title,
-          description: this.formHead.lead,
-          width: this.innerWidth,
-          styleTemplate: this.inpType,
-          buttonColor: this.submitButton.bgColor,
-          buttonFontColor: this.submitButton.textColor,
-          buttonFontSize: this.submitButton.textSize,
-          buttonText: this.submitButton.text,
-          textFont: this.textDesign.fontFamily,
-          labelFontColor: this.textDesign.labelColor,
-          labelFontSize: this.textDesign.labelSize,
-          descriptionColor: this.textDesign.suppleColor,
-          descriptionSize: this.textDesign.suppleSize,
+          formHead: {
+            title: this.formHead.title,
+            description: this.formHead.description,
+          },
+          width: this.width,
+          styleTemplate: this.styleTemplate,
+          submitButton: {
+            buttonColor: this.submitButton.buttonColor,
+            buttonFontColor: this.submitButton.buttonFontColor,
+            buttonFontSize: this.submitButton.buttonFontSize,
+            buttonText: this.submitButton.buttonText,
+          },
+          textDesign: {
+            textFont: this.textDesign.textFont,
+            labelFontColor: this.textDesign.labelFontColor,
+            labelFontSize: this.textDesign.labelFontSize,
+            descriptionColor: this.textDesign.descriptionColor,
+            descriptionSize: this.textDesign.descriptionSize,
+          },
           formItems: formItems
         }
-        const res = await this.$functions.httpsCallable("addInputForms2Forms")(
-          {
-            postData:postData
-          }
-        )
-        console.log(postData)
+        if (this.inputFormId) {
+          const res = await this.$functions.httpsCallable("updateInputForms")(
+            {
+              inputFormId:this.inputFormId,
+              postData:postData
+            }
+          )
+        } else {
+          const res = await this.$functions.httpsCallable("addInputForms2Forms")(
+            {
+              postData:postData
+            }
+          )
+        }
         alert('ボタンが押されました');
       }
     }

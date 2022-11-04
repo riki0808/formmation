@@ -48,11 +48,13 @@
 export default {
   data: () => ({}),
   async asyncData(ctx) {
+    // console.log(ctx)
     const res = await ctx.$functions.httpsCallable("getUser")({
       userId: ctx.params.id,
     });
 
-    console.log(res.data.res);
+      console.log(res);
+      console.log(res.data.res);
 
     return {
       id: ctx.params.id,
