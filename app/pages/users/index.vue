@@ -65,17 +65,19 @@
 export default {
   name: "Users",
   async asyncData(ctx) {
-    // console.log(ctx.store.state.user);
     const res = await ctx.$functions.httpsCallable("getTeamInfo")({
       teamId: ctx.store.state.user.teamId,
     });
 
-    console.log(res.data.res);
+    console.log(ctx);
 
     return {
       teamInfo: res.data.res,
     };
 
+  },
+  mounted() {
+    
   },
   data() {
     return {
@@ -87,6 +89,7 @@ export default {
       const res = await this.$functions.httpsCallable("getTeamInfo")({
         teamId: this.$store.state.user.teamId,
       });
+      // console.log(res);
       this.teamInfo = res.data.res;
     },
     async deleteUser(uid) {

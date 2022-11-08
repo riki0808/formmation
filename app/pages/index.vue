@@ -24,13 +24,15 @@
         <v-card
           flat
           elevation="1"
-          class="pa-8 pl-15"
+          class="pa-8 pl-15 mb-5"
+          v-for="(form, i) in formsInfo"
+          :key="i"
         >
           <div class="d-flex align-center justify-space-between">
 
             <div class="">
               <div class="d-flex align-center">
-                <p class="mb-0 text-h6">お問い合わせフォーム</p>
+                <p class="mb-0 text-h6">{{form.title}}</p>
                 <v-btn icon>
                   <v-icon
                   >
@@ -38,8 +40,8 @@
                   </v-icon>
                 </v-btn>
               </div>
-              <p class="primary--text c-sm-fs">
-                /formmation.com/rikisato
+              <p class="primary--text c-sm-fs mb-0">
+                {{`/formmation.com/input/${form.id}`}}
               </p>
             </div>
 
@@ -55,7 +57,7 @@
               </v-btn>
               <v-btn
                 color="main"
-                to="/forms/input"
+                :to="`/forms/input/${form.id}`"
                 nuxt
                 class="mr-3 shadow-none"
               >
@@ -63,7 +65,7 @@
               </v-btn>
               <v-btn
                 color="main"
-                to="/forms/input"
+                :to="`/forms/input/${form.id}`"
                 nuxt
                 class="mr-3 shadow-none"
               >
@@ -110,6 +112,18 @@
 <script>
 export default {
   name: 'IndexPage',
+  async asyncData(ctx) {
+    const res = await ctx.$functions.httpsCallable("getFormInfo")({
+      teamId: ctx.store.state.user.teamId,
+    });
+
+    return {
+      formsInfo: res.data.res
+    };
+  },
+  mounted() {
+    console.log(this.formsInfo)
+  },
   data() {
     return {
       formItemList: [

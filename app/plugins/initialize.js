@@ -11,5 +11,6 @@ export default async ({ store, route, app, redirect }) => {
 
   if (user) {
     await store.dispatch("initializeUser", user.uid);
+    // console.log(user);
   }
 };

@@ -293,41 +293,66 @@
       </nav>
       <div class="c-forms-select-item-edit-main">
 
-        <div class="d-flex align-center mb-4" v-if="selectItem">
-          <span class="mr-6">この項目を必須にする</span>
-          <v-switch
-            inset
-            v-model="selectItem.required"
-          >
-          </v-switch>
-        </div>
-        
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">タイトル</p>
-          <div v-if="selectItem">
-            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
+        <div v-if="selectItem">
+
+          <div>
+            <div class="d-flex align-center mb-4">
+              <span class="mr-6">この項目を必須にする</span>
+              <v-switch
+                inset
+                v-model="selectItem.required"
+              >
+              </v-switch>
+            </div>
+            
+            <div class="c-forms-select-item-edit-main-item">
+              <p class="mb-1">タイトル</p>
+              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
+            </div>
+            <div class="c-forms-select-item-edit-main-item">
+              <p class="mb-1">補足説明</p>
+              <textarea
+                class="c-form-group-item-inp type--1 inp--type4"
+                :class="styleTemplate"
+                name=""
+                id=""
+                cols="30"
+                rows="10"
+                v-model="selectItem.description"
+              >
+              </textarea>
+            </div>
+            <div class="c-forms-select-item-edit-main-item">
+              <p class="mb-1">プレースホルダー</p>
+              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.placeholder">
+            </div>
           </div>
-        </div>
+
+        </div><!-- v-if -->
+      </div><!-- c-forms-select-item-edit-main -->
+    </div>
+    
+    <!-- Buttonドロワーメニュー -->
+    <div class="c-forms-select-item-edit" :class="{active:buttonEditView}">
+      <nav class="c-forms-select-item-edit-nav">
+        <v-btn
+          tile
+          color="grey"
+          text
+          class="font-weight-black"
+          @click="openButtonEditor"
+        >
+          <v-icon left>
+            mdi-chevron-left
+          </v-icon>
+          完了
+        </v-btn>
+      </nav>
+      <div class="c-forms-select-item-edit-main">
+
         <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">補足説明</p>
-          <div v-if="selectItem">
-            <textarea
-              class="c-form-group-item-inp type--1 inp--type4"
-              :class="styleTemplate"
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              v-model="selectItem.description"
-            >
-            </textarea>
-          </div>
-        </div>
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">プレースホルダー</p>
-          <div v-if="selectItem">
-            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.placeholder">
-          </div>
+          <p class="mb-1">ボタンテキスト</p>
+          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="submitButton.buttonText">
         </div>
         
       </div>
@@ -346,14 +371,53 @@
 
         <div class="c-main-form-edit-contents-inner mb-15" :style="{width: width + '%'}">
 
+          <!-- ↓↓お問い合わせのタイトルとディスクリプション↓↓ -->
           <div class="p-form-input-title" @click="openEditTitleDrawer">
             <div class="p-form-input-title-overray"></div>
             <h2 class="text-center mb-5">{{formHead.title}}</h2>
             <p class="text-center">{{formHead.description}}</p>
           </div>
-
+          <!-- ↑↑お問い合わせのタイトルとディスクリプション↑↑ -->
 
           <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
+
+            <div class="c-form-group-item" v-if="editItem.type == 'lastName' || editItem.type == 'firstName'" @click="onSelectEditFormItem(editItem)">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-space-between">
+                <div class="c-form-group-item-sub">
+                  <div class="c-form-group-item-label-flex">
+                    <p class="c-form-group-item-label">お名前(姓)</p>
+                    <span class="c-form-group-item-val required">必須</span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <input type="text" class="c-form-group-item-inp inp--type1 type--1" placeholder="山田">
+                  </div>
+                </div>
+                <div class="c-form-group-item-sub">
+                  <div class="c-form-group-item-label-flex">
+                    <p class="c-form-group-item-label">お名前(名)</p>
+                    <span class="c-form-group-item-val required">必須</span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <input type="text" class="c-form-group-item-inp inp--type1 type--1" placeholder="太郎">
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class="c-form-group-item" v-if="editItem.type == 'email'" @click="onSelectEditFormItem(editItem)">
               <div class="c-form-group-item-overray">
@@ -496,6 +560,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -540,6 +605,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -584,6 +650,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -637,6 +704,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -687,6 +755,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -740,6 +809,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -790,6 +860,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -839,6 +910,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -886,6 +958,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -936,6 +1009,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -982,6 +1056,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -1065,6 +1140,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -1110,6 +1186,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -1156,6 +1233,7 @@
                 class="mt-2"
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -1166,7 +1244,9 @@
             
           </div><!-- c-form-group -->
 
-          <div>
+          <!-- ↓↓送信ボタンの部分↓↓ -->
+          <div class="p-form-button" @click="openButtonEditor">
+            <div class="c-form-group-item-overray"></div>
             <button
               type="submit"
               class="w-100 d-flex justify-center py-2 font-weight-bold"
@@ -1179,6 +1259,7 @@
               {{submitButton.buttonText}}
             </button>
           </div>
+          <!-- ↑↑送信ボタンの部分↑↑ -->
           
         </div><!-- c-main-form-edit-contents-inner -->
 
@@ -1217,10 +1298,16 @@
         formEditItems: {
           favs: [
             {
-              type: "name",
+              type: "lastName",
               icon: "mdi-human-male",
-              text: "名前（姓名別）",
-              placeholder: "山田 太郎"
+              text: "名前（姓）",
+              placeholder: "山田"
+            },
+            {
+              type: "firstName",
+              icon: "mdi-human-male",
+              text: "名前（名）",
+              placeholder: "太郎"
             },
             {
               type: "email",
@@ -1353,8 +1440,11 @@
         jobs: ["会社員","会社役員","公務員","自営業","主夫/主婦","アルバイト","学生"],
         industrys: ["選択してください","小売(店舗・通販を含む)","メーカー","医療・福祉・介護","建築・設計・塗装","コンサルティング","人材サービス","冠婚葬祭","飲食","運輸","教育・スクール","士業","システム開発","Web・アプリ制作","IT・通信","マスコミ・メディア","広告代理店","出版・印刷","公的機関","美容・エステ","スポーツ・レジャー・観光","金融・保険","不動産","農業・林業・漁業","電気・ガス・水道"],
         sources: ["テレビ","ラジオ","新聞","雑誌","Webメディア","企業HP","ネット広告","メルマガ","SNS・ブログ","交通広告・看板","知人・友人"],
+
+        // エディタードロワーの真偽値
         editView: false,
         editTitleView: false,
+        buttonEditView: false,
 
         selectItem: null,
         // ここから保存したいデータ
@@ -1400,6 +1490,9 @@
       },
       openEditTitleDrawer() {
         this.editTitleView = !this.editTitleView
+      },
+      openButtonEditor() {
+        this.buttonEditView = !this.buttonEditView
       },
       async submitSave() {
         const formItems = []
@@ -1449,7 +1542,6 @@
             }
           )
         }
-        alert('ボタンが押されました');
       }
     }
   }//export default

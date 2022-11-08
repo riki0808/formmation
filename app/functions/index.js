@@ -373,3 +373,36 @@ exports.getForms = functions.https.onCall(async (data, context) => {
     };
   }
 });
+
+exports.getFormInfo = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { teamId } = data;
+
+      const snapshot = await db
+        .collection("forms")
+        .where("teamId", "==", teamId)
+        .get();
+
+      // console.log("snapshot", snapshot);
+      // console.log("snapshot.docs", snapshot.docs[0]);
+
+      const forms = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+      console.log(forms);
+
+      return {
+        status: 200,
+        res: forms,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});

@@ -47,6 +47,7 @@ export default {
       this.$fireAuth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(async (userCredential) => {
+          // console.log(userCredential)
           // Signed in
           alert("成功");
           await this.$store.dispatch("initializeUser", userCredential.user.uid);

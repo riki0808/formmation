@@ -9,6 +9,7 @@ export const state = () => ({
 export const mutations = {
   setUser(state, user) {
     state.user = user;
+    // console.log(user);
   },
   setLoadingDialog(state, flag) {
     state.loadingDialog = flag;
@@ -21,6 +22,7 @@ export const mutations = {
 
 export const actions = {
   async initializeUser({ commit }, userId) {
+    // console.log(userId);
     const doc = await db.collection("users").doc(userId).get();
     const data = doc.data();
     commit("setUser", { uid: userId, ...data });
