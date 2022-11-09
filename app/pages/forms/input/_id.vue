@@ -29,7 +29,7 @@
       
       <!-- 以下【完了画面】のUI -->
       <v-tab-item transition="fade-transition">
-        <form-input-thanks></form-input-thanks>
+        <form-input-thanks :completeForms="completeForms" :formId="formId" :completeFormId="completeFormId"></form-input-thanks>
       </v-tab-item><!-- 以上【完了画面】のUI -->
 
       <!-- 以下【自動化】のUI -->
@@ -75,16 +75,21 @@ export default {
       const res = await ctx.$functions.httpsCallable("getForms")({
         formId: ctx.params.id,
       });
+      console.log(res.data.res);
       return {
         formId: ctx.params.id,
         inputFormId: res.data.res.inputFormId,
         inputForms: res.data.res.inputForm,
+        completeFormId: res.data.res.completeFormId,
+        completeForms: res.data.res.completeForm,
       };
     }else{
       return {
         formId:"",
         inputFormId: "",
-        inputForms: ""
+        inputForms: "",
+        completeFormId: "",
+        completeForms: "",
       }
     }
   },

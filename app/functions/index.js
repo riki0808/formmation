@@ -246,50 +246,11 @@ exports.updateInputForms = functions.https.onCall(async (data, context) => {
   }
 });
 
-// exports.updateInputForms = functions.https.onCall(async (data, context) => {
-//   try {
-//     if (context.auth) {
-//       const {
-//         inputFormId,
-//         formHaed,
-//         width,
-//         styleTemplate,
-//         submitButtton,
-//         textDesign,
-//         formItems,
-//       } = data;
-
-//       await db.collection("inputForms").doc(inputFormId).update({
-//         formHaed: formHaed,
-//         width: width,
-//         styleTemplate: styleTemplate,
-//         submitButtton: submitButtton,
-//         textDesign: textDesign,
-//         formItems: formItems,
-//       });
-
-//       return {
-//         status: 200,
-//       };
-//     } else {
-//       throw new functions.https.HttpsError("permission-denied", "Auth Error");
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     return {
-//       status: 999,
-//       error: err,
-//     };
-//   }
-// });
-
 exports.addCompleteForms2Forms = functions.https.onCall(
   async (data, context) => {
     try {
       if (context.auth) {
         const { postData } = data;
-
-        console.log(postData);
 
         await db.collection("completeForms").add(postData);
 
@@ -308,6 +269,34 @@ exports.addCompleteForms2Forms = functions.https.onCall(
     }
   }
 );
+
+exports.updateCompleteForms = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { completeFormId, postData } = data;
+
+      await db
+        .collection("completeForms")
+        .doc(completeFormId)
+        .update({
+          ...postData,
+        });
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
 exports.addWorkflows2Forms = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
@@ -357,6 +346,7 @@ exports.getForms = functions.https.onCall(async (data, context) => {
         const completeForm = completeDoc.data();
         form["completeForm"] = completeForm;
       }
+      console.log(form);
 
       return {
         status: 200,

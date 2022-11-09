@@ -87,7 +87,7 @@
             id=""
             cols="30"
             rows="10"
-            v-model="formHead.lead"
+            v-model="formHead.description"
           >
           </textarea>
         </div>
@@ -111,11 +111,13 @@
         </v-btn>
       </nav>
 
-      <div class="c-forms-select-item-edit-main" v-if="thanksItem.type == 'contents'">
+      <!-- コンテンツ(資料)のドロワー -->
+      <div class="c-forms-select-item-edit-main" v-if="selectItem.type == 'contents'">
         <div class="d-flex align-center mb-4">
           <span class="mr-6">回答者にダウンロードを許可する</span>
           <v-switch
             inset
+            v-model="allowDownload"
             @click="allowDownload = !allowDownload"
           >
           </v-switch>
@@ -126,13 +128,17 @@
           <p class="mt-2">※PDFのみとなっております</p>
         </div>
       </div>
-      <div class="c-forms-select-item-edit-main" v-else-if="thanksItem.type == 'inport'">
+
+      <!-- 埋め込み(日程調整ツール推奨)のドロワー -->
+      <div class="c-forms-select-item-edit-main" v-else-if="selectItem.type == 'inport'">
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">埋め込み</p>
           <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="html" placeholder="埋め込みコードを入力してください"></textarea>
         </div>
       </div>
-      <div class="c-forms-select-item-edit-main" v-else-if="thanksItem.type == 'link'">
+
+      <!-- 外部ページへのリンクのドロワー -->
+      <div class="c-forms-select-item-edit-main" v-else-if="selectItem.type == 'link'">
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">外部ページのリンク</p>
           <input v-model="thanksRedirect.url" class="c-form-group-item-inp inp--type3 type--1" type="text" placeholder="URLを入力">
@@ -160,20 +166,21 @@
               <div class="p-form-input-title-overray"></div>
               <h2 class="text-center mb-5">{{ formHead.title }}</h2>
               <p class="text-center">
-                {{ formHead.lead }}
+                {{ formHead.description }}
               </p>
             </div>
 
+            <!-- コンテンツ(資料)の画面表示 -->
             <div v-if="thanksPDF" style="position:relative;" @click="onClickThanksItem(formThanksItems[0])">
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <!-- <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-chevron-down</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
@@ -183,16 +190,17 @@
               <div class="mb-4">{{thanksPDF}}</div>
             </div>
 
+            <!-- 埋め込み(日程調整ツール推奨)の画面表示 -->
             <div v-if="html" style="position:relative;" @click="onClickThanksItem(formThanksItems[1])">
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <!-- <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-chevron-down</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
@@ -202,16 +210,17 @@
               <div class="mb-4" v-html="html"></div>
             </div>
 
+            <!-- 外部ページリンクの画面表示 -->
             <div v-if="thanksRedirect.url" class="text-center" style="position:relative;" @click="onClickThanksItem(formThanksItems[2])">
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <!-- <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-chevron-down</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <v-btn class="mx-1" fab dark small color="#475a74">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
@@ -236,8 +245,22 @@
 
 <script>
 export default {
+  props: ["completeForms", "formId", "completeFormId"],
+  mounted() {
+    if (this.completeForms) {
+      this.innerWidth = this.completeForms.innerWidth
+      // inportのデータ
+      this.html = this.completeForms.html
+      // contentsのデータ
+      this.allowDownload = this.completeForms.allowDownload
+      this.thanksPDF = this.completeForms.thanksPDF
+      // linkのデータ
+      this.thanksRedirect = this.completeForms.thanksRedirect
+      // titleとdescのデータ
+      this.formHead = this.completeForms.formHead
+    }
+  },
   data:()=>({
-    html: "",
     formThanks: 0,
     formThanksTabs: ["項目","スタイル"],
     formThanksItems: [
@@ -257,25 +280,32 @@ export default {
         type: "link"
       },
     ],
-    thanksItem: "",
-    allowDownload: false,
-    innerWidth: 50,
+    selectItem: "",
     thanksView: false,
     editTitleView: false,
+
+    // 全体横幅のデータ
+    innerWidth: 50,
+    // inportのデータ
+    html: "",
+    // contentsのデータ
+    allowDownload: false,
     thanksPDF: "",
+    // linkのデータ
     thanksRedirect: {
       url: "",
       label: "ホームページへ戻る"
     },
+    // titleとdescのデータ
     formHead: {
       title: "お問い合わせいただきありがとございます",
-      lead: "お問い合わせいただきありがとうございました\nお送りした内容をご確認の上、担当者より折り返しご連絡させていただきます。"
+      description: "お問い合わせいただきありがとうございました\nお送りした内容をご確認の上、担当者より折り返しご連絡させていただきます。"
     },
   }),
   methods: {
     onClickThanksItem(item) {
       this.thanksView = !this.thanksView
-      this.thanksItem = item
+      this.selectItem = item
     },
     onClickOpenThanksDrawer() {
       this.thanksView = !this.thanksView
@@ -291,40 +321,41 @@ export default {
         this.thanksPDF = file
         const reader = new FileReader()
         reader.readAsDataURL(file)
-        const storageRef = this.$fireStorage.ref().child("file.png")
+        const storageRef = this.$fireStorage.ref().child("file.pdf")
         await storageRef.put(file)
         const url = await storageRef.getDownloadURL()
         console.log(url)
       }
     },
     async submitSave() {
-      const formItems = [
-        {
-          type: "contents",
-          allowDownload: this.allowDownload,
-          fileUrl: this.thanksPDF,
-        },
-        {
-          type: "inport",
-          html: this.html,
-        },
-        {
-          type: "link",
-          href: this.thanksRedirect.url,
-          linkText: this.thanksRedirect.label,
-        },
-      ]
       const postData = {
-        title: this.formHead.title,
-        description: this.formHead.lead,
-        width: this.innerWidth,
-        formItems: formItems,
-      }
-      const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
-        {
-          postData:postData
+        innerWidth: this.innerWidth,
+        html: this.html,
+        allowDownload: this.allowDownload,
+        thanksPDF: this.thanksPDF, 
+        thanksRedirect: {
+          url: this.thanksRedirect.url,
+          label: this.thanksRedirect.label,
+        },
+        formHead: {
+          title: this.formHead.title,
+          description: this.formHead.description
         }
-      )
+      }
+      if (this.completeFormId) {
+        const res = await this.$functions.httpsCallable("updateCompleteForms")(
+          {
+            postData:postData,
+            completeFormId: this.completeFormId
+          }
+        )
+      } else {
+        const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
+          {
+            postData:postData
+          }
+        )
+      }
       console.log(postData);
     }
   }

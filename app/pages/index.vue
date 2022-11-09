@@ -33,12 +33,12 @@
             <div class="">
               <div class="d-flex align-center">
                 <p class="mb-0 text-h6">{{form.title}}</p>
-                <v-btn icon>
+                <!-- <v-btn icon>
                   <v-icon
                   >
                     mdi-pencil
                   </v-icon>
-                </v-btn>
+                </v-btn> -->
               </div>
               <p class="primary--text c-sm-fs mb-0">
                 {{`/formmation.com/input/${form.id}`}}
