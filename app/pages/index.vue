@@ -88,13 +88,21 @@
                 </template>
 
                 <v-list>
-                  <v-list-item
-                    v-for="(item, i) in formItemList"
-                    :key="i"
-                    :to="item.to"
-                  >
-                    <v-list-item-title>{{ item.formItem }}</v-list-item-title>
-                  </v-list-item>
+                  <v-btn block tile depressed large color="white" class="text-left">
+                    <v-list-item-title>回答者管理</v-list-item-title>
+                  </v-btn>
+                  <v-btn block tile depressed large color="white" class="text-left">
+                    <v-list-item-title>フォームの編集・設定変更</v-list-item-title>
+                  </v-btn>
+                  <v-btn block tile depressed large color="white" class="text-left">
+                    <v-list-item-title>このフォームを非公開にする</v-list-item-title>
+                  </v-btn>
+                  <v-btn block tile depressed large color="white" class="text-left">
+                    <v-list-item-title>複製</v-list-item-title>
+                  </v-btn>
+                  <v-btn block tile depressed large color="white" class="text-left" @click="deleteFormInfo(form.id)">
+                    <v-list-item-title>削除</v-list-item-title>
+                  </v-btn>
                 </v-list>
               </v-menu>
 
@@ -149,6 +157,21 @@ export default {
         }
       ],
       offset: true,
+    }
+  },
+  methods: {
+    async deleteFormInfo(id) {
+      if (confirm("本当に削除しますか？")) {
+        const res = await this.$functions.httpsCallable("deleteForm") ({
+          formId: id
+        });
+        if (res.data.status == 200) {
+          alert("成功！")
+          this.$router.go({path: this.$router.currentRoute.path, force: true})
+        } else {
+          alert("失敗！")
+        }
+      }
     }
   }
 }

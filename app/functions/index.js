@@ -480,6 +480,32 @@ exports.getFormInfo = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.deleteForm = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { formId } = data;
+
+      const formsDoc = await db.collection("forms").doc(formId).get();
+      const forms = formsDoc.data();
+
+      await db.collection("forms").doc(formId).delete();
+      await db.collection("inputForms").doc(forms.inputFormId).delete();
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
 exports.updateFormTitle = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
