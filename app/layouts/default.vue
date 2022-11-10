@@ -89,7 +89,7 @@
         <v-icon color="#c8c8c8">mdi-account-circle</v-icon>
       </v-btn> -->
     </v-app-bar>
-    <v-main>
+    <v-main class="pb-10">
       <Nuxt />
     </v-main>
     <!-- <v-footer :absolute="!fixed" app>

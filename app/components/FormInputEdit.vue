@@ -419,7 +419,7 @@
               </div>
             </div>
 
-            <div class="c-form-group-item" v-if="editItem.type == 'email'" @click="onSelectEditFormItem(editItem)">
+            <div class="c-form-group-item" v-else-if="editItem.type == 'email'" @click="onSelectEditFormItem(editItem)">
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
@@ -461,6 +461,216 @@
                 :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
               >
                 {{editItem.description}}
+              </div>
+            </div>
+
+            <div class="c-form-group-item" v-else-if="editItem.type == 'company'" @click="onSelectEditFormItem(editItem)">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div class="c-form-group-item-label-flex">
+                <p
+                  class="c-form-group-item-label"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                >
+                  {{editItem.title}}
+                </p>
+                <span
+                  class="c-form-group-item-val"
+                  :class="{required:editItem.required}"
+                >
+                  {{editItem.required ? "必須" : "任意"}}
+                </span>
+              </div>
+              <div></div><!-- ←規約説明を記入するスペース -->
+              <div class="c-form-group-item-inp-frame">
+                <input
+                  class="c-form-group-item-inp type--1"
+                  :class="styleTemplate"
+                  type="text"
+                  name="source"
+                  :placeholder="editItem.placeholder"
+                >
+              </div>
+              <div
+                class="mt-2"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+              >
+              {{editItem.description}}
+              </div>
+            </div>
+
+            <div class="c-form-group-item" v-else-if="editItem.type == 'department'" @click="onSelectEditFormItem(editItem)">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div class="c-form-group-item-label-flex">
+                <p
+                  class="c-form-group-item-label"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                >
+                  {{editItem.title}}
+                </p>
+                <span
+                  class="c-form-group-item-val"
+                  :class="{required:editItem.required}"
+                >
+                  {{editItem.required ? "必須" : "任意"}}
+                </span>
+              </div>
+              <div class="c-form-group-item-inp-frame">
+                <select
+                class="c-form-group-item-inp type--1"
+                :class="styleTemplate"
+                name=""
+                id=""
+                >
+                  <option 
+                    v-for="(department, i) in departments" 
+                    :key="i"
+                    :value="department"
+                  >
+                    {{department}}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="mt-2"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+              >
+              {{editItem.description}}
+              </div>
+            </div>
+
+            <div class="c-form-group-item" v-else-if="editItem.type == 'position'" @click="onSelectEditFormItem(editItem)">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div class="c-form-group-item-label-flex">
+                <p
+                  class="c-form-group-item-label"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                >
+                  {{editItem.title}}
+                </p>
+                <span
+                  class="c-form-group-item-val"
+                  :class="{required:editItem.required}"
+                >
+                  {{editItem.required ? "必須" : "任意"}}
+                </span>
+              </div>
+              <div class="c-form-group-item-inp-frame">
+                <select
+                class="c-form-group-item-inp type--1"
+                :class="styleTemplate"
+                name=""
+                id=""
+                >
+                  <option 
+                    v-for="(position, i) in positions" 
+                    :key="i"
+                    :value="position"
+                  >
+                    {{position}}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="mt-2"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+              >
+              {{editItem.description}}
+              </div>
+            </div>
+
+            <div class="c-form-group-item" v-else-if="editItem.type == 'employees'" @click="onSelectEditFormItem(editItem)">
+              <div class="c-form-group-item-overray">
+                <div class="c-form-group-item-overray-sub">
+                  <div class="c-form-group-item-overray-icon">
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-1" fab dark small color="#475a74">
+                      <v-icon>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div class="c-form-group-item-label-flex">
+                <p
+                  class="c-form-group-item-label"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                >
+                  {{editItem.title}}
+                </p>
+                <span
+                  class="c-form-group-item-val"
+                  :class="{required:editItem.required}"
+                >
+                  {{editItem.required ? "必須" : "任意"}}
+                </span>
+              </div>
+              <div class="c-form-group-item-inp-frame">
+                <select
+                class="c-form-group-item-inp type--1"
+                :class="styleTemplate"
+                name=""
+                id=""
+                >
+                  <option 
+                    v-for="(employee, i) in employees" 
+                    :key="i"
+                    :value="employee"
+                  >
+                    {{employee}}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="mt-2"
+                :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+              >
+              {{editItem.description}}
               </div>
             </div>
 
@@ -1316,6 +1526,30 @@
               placeholder: "-----@formmation.com"
             },
             {
+              type: "company",
+              icon: "mdi-office-building",
+              text: "会社名",
+              placeholder: "株式会社◯◯◯◯"
+            },
+            {
+              type: "department",
+              icon: "mdi-dots-hexagon",
+              text: "部署名",
+              placeholder: ""
+            },
+            {
+              type: "position",
+              icon: "mdi-account-tie",
+              text: "役職",
+              placeholder: ""
+            },
+            {
+              type: "employees",
+              icon: "mdi-account-multiple",
+              text: "従業員数",
+              placeholder: ""
+            },
+            {
               type: "tel",
               icon: "mdi-phone",
               text: "電話番号",
@@ -1440,6 +1674,9 @@
         jobs: ["会社員","会社役員","公務員","自営業","主夫/主婦","アルバイト","学生"],
         industrys: ["選択してください","小売(店舗・通販を含む)","メーカー","医療・福祉・介護","建築・設計・塗装","コンサルティング","人材サービス","冠婚葬祭","飲食","運輸","教育・スクール","士業","システム開発","Web・アプリ制作","IT・通信","マスコミ・メディア","広告代理店","出版・印刷","公的機関","美容・エステ","スポーツ・レジャー・観光","金融・保険","不動産","農業・林業・漁業","電気・ガス・水道"],
         sources: ["テレビ","ラジオ","新聞","雑誌","Webメディア","企業HP","ネット広告","メルマガ","SNS・ブログ","交通広告・看板","知人・友人"],
+        departments: ["情報システム部","マーケティング部","営業・販売部","経営企画部","広報・PR部","人事部","総務・法務部","経理・財務部"],
+        positions: ["経営者","役員（取締）","部長・課長 / マネージャー","係長・主任 / エリアマネージャー","一般社員・職員 / スタッフ","契約・委託・派遣"],
+        employees: ["1人","2〜10人","2〜10人","31〜50人","51〜100人","101〜300人","301〜500人","501〜1000人","1001人〜"],
 
         // エディタードロワーの真偽値
         editView: false,

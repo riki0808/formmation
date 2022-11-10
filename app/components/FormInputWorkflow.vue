@@ -231,6 +231,12 @@
 
 <script>
   export default {
+    props: ["formId","workflows","workflowId"],
+    mounted() {
+      if (this.workflows) {
+        this.workflowItems = this.workflows.actions
+      }
+    },
     data() {
       return {
         mainView: false,
@@ -288,6 +294,11 @@
           subject: "",
           body: "",
           footer: "",
+          delayNextActionDateTime: "",
+          targetDomId: "",
+          next: "",
+          notThenNext: "",
+          checkValue: "",
         })
       },
       onClickDelayCard() {
@@ -297,6 +308,11 @@
           title: "次のタイミングまで時間を遅延",
           day: 0,
           hour: 0,
+          delayNextActionDateTime: "",
+          targetDomId: "",
+          next: "",
+          notThenNext: "",
+          checkValue: "",
         })
       },
       editMail(index) {
@@ -332,25 +348,34 @@
       async submitsave() {
         const actions = []
         for ( const workflowItem of this.workflowItems ) {
-          console.log("workflowItem",workflowItem)
           actions.push({
             ...workflowItem,
-            targetDomId: "",
-            next: "",
-            notThenNext: "",
-            checkValue: "",
+            // delayNextActionDateTime: "",
+            // targetDomId: "",
+            // next: "",
+            // notThenNext: "",ああああああああああ
+            // checkValue: "",
           })
         }
 
-        console.log("actions",actions)
-        const res = await this.$functions.httpsCallable("addWorkflows2Forms")(
-          {
-            postData:{
-              actions:actions
+        if (this.workflowId) {
+          const res = await this.$functions.httpsCallable("updateWorkflows")(
+            {
+              postData:{
+                actions:actions
+              },
+              workflowId: this.workflowId
             }
-          }
-        )
-        console.log(actions)
+          )
+        } else {
+          const res = await this.$functions.httpsCallable("addWorkflows2Forms")(
+            {
+              postData:{
+                actions:actions
+              }
+            }
+          )
+        }
       }
 
     },

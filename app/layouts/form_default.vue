@@ -1,11 +1,11 @@
 <template>
-  <v-app style="background-color: #f4f4f8;">
+  <!-- <v-app style="background-color: #f4f4f8;">
 
     <v-app-bar
-     fixed 
-     app 
-     color="#ffffff" 
-     style="box-shadow:none!important; border-bottom:1px solid #c8c8c8;"
+      fixed 
+      app 
+      color="#ffffff" 
+      style="box-shadow:none!important; border-bottom:1px solid #c8c8c8;"
     >
       
       <v-btn
@@ -43,13 +43,13 @@
 
     </v-app-bar>
 
-    <v-main>
+    <v-main> -->
       
       <Nuxt />
       
-    </v-main>
+    <!-- </v-main>
 
-  </v-app>
+  </v-app> -->
 </template>
 
 <script>

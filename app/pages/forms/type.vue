@@ -11,7 +11,7 @@
           v-for="(template, i) in templates"
           :key="i"
           width="31%"
-          :to="template.to"
+          @click="onClickFormType(template.type)"
         >
           <v-card-title
             v-text="template.title"
@@ -39,10 +39,22 @@
 <script>
   export default {
     layout: "simple_default",
+    async asyncData(ctx) {
+      const res = await ctx.$functions.httpsCallable("getTeamInfo")({
+        teamId: ctx.store.state.user.teamId,
+      });
+
+      return {
+        teamInfo: res.data.res,
+      };
+    },
+    mounted() {
+    },
     data() {
       return {
         templates: [
           {
+            type: "new",
             title: "新規作成",
             css: "white grey--text d-flex align-center justify-center font-weight-bold text-body-2",
             items: [
@@ -51,6 +63,7 @@
             to: "/forms/input",
           },
           {
+            type: "contact",
             title: "お問い合わせ",
             css: "primary white--text d-flex align-center justify-center font-weight-bold text-body-2",
             items: [
@@ -65,6 +78,7 @@
             to: "/forms/input",
           },
           {
+            type: "download",
             title: "資料ダウンロード",
             css: "primary white--text d-flex align-center justify-center font-weight-bold text-body-2",
             items: [
@@ -81,6 +95,220 @@
             to: "/forms/input",
           },
         ]
+      }
+    },
+    methods: {
+      async onClickFormType(type) {
+        const formId = Math.random().toString(32).substring(2)
+        const postData = {
+          teamId: this.teamInfo.id,
+          title: "新規作成フォーム",
+          inputFormId: Math.random().toString(32).substring(2),
+          conpleteFormId: Math.random().toString(32).substring(2),
+          workflowId: Math.random().toString(32).substring(2),
+        }
+        if (type == "contact") {
+          const inputForms = {
+            formItems: [
+              {
+                type: "firstName",
+                title: "名前（姓）",
+                description: "",
+                placeholder: "山田",
+                required: true,
+                imageUrl: "",
+              },
+              {
+                type: "company",
+                title: "会社名",
+                description: "",
+                placeholder: "株式会社◯◯◯◯",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "department",
+                title: "部署名",
+                description: "",
+                placeholder: "",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "position",
+                title: "役職",
+                description: "",
+                placeholder: "",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "email",
+                title: "メールアドレス",
+                description: "",
+                placeholder: "-----@formmation.com",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "tel",
+                title: "電話番号",
+                description: "",
+                placeholder: "000-0000-0000",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "textarea",
+                title: "お問い合わせ内容",
+                description: "",
+                placeholder: "テキストを入力してください",
+                required: false,
+                imageUrl: "",
+              },
+            ],
+            width: 50,
+            styleTemplate: "inp--type2",
+            submitButton: {
+              buttonColor: "#3042cc",
+              buttonFontColor: "#ffffff",
+              buttonFontSize: 12,
+              buttonText: '送信',
+            },
+            textDesign: {
+              textFont: '"游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", sans-serif;',
+              labelFontColor: "#606060",
+              labelFontSize: 12,
+              descriptionColor: "#606060",
+              descriptionSize: 12
+            },
+            formHead: {
+              title: "お問い合わせ",
+              description: "お気軽にご相談ください"
+            }
+          }
+          const res = await this.$functions.httpsCallable("addForms")(
+          {
+            formId:formId,
+            postData:postData,
+            inputForms:inputForms,
+            inputFormId: postData.inputFormId
+          }
+        )
+        } else if (type == "download") {
+          const inputForms = {
+            formItems: [
+              {
+                type: "firstName",
+                title: "名前（姓）",
+                description: "",
+                placeholder: "山田",
+                required: true,
+                imageUrl: "",
+              },
+              {
+                type: "company",
+                title: "会社名",
+                description: "",
+                placeholder: "株式会社◯◯◯◯",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "department",
+                title: "部署名",
+                description: "",
+                placeholder: "",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "position",
+                title: "役職",
+                description: "",
+                placeholder: "",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "employees",
+                title: "従業員数",
+                description: "",
+                placeholder: "",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "email",
+                title: "メールアドレス",
+                description: "",
+                placeholder: "-----@formmation.com",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "tel",
+                title: "電話番号",
+                description: "",
+                placeholder: "000-0000-0000",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "source",
+                title: "認知経路",
+                description: "",
+                placeholder: "",
+                required: false,
+                imageUrl: "",
+              },
+              {
+                type: "textarea",
+                title: "その他相談内容",
+                description: "",
+                placeholder: "テキストを入力してください",
+                required: false,
+                imageUrl: "",
+              },
+            ],
+            width: 50,
+            styleTemplate: "inp--type2",
+            submitButton: {
+              buttonColor: "#3042cc",
+              buttonFontColor: "#ffffff",
+              buttonFontSize: 12,
+              buttonText: '送信',
+            },
+            textDesign: {
+              textFont: '"游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", sans-serif;',
+              labelFontColor: "#606060",
+              labelFontSize: 12,
+              descriptionColor: "#606060",
+              descriptionSize: 12
+            },
+            formHead: {
+              title: "お問い合わせ",
+              description: "お気軽にご相談ください"
+            }
+          }
+          const res = await this.$functions.httpsCallable("addForms")(
+          {
+            formId:formId,
+            postData:postData,
+            inputForms:inputForms,
+            inputFormId: postData.inputFormId
+          }
+        )
+        } else {
+          const res = await this.$functions.httpsCallable("addForms")(
+            {
+              formId:formId,
+              postData:postData,
+            }
+          )
+        }
+        this.$router.push(`/forms/input/${formId}`);
+
       }
     }
   }

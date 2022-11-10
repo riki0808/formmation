@@ -53,9 +53,6 @@ exports.getTeamInfo = functions.https.onCall(async (data, context) => {
         "id" //IDが格納されているフィールドの名前
       );
 
-      // console.log(ref);
-      console.log(res);
-
       return {
         status: 200,
         res: res,
@@ -195,12 +192,36 @@ exports.updateUser = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.addForms = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { formId, postData, inputForms, inputFormId } = data;
+
+      await db.collection("forms").doc(formId).set(postData);
+
+      if (inputFormId) {
+        await db.collection("inputForms").doc(inputFormId).set(inputForms);
+      }
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
 exports.addInputForms2Forms = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
       const { postData } = data;
-
-      console.log(postData);
 
       await db.collection("inputForms").add(postData);
 
@@ -319,6 +340,60 @@ exports.addWorkflows2Forms = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.updateCompleteForms = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { completeFormId, postData } = data;
+
+      await db
+        .collection("completeForms")
+        .doc(completeFormId)
+        .update({
+          ...postData,
+        });
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
+exports.updateWorkflows = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { workflowId, postData } = data;
+
+      await db
+        .collection("workflows")
+        .doc(workflowId)
+        .update({
+          ...postData,
+        });
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
 exports.getForms = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
@@ -346,7 +421,17 @@ exports.getForms = functions.https.onCall(async (data, context) => {
         const completeForm = completeDoc.data();
         form["completeForm"] = completeForm;
       }
-      console.log(form);
+
+      if (form.workflowId) {
+        const workflowDoc = await db
+          .collection("workflows")
+          .doc(form.workflowId)
+          .get();
+        const workflow = workflowDoc.data();
+        form["workflow"] = workflow;
+      }
+
+      // console.log(form);
 
       return {
         status: 200,
@@ -379,11 +464,33 @@ exports.getFormInfo = functions.https.onCall(async (data, context) => {
 
       const forms = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-      console.log(forms);
-
       return {
         status: 200,
         res: forms,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
+exports.updateFormTitle = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { formId, title } = data;
+
+      await db.collection("forms").doc(formId).update({
+        title: title,
+      });
+
+      return {
+        status: 200,
       };
     } else {
       throw new functions.https.HttpsError("permission-denied", "Auth Error");
