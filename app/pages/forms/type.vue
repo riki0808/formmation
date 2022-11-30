@@ -104,7 +104,7 @@
           teamId: this.teamInfo.id,
           title: "新規作成フォーム",
           inputFormId: Math.random().toString(32).substring(2),
-          conpleteFormId: Math.random().toString(32).substring(2),
+          completeFormId: Math.random().toString(32).substring(2),
           workflowId: Math.random().toString(32).substring(2),
         }
         if (type == "contact") {

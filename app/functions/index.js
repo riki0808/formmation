@@ -221,9 +221,9 @@ exports.addForms = functions.https.onCall(async (data, context) => {
 exports.addInputForms2Forms = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
-      const { postData } = data;
+      const { postData, inputFormId } = data;
 
-      await db.collection("inputForms").add(postData);
+      await db.collection("inputForms").doc(inputFormId).set(postData);
 
       return {
         status: 200,
@@ -271,9 +271,9 @@ exports.addCompleteForms2Forms = functions.https.onCall(
   async (data, context) => {
     try {
       if (context.auth) {
-        const { postData } = data;
+        const { postData, completeFormId } = data;
 
-        await db.collection("completeForms").add(postData);
+        await db.collection("completeForms").doc(completeFormId).set(postData);
 
         return {
           status: 200,
@@ -321,9 +321,9 @@ exports.updateCompleteForms = functions.https.onCall(async (data, context) => {
 exports.addWorkflows2Forms = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
-      const { postData } = data;
+      const { postData, workflowId } = data;
 
-      await db.collection("workflows").add(postData);
+      await db.collection("workflows").doc(workflowId).set(postData);
 
       return {
         status: 200,
@@ -394,7 +394,7 @@ exports.updateWorkflows = functions.https.onCall(async (data, context) => {
   }
 });
 
-exports.getForms = functions.https.onCall(async (data, context) => {
+exports.getForm = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
       // formsのデータを取得
@@ -403,31 +403,31 @@ exports.getForms = functions.https.onCall(async (data, context) => {
       let form = doc.data();
 
       // inputFormsのデータを取得
-      if (form.inputFormId) {
-        const inputDoc = await db
-          .collection("inputForms")
-          .doc(form.inputFormId)
-          .get();
-        const inputForm = inputDoc.data();
+      const inputDoc = await db
+        .collection("inputForms")
+        .doc(form.inputFormId)
+        .get();
+      const inputForm = inputDoc.data();
+      if (inputForm) {
         form["inputForm"] = inputForm;
       }
 
       // completeFormsのデータを取得
-      if (form.completeFormId) {
-        const completeDoc = await db
-          .collection("completeForms")
-          .doc(form.completeFormId)
-          .get();
-        const completeForm = completeDoc.data();
+      const completeDoc = await db
+        .collection("completeForms")
+        .doc(form.completeFormId)
+        .get();
+      const completeForm = completeDoc.data();
+      if (completeForm) {
         form["completeForm"] = completeForm;
       }
 
-      if (form.workflowId) {
-        const workflowDoc = await db
-          .collection("workflows")
-          .doc(form.workflowId)
-          .get();
-        const workflow = workflowDoc.data();
+      const workflowDoc = await db
+        .collection("workflows")
+        .doc(form.workflowId)
+        .get();
+      const workflow = workflowDoc.data();
+      if (workflow) {
         form["workflow"] = workflow;
       }
 
@@ -490,6 +490,8 @@ exports.deleteForm = functions.https.onCall(async (data, context) => {
 
       await db.collection("forms").doc(formId).delete();
       await db.collection("inputForms").doc(forms.inputFormId).delete();
+      await db.collection("completeForms").doc(forms.completeFormId).delete();
+      await db.collection("workflows").doc(forms.workflowId).delete();
 
       return {
         status: 200,

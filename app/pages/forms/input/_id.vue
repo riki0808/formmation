@@ -118,9 +118,10 @@ export default {
   async asyncData(ctx) {
 
     if(ctx.params.id){
-      const res = await ctx.$functions.httpsCallable("getForms")({
+      const res = await ctx.$functions.httpsCallable("getForm")({
         formId: ctx.params.id,
       });
+      console.log(res.data.res)
       return {
         formId: ctx.params.id,
         formTitle: res.data.res.title,

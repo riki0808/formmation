@@ -75,6 +75,10 @@
   transition: .3s;
 }
 
+.c-main-form-inner {
+  margin: auto;
+  padding: 150px 0;
+}
 
 .c-main-form-edit-contents {
   width: 100%;
@@ -231,30 +235,29 @@
   height: 100%;
   padding: 0 14px;
 }
-.c-sutomers-list {
-  font-size: 12px;
-}
-.c-sutomers-list-head {
+.c-customers-list-head {
   background-color: #495963;
   color: #fff;
 }
-.c-sutomers-list-head-frame {
-  text-align: center;
-}
-.c-sutomers-list-body {
+.c-customers-list-body {
   background-color: #fff;
 }
-.c-sutomers-list-body-frame {
-  text-align: left;
+.c-customers-list-input {
+  width: 100%;
+  padding: 10px;
 }
-
-.c-sutomers-list-item {
+.c-customers-list-item {
   min-width: 100px;
   max-width: 350px;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 12px 24px;
+  // padding: 10px;
   white-space: nowrap;
+}
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse
 }
 
 

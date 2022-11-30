@@ -247,6 +247,7 @@
 export default {
   props: ["completeForms", "formId", "completeFormId"],
   mounted() {
+    // console.log(this.completeForms)
     if (this.completeForms) {
       this.innerWidth = this.completeForms.innerWidth
       // inportのデータ
@@ -342,7 +343,7 @@ export default {
           description: this.formHead.description
         }
       }
-      if (this.completeFormId) {
+      if (this.completeForms) {
         const res = await this.$functions.httpsCallable("updateCompleteForms")(
           {
             postData:postData,
@@ -352,7 +353,8 @@ export default {
       } else {
         const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
           {
-            postData:postData
+            postData:postData,
+            completeFormId: this.completeFormId
           }
         )
       }

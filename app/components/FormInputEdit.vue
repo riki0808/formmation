@@ -404,7 +404,7 @@
                     <span class="c-form-group-item-val required">必須</span>
                   </div>
                   <div class="c-form-group-item-inp-frame">
-                    <input type="text" class="c-form-group-item-inp inp--type1 type--1" placeholder="山田">
+                    <input type="text" class="c-form-group-item-inp type--1" :class="styleTemplate" placeholder="山田">
                   </div>
                 </div>
                 <div class="c-form-group-item-sub">
@@ -413,7 +413,7 @@
                     <span class="c-form-group-item-val required">必須</span>
                   </div>
                   <div class="c-form-group-item-inp-frame">
-                    <input type="text" class="c-form-group-item-inp inp--type1 type--1" placeholder="太郎">
+                    <input type="text" class="c-form-group-item-inp type--1" :class="styleTemplate" placeholder="太郎">
                   </div>
                 </div>
               </div>
@@ -1765,8 +1765,8 @@
           },
           formItems: formItems
         }
-        if (this.inputFormId) {
-          const res = await this.$functions.httpsCallable("updateInputForms")(
+        if (this.inputForms) {
+          const res = await this.$functions.htt?psCallable("updateInputForms")(
             {
               inputFormId:this.inputFormId,
               postData:postData
@@ -1775,6 +1775,7 @@
         } else {
           const res = await this.$functions.httpsCallable("addInputForms2Forms")(
             {
+              inputFormId:this.inputFormId,
               postData:postData
             }
           )

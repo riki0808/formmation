@@ -350,15 +350,10 @@
         for ( const workflowItem of this.workflowItems ) {
           actions.push({
             ...workflowItem,
-            // delayNextActionDateTime: "",
-            // targetDomId: "",
-            // next: "",
-            // notThenNext: "",ああああああああああ
-            // checkValue: "",
           })
         }
 
-        if (this.workflowId) {
+        if (this.workflows) {
           const res = await this.$functions.httpsCallable("updateWorkflows")(
             {
               postData:{
@@ -372,7 +367,8 @@
             {
               postData:{
                 actions:actions
-              }
+              },
+              workflowId: this.workflowId
             }
           )
         }
