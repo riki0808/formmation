@@ -1766,7 +1766,7 @@
           formItems: formItems
         }
         if (this.inputForms) {
-          const res = await this.$functions.htt?psCallable("updateInputForms")(
+          const res = await this.$functions.httpsCallable("updateInputForms")(
             {
               inputFormId:this.inputFormId,
               postData:postData
