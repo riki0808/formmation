@@ -119,11 +119,15 @@
             class="pt-0"
           ></v-text-field>
         </div>
-        <!-- <v-card class="pa-4">
+        <v-card class="pa-4">
           <p class="mb-1 text-caption">条件イメージ</p>
-          <p class="text-center mb-1">①  =  ③</p>
-          <p class="text-center mb-0">①  ≠  ③</p>
-        </v-card> -->
+          <p class="text-center mb-1">
+            <span class="blue--text">{{charts[currentIndex].targetContentName}}</span>
+            <span class="mx-3" v-if="(charts[currentIndex].compareType == 1)">=</span>
+            <span class="mx-3" v-else-if="(charts[currentIndex].compareType == 2)">≠</span>
+            <span class="red--text">{{charts[currentIndex].checkValue}}</span>
+          </p>
+        </v-card>
       </div>
 
     </v-navigation-drawer>
