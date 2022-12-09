@@ -74,7 +74,7 @@
 
           <!-- 以下【自動化】のUI -->
           <v-tab-item transition="fade-transition">
-            <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId"></form-input-workflow>
+            <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms"></form-input-workflow>
           </v-tab-item><!-- 以上【自動化】のUI -->
 
           <!-- 以下【その他設定】のUI -->

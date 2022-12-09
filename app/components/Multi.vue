@@ -175,7 +175,10 @@ export default {
         body: '',
         footer: '',
         next: null,
-        notNext: null
+        notNext: null,
+        targetContentName: '',
+        checkValue: '',
+        compareType: ''
       })
 
       this.$set(this.charts[this.index], 'next', latest)
@@ -201,7 +204,10 @@ export default {
         body: '',
         footer: '',
         next: null,
-        notNext: null
+        notNext: null,
+        targetContentName: '',
+        checkValue: '',
+        compareType: ''
       })
 
       this.$set(this.charts[this.index], 'notNext', latest)

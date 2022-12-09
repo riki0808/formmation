@@ -125,7 +125,10 @@ export default {
           body: '',
           footer: '',
           next: null,
-          notNext: null
+          notNext: null,
+          targetContentName: '',
+          checkValue: '',
+          compareType: ''
         })
       } else if(this.type == 1) {
         this.charts.push({
@@ -145,7 +148,10 @@ export default {
           body: '',
           footer: '',
           next: null,
-          notNext: null
+          notNext: null,
+          targetContentName: '',
+          checkValue: '',
+          compareType: ''
         })
       }
       this.$set(this.charts[this.index], 'next', latest)

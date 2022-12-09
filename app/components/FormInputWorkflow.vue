@@ -90,7 +90,40 @@
         </v-form>
       </div>
       <div class="px-8 py-10" v-if="(charts[currentIndex].type == 1)">
-        分岐条件を記入していくぅ！
+        <p class="font-weight-bold text-body-2">好きな条件を指定してください</p>
+        <div class="d-flex">
+          <span class="mt-2 mr-3">①</span>
+          <v-select
+            :items="targetContentNames"
+            v-model="charts[currentIndex].targetContentName"
+            label="項目を選んでください"
+            dense
+            outlined
+          ></v-select>
+        </div>
+        <div class="d-flex">
+          <span class="mt-2 mr-3">②</span>
+          <v-select
+            :items="compareTypes"
+            v-model="charts[currentIndex].compareType"
+            label="条件選択"
+            dense
+            outlined
+          ></v-select>
+        </div>
+        <div class="d-flex">
+          <span class="mt-2 mr-3">③</span>
+          <v-text-field
+            v-model="charts[currentIndex].checkValue"
+            label="任意のテキスト入力"
+            class="pt-0"
+          ></v-text-field>
+        </div>
+        <!-- <v-card class="pa-4">
+          <p class="mb-1 text-caption">条件イメージ</p>
+          <p class="text-center mb-1">①  =  ③</p>
+          <p class="text-center mb-0">①  ≠  ③</p>
+        </v-card> -->
       </div>
 
     </v-navigation-drawer>
@@ -115,9 +148,27 @@
 
 <script>
   export default {
-    props: ["formId","workflows","workflowId"],
+    props: ["formId","workflows","workflowId","inputForms"],
+    // async asyncData(ctx) {
+    //   if(ctx.params.id) {
+    //     const res = await ctx.$function.httpsCallable("getInputFormItem")({
+
+    //     })
+    //   }
+    // },
     created() {
-      console.log(this.workflows)
+
+      // inputFormsのtitleだけの配列を作成
+      const inputForms = this.inputForms.formItems
+      for(let inputForm of inputForms) {
+        this.targetContentNames.push(
+          inputForm.title
+        )
+      }
+
+      console.log('いけてる？',this.targetContentNames)
+
+
       if (this.workflows) {
         this.charts = this.workflows.actions
       }
@@ -142,7 +193,10 @@
           body: '',
           footer: '',
           next: null,
-          notNext: null
+          notNext: null,
+          targetContentName: '',
+          checkValue: '',
+          compareType: ''
         })
       }
       console.log('index',this.currentIndex)
@@ -152,7 +206,11 @@
         drawer: false,
         // 実行アクションの数
         actions: ["delay","mail"],
-        // action: '',
+        compareTypes:[
+          {value:1, text:'一致ならば'},
+          {value:2, text:'不一致ならば'}
+        ],
+        targetContentNames: [],
         valid: false,
         currentIndex: 0,
 
