@@ -1148,7 +1148,7 @@
 
         if (res.data.status == 200) {
           this.$store.dispatch("deactivateLoadingDialog");
-          this.$router.push("/users");
+          this.$router.push(`/thanks/${this.formId}`);
         } else {
           alert("失敗");
           this.$store.dispatch("deactivateLoadingDialog");
