@@ -531,3 +531,59 @@ exports.updateFormTitle = functions.https.onCall(async (data, context) => {
     };
   }
 });
+
+// 顧客管理用
+exports.getInputFormsItem = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { formId } = data;
+
+      const doc = await db.collection("forms").doc(formId).get();
+      let form = doc.data();
+
+      // inputFormsのデータを取得
+      const inputDoc = await db
+        .collection("inputForms")
+        .doc(form.inputFormId)
+        .get();
+      const inputForm = inputDoc.data();
+
+      return {
+        status: 200,
+        res: inputForm,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
+// form送信時のapi
+
+exports.addFormAnswers = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { postData } = data;
+
+      await db.collection("formAnswers").add(postData);
+
+      return {
+        status: 200,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});

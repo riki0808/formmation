@@ -381,7 +381,7 @@
 
           <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
 
-            <div class="c-form-group-item" v-if="editItem.type == 'lastName' || editItem.type == 'firstName'" @click="onSelectEditFormItem(editItem)">
+            <div class="c-form-group-item" v-if="editItem.type == 'name'" @click="onSelectEditFormItem(editItem)">
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
@@ -400,20 +400,52 @@
               <div class="d-flex justify-space-between">
                 <div class="c-form-group-item-sub">
                   <div class="c-form-group-item-label-flex">
-                    <p class="c-form-group-item-label">お名前(姓)</p>
-                    <span class="c-form-group-item-val required">必須</span>
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.seiTitle}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
                   </div>
                   <div class="c-form-group-item-inp-frame">
-                    <input type="text" class="c-form-group-item-inp type--1" :class="styleTemplate" placeholder="山田">
+                    <input
+                      type="text"
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      :placeholder="editItem.seiPlaceholder"
+                      v-model="editItem.value"
+                    >
                   </div>
                 </div>
                 <div class="c-form-group-item-sub">
                   <div class="c-form-group-item-label-flex">
-                    <p class="c-form-group-item-label">お名前(名)</p>
-                    <span class="c-form-group-item-val required">必須</span>
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.meiTitle}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
                   </div>
                   <div class="c-form-group-item-inp-frame">
-                    <input type="text" class="c-form-group-item-inp type--1" :class="styleTemplate" placeholder="太郎">
+                    <input
+                      type="text"
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      :placeholder="editItem.meiPlaceholder"
+                      v-model="editItem.value"
+                    >
                   </div>
                 </div>
               </div>
@@ -454,7 +486,8 @@
                 type="email"
                 class="c-form-group-item-inp type--1"
                 :class="styleTemplate"
-                :placeholder="editItem.placeholder">
+                :placeholder="editItem.placeholder"
+                v-model="editItem.value">
               </div>
               <div
                 class="mt-2"
@@ -502,6 +535,7 @@
                   type="text"
                   name="source"
                   :placeholder="editItem.placeholder"
+                  v-model="editItem.value"
                 >
               </div>
               <div
@@ -548,6 +582,7 @@
                 :class="styleTemplate"
                 name=""
                 id=""
+                v-model="editItem.value"
                 >
                   <option 
                     v-for="(department, i) in departments" 
@@ -602,6 +637,7 @@
                 :class="styleTemplate"
                 name=""
                 id=""
+                v-model="editItem.value"
                 >
                   <option 
                     v-for="(position, i) in positions" 
@@ -656,6 +692,7 @@
                 :class="styleTemplate"
                 name=""
                 id=""
+                v-model="editItem.value"
                 >
                   <option 
                     v-for="(employee, i) in employees" 
@@ -709,7 +746,8 @@
                 type="tel"
                 class="c-form-group-item-inp type--1"
                 :class="styleTemplate"
-                :placeholder="editItem.placeholder">
+                :placeholder="editItem.placeholder"
+                v-model="editItem.value">
               </div>
               <div
                 class="mt-2"
@@ -754,14 +792,14 @@
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="radio" name="gender" value="男性">
+                    <input type="radio" name="gender" value="男性" v-model="editItem.value">
                     男性
                   </label>
                   <label
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="radio" name="gender" value="女性">
+                    <input type="radio" name="gender" value="女性" v-model="editItem.value">
                     女性
                   </label>
                 </div>
@@ -809,7 +847,8 @@
                 type="date"
                 class="c-form-group-item-inp type--1"
                 :class="styleTemplate"
-                :placeholder="editItem.placeholder">
+                :placeholder="editItem.placeholder"
+                v-model="editItem.value">
               </div>
               <div
                 class="mt-2"
@@ -854,7 +893,8 @@
                 type="text"
                 class="c-form-group-item-inp type--1"
                 :class="styleTemplate"
-                :placeholder="editItem.placeholder">
+                :placeholder="editItem.placeholder"
+                v-model="editItem.value">
               </div>
               <div
                 class="mt-2"
@@ -900,6 +940,7 @@
                 :class="styleTemplate"
                 name=""
                 id=""
+                v-model="editItem.value"
                 >
                   <option 
                     v-for="(prefecture, i) in prefectures" 
@@ -956,7 +997,7 @@
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="radio" name="job" :value="job">
+                    <input type="radio" name="job" :value="job" v-model="editItem.value">
                     {{job}}
                   </label>
                 </div>
@@ -1005,6 +1046,7 @@
                 :class="styleTemplate"
                 name=""
                 id=""
+                v-model="editItem.value"
                 >
                   <option 
                     v-for="(industry, i) in industrys" 
@@ -1061,7 +1103,7 @@
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="checkbox" name="source" :value="source">
+                    <input type="checkbox" name="source" :value="source" v-model="editItem.value">
                     {{source}}
                   </label>
                 </div>
@@ -1111,7 +1153,7 @@
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
                   >
-                    <input type="checkbox" name="source" value="同意する">
+                    <input type="checkbox" name="source" value="同意する" v-model="editItem.value">
                     同意する
                   </label>
                 </div>
@@ -1162,6 +1204,7 @@
                   type="text"
                   name="source"
                   :placeholder="editItem.placeholder"
+                  v-model="editItem.value"
                 >
               </div>
               <div
@@ -1212,6 +1255,7 @@
                   cols="30"
                   rows="10"
                   :placeholder="editItem.placeholder"
+                  v-model="editItem.value"
                 >
                 </textarea>
               </div>
@@ -1260,6 +1304,7 @@
                   :class="styleTemplate"
                   type="number"
                   :placeholder="editItem.placeholder"
+                  v-model="editItem.value"
                 >
               </div>
               <div
@@ -1327,21 +1372,21 @@
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="radio" name="choice" >
+                    <input type="radio" name="choice" v-model="editItem.value">
                     選択肢１
                   </label>
                   <label
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="radio" name="choice" >
+                    <input type="radio" name="choice" v-model="editItem.value">
                     選択肢２
                   </label>
                   <label
                     class="c-form-group-item-inp type--2"
                     :class="styleTemplate"
                   >
-                    <input type="radio" name="choice" >
+                    <input type="radio" name="choice" v-model="editItem.value">
                     選択肢３
                   </label>
                 </div>
@@ -1390,6 +1435,7 @@
                   class="c-form-group-item-inp type--1"
                   :class="styleTemplate"
                   type="date"
+                  v-model="editItem.value"
                 >
               </div>
               <div
@@ -1400,6 +1446,7 @@
               </div>
             </div>
 
+            <!-- こいつv-modelどうしたらええにゃろ -->
             <div class="c-form-group-item" v-else-if="editItem.type == 'file'" @click="onSelectEditFormItem(editItem)">
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
@@ -1447,6 +1494,7 @@
               </div>
             </div>
 
+            <!-- まだv-modelでvalue入れてない -->
             <div class="c-form-group-item" v-else-if="editItem.type == 'intro-text'" @click="onSelectEditFormItem(editItem)">
               <div>説明テキスト</div>
             </div>
@@ -1481,7 +1529,7 @@
 </template>
 <script>
   export default {
-    props: ["inputForms", "formId", "inputFormId"],
+    props: ["inputForms", "formId", "inputFormId", "workflowId"],
     mounted(){
       if (this.inputForms) {
         this.formHead = this.inputForms.formHead
@@ -1508,100 +1556,113 @@
         formEditItems: {
           favs: [
             {
-              type: "lastName",
+              type: "name",
               icon: "mdi-human-male",
-              text: "名前（姓）",
-              placeholder: "山田"
-            },
-            {
-              type: "firstName",
-              icon: "mdi-human-male",
-              text: "名前（名）",
-              placeholder: "太郎"
+              text: "名前",
+              seiText: "名前（姓）",
+              seiPlaceholder: "山田",
+              seiValue: "",
+              meiText: "名前（名）",
+              meiPlaceholder: "太郎",
+              meiValue: "",
             },
             {
               type: "email",
               icon: "mdi-email-outline",
               text: "メールアドレス",
-              placeholder: "-----@formmation.com"
+              placeholder: "-----@formmation.com",
+              value: "",
             },
             {
               type: "company",
               icon: "mdi-office-building",
               text: "会社名",
-              placeholder: "株式会社◯◯◯◯"
+              placeholder: "株式会社◯◯◯◯",
+              value: "",
             },
             {
               type: "department",
               icon: "mdi-dots-hexagon",
               text: "部署名",
-              placeholder: ""
+              placeholder: "",
+              value: "",
             },
             {
               type: "position",
               icon: "mdi-account-tie",
               text: "役職",
-              placeholder: ""
+              placeholder: "",
+              value: "",
             },
             {
               type: "employees",
               icon: "mdi-account-multiple",
               text: "従業員数",
-              placeholder: ""
+              placeholder: "",
+              value: "",
             },
             {
               type: "tel",
               icon: "mdi-phone",
               text: "電話番号",
-              placeholder: "000-0000-0000"
+              placeholder: "000-0000-0000",
+              value: "",
             },
             {
               type: "gender",
               icon: "mdi-human-male-male",
               text: "性別",
-              placeholder: "男性"
+              placeholder: "男性",
+              value: "",
             },
             {
               type: "birthday",
               icon: "mdi-calendar-month-outline",
               text: "生年月日",
-              placeholder: "19◯◯/01/01"
+              placeholder: "19◯◯/01/01",
+              value: "",
             },
             {
               type: "address",
               icon: "mdi-home-outline",
               text: "住所",
-              placeholder: "◯◯県◯◯市◯◯町1-1"
+              placeholder: "◯◯県◯◯市◯◯町1-1",
+              value: "",
             },
             {
               type: "prefecture",
               icon: "mdi-map-marker-outline",
               text: "都道府県",
-              placeholder: "大阪府"
+              placeholder: "東京都",
+              value: "",
             },
             {
               type: "job",
               icon: "mdi-card-account-details-outline",
               text: "ご職業",
-              placeholder: "営業"
+              placeholder: "営業",
+              value: "",
             },
             {
               type: "industry",
               icon: "mdi-domain",
               text: "業種",
-              placeholder: "商社"
+              placeholder: "商社",
+              value: "",
             },
             {
               type: "source",
               icon: "mdi-web",
               text: "認知経路",
-              placeholder: "広告"
+              placeholder: "広告",
+              value: "",
             },
             {
               type: "check",
               icon: "mdi-checkbox-marked",
               text: "規約に同意する",
-              placeholder: "✔️"
+              placeholder: "✔️",
+              value: "",
             },
           ],
           convs: [
@@ -1609,43 +1670,50 @@
               type: "text",
               icon: "mdi-form-textbox",
               text: "1行テキスト",
-              placeholder: "テキスト入力してください"
+              placeholder: "テキスト入力してください",
+              value: "",
             },
             {
               type: "textarea",
               icon: "mdi-form-textarea",
               text: "複数行テキスト",
-              placeholder: "テキスト入力してください"
+              placeholder: "テキスト入力してください",
+              value: "",
             },
             {
               type: "number",
               icon: "mdi-numeric",
               text: "数値",
-              placeholder: "0"
+              placeholder: "0",
+              value: "",
             },
             {
               type: "button",
               icon: "mdi-dns-outline",
               text: "尺度ボタン",
-              placeholder: "✔️"
+              placeholder: "✔️",
+              value: "",
             },
             {
               type: "choice",
               icon: "mdi-form-select",
               text: "選択",
-              placeholder: "✔️"
+              placeholder: "✔️",
+              value: "",
             },
             {
               type: "day",
               icon: "mdi-calendar-month-outline",
               text: "日付",
-              placeholder: "✔️"
+              placeholder: "✔️",
+              value: "",
             },
             {
               type: "file",
               icon: "mdi-file-upload-outline",
               text: "ファイルアップロード",
-              placeholder: "✔️"
+              placeholder: "✔️",
+              value: "",
             },
           ],
           blocks: [
@@ -1653,19 +1721,22 @@
               type: "intro-text",
               icon: "mdi-text",
               text: "説明テキスト",
-              placeholder: "説明文を入力してください"
+              placeholder: "説明文を入力してください",
+              value: "",
             },
             {
               type: "img",
               icon: "mdi-image-size-select-actual",
               text: "画像",
-              placeholder: "画像を選んでください"
+              placeholder: "画像を選んでください",
+              value: "",
             },
             {
               type: "media",
               icon: "mdi-code-braces",
               text: "メディア埋め込み",
-              placeholder: "メディア埋め込み"
+              placeholder: "メディア埋め込み",
+              value: "",
             },
           ]
         },// formEditItems
@@ -1709,14 +1780,27 @@
     },//data()
     methods: {
       onClickFormItem(cardItem){
-        this.editItems.push({
-          type: cardItem.type,
-          title: cardItem.text,
-          description: '',
-          required: false,
-          placeholder: cardItem.placeholder,
-          imgUrl:"",
-        })
+        if (cardItem.type == 'name') {
+          this.editItems.push({
+            type: cardItem.type,
+            title: cardItem.text,
+            seiTitle: cardItem.seiText,
+            seiPlaceholder: cardItem.seiPlaceholder,
+            meiTitle: cardItem.meiText,
+            meiPlaceholder: cardItem.meiPlaceholder,
+            description: '',
+            required: false,
+          })
+        } else {
+          this.editItems.push({
+            type: cardItem.type,
+            title: cardItem.text,
+            description: '',
+            required: false,
+            placeholder: cardItem.placeholder,
+            imgUrl:"",
+          })
+        }
       },
       onSelectEditFormItem(item) {
         this.editView = !this.editView
@@ -1734,14 +1818,29 @@
       async submitSave() {
         const formItems = []
         for(const editItem of this.editItems){
-          formItems.push({
-            type: editItem.type,
-            title: editItem.title,
-            description: editItem.description,
-            required: editItem.required,
-            placeholder: editItem.placeholder,
-            imageUrl: editItem.imgUrl,
-          })
+          if (editItem.type == 'name') {
+            formItems.push({
+              type: editItem.type,
+              title: editItem.title,
+              seiTitle: editItem.seiTitle,
+              seiPlaceholder: editItem.seiPlaceholder,
+              meiTitle: editItem.meiTitle,
+              meiPlaceholder: editItem.meiPlaceholder,
+              description: editItem.description,
+              required: editItem.required,
+              value: editItem.value
+            })
+          } else {
+            formItems.push({
+              type: editItem.type,
+              title: editItem.title,
+              description: editItem.description,
+              required: editItem.required,
+              placeholder: editItem.placeholder,
+              imageUrl: editItem.imgUrl,
+              value: editItem.value
+            })
+          }
         }
         const postData = {
           formHead: {
@@ -1763,7 +1862,8 @@
             descriptionColor: this.textDesign.descriptionColor,
             descriptionSize: this.textDesign.descriptionSize,
           },
-          formItems: formItems
+          formItems: formItems,
+          workflowId: this.workflowId
         }
         if (this.inputForms) {
           const res = await this.$functions.httpsCallable("updateInputForms")(

@@ -64,7 +64,7 @@
 
           <!-- 以下【入力画面】のUI -->
           <v-tab-item transition="fade-transition">
-            <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId"></form-input-edit>
+            <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId" :workflowId="workflowId"></form-input-edit>
           </v-tab-item><!-- 以上【入力画面】のUI -->
           
           <!-- 以下【完了画面】のUI -->
@@ -74,7 +74,7 @@
 
           <!-- 以下【自動化】のUI -->
           <v-tab-item transition="fade-transition">
-            <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms"></form-input-workflow>
+            <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms" :inputFormId="inputFormId"></form-input-workflow>
           </v-tab-item><!-- 以上【自動化】のUI -->
 
           <!-- 以下【その他設定】のUI -->

@@ -12,25 +12,57 @@
 
       <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
 
-        <div class="c-form-group-item" v-if="editItem.type == 'lastName' || editItem.type == 'firstName'">
+        <div class="c-form-group-item" v-if="editItem.type == 'name'">
           
           <div class="d-flex justify-space-between">
             <div class="c-form-group-item-sub">
               <div class="c-form-group-item-label-flex">
-                <p class="c-form-group-item-label">お名前(姓)</p>
-                <span class="c-form-group-item-val required">必須</span>
+                <p
+                  class="c-form-group-item-label"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                >
+                  {{editItem.seiTitle}}
+                </p>
+                <span
+                  class="c-form-group-item-val"
+                  :class="{required:editItem.required}"
+                >
+                  {{editItem.required ? "必須" : "任意"}}
+                </span>
               </div>
               <div class="c-form-group-item-inp-frame">
-                <input type="text" class="c-form-group-item-inp inp--type1 type--1" placeholder="山田">
+                <input
+                  type="text"
+                  class="c-form-group-item-inp type--1"
+                  :class="styleTemplate"
+                  :placeholder="editItem.seiPlaceholder"
+                  v-model="editItem.seiValue"
+                >
               </div>
             </div>
             <div class="c-form-group-item-sub">
               <div class="c-form-group-item-label-flex">
-                <p class="c-form-group-item-label">お名前(名)</p>
-                <span class="c-form-group-item-val required">必須</span>
+                <p
+                  class="c-form-group-item-label"
+                  :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                >
+                  {{editItem.meiTitle}}
+                </p>
+                <span
+                  class="c-form-group-item-val"
+                  :class="{required:editItem.required}"
+                >
+                  {{editItem.required ? "必須" : "任意"}}
+                </span>
               </div>
               <div class="c-form-group-item-inp-frame">
-                <input type="text" class="c-form-group-item-inp inp--type1 type--1" placeholder="太郎">
+                <input
+                  type="text"
+                  class="c-form-group-item-inp type--1"
+                  :class="styleTemplate"
+                  :placeholder="editItem.meiPlaceholder"
+                  v-model="editItem.meiValue"
+                >
               </div>
             </div>
           </div>
@@ -57,7 +89,8 @@
             type="email"
             class="c-form-group-item-inp type--1"
             :class="styleTemplate"
-            :placeholder="editItem.placeholder">
+            :placeholder="editItem.placeholder"
+            v-model="editItem.value">
           </div>
           <div
             class="mt-2"
@@ -91,6 +124,7 @@
               type="text"
               name="source"
               :placeholder="editItem.placeholder"
+              v-model="editItem.value"
             >
           </div>
           <div
@@ -123,6 +157,7 @@
             :class="styleTemplate"
             name=""
             id=""
+            v-model="editItem.value"
             >
               <option 
                 v-for="(department, i) in departments" 
@@ -163,6 +198,7 @@
             :class="styleTemplate"
             name=""
             id=""
+            v-model="editItem.value"
             >
               <option 
                 v-for="(position, i) in positions" 
@@ -203,6 +239,7 @@
             :class="styleTemplate"
             name=""
             id=""
+            v-model="editItem.value"
             >
               <option 
                 v-for="(employee, i) in employees" 
@@ -242,7 +279,8 @@
             type="tel"
             class="c-form-group-item-inp type--1"
             :class="styleTemplate"
-            :placeholder="editItem.placeholder">
+            :placeholder="editItem.placeholder"
+            v-model="editItem.value">
           </div>
           <div
             class="mt-2"
@@ -273,14 +311,14 @@
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="radio" name="gender" value="男性">
+                <input type="radio" name="gender" value="男性" v-model="editItem.value">
                 男性
               </label>
               <label
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="radio" name="gender" value="女性">
+                <input type="radio" name="gender" value="女性" v-model="editItem.value">
                 女性
               </label>
             </div>
@@ -314,7 +352,8 @@
             type="date"
             class="c-form-group-item-inp type--1"
             :class="styleTemplate"
-            :placeholder="editItem.placeholder">
+            :placeholder="editItem.placeholder"
+            v-model="editItem.value">
           </div>
           <div
             class="mt-2"
@@ -345,7 +384,8 @@
             type="text"
             class="c-form-group-item-inp type--1"
             :class="styleTemplate"
-            :placeholder="editItem.placeholder">
+            :placeholder="editItem.placeholder"
+            v-model="editItem.value">
           </div>
           <div
             class="mt-2"
@@ -377,6 +417,7 @@
             :class="styleTemplate"
             name=""
             id=""
+            v-model="editItem.value"
             >
               <option 
                 v-for="(prefecture, i) in prefectures" 
@@ -419,7 +460,7 @@
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="radio" name="job" :value="job">
+                <input type="radio" name="job" :value="job" v-model="editItem.value">
                 {{job}}
               </label>
             </div>
@@ -454,6 +495,7 @@
             :class="styleTemplate"
             name=""
             id=""
+            v-model="editItem.value"
             >
               <option 
                 v-for="(industry, i) in industrys" 
@@ -496,7 +538,7 @@
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="checkbox" name="source" :value="source">
+                <input type="checkbox" name="source" :value="source" v-model="editItem.value">
                 {{source}}
               </label>
             </div>
@@ -532,7 +574,7 @@
                 class="c-form-group-item-inp type--1"
                 :class="styleTemplate"
               >
-                <input type="checkbox" name="source" value="同意する">
+                <input type="checkbox" name="source" value="同意する" v-model="editItem.value">
                 同意する
               </label>
             </div>
@@ -569,6 +611,7 @@
               type="text"
               name="source"
               :placeholder="editItem.placeholder"
+              v-model="editItem.value"
             >
           </div>
           <div
@@ -605,6 +648,7 @@
               cols="30"
               rows="10"
               :placeholder="editItem.placeholder"
+              v-model="editItem.value"
             >
             </textarea>
           </div>
@@ -639,6 +683,7 @@
               :class="styleTemplate"
               type="number"
               :placeholder="editItem.placeholder"
+              v-model="editItem.value"
             >
           </div>
           <div
@@ -692,21 +737,21 @@
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="radio" name="choice" >
+                <input type="radio" name="choice" v-model="editItem.value">
                 選択肢１
               </label>
               <label
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="radio" name="choice" >
+                <input type="radio" name="choice" v-model="editItem.value">
                 選択肢２
               </label>
               <label
                 class="c-form-group-item-inp type--2"
                 :class="styleTemplate"
               >
-                <input type="radio" name="choice" >
+                <input type="radio" name="choice" v-model="editItem.value">
                 選択肢３
               </label>
             </div>
@@ -741,6 +786,7 @@
               class="c-form-group-item-inp type--1"
               :class="styleTemplate"
               type="date"
+              v-model="editItem.value"
             >
           </div>
           <div
@@ -788,7 +834,6 @@
           <div>説明テキスト</div>
         </div>
 
-
       </div><!-- c-form-group -->
 
       <!-- ↓↓送信ボタンの部分↓↓ -->
@@ -801,6 +846,7 @@
             color: submitButton.buttonFontColor,
             fontSize: submitButton.buttonFontSize + 'px'
           }"
+          @click="submitData"
         >
           {{submitButton.buttonText}}
         </button>
@@ -821,6 +867,7 @@
         const res = await ctx.$functions.httpsCallable("getForm")({
           formId: ctx.params.id,
         });
+        console.log(res.data.res)
         return {
           formId: ctx.params.id,
           formTitle: res.data.res.title,
@@ -858,20 +905,17 @@
     },  
     data: () => (
       {
-
         formEditItems: {
           favs: [
             {
-              type: "lastName",
+              type: "name",
               icon: "mdi-human-male",
-              text: "名前（姓）",
-              placeholder: "山田"
-            },
-            {
-              type: "firstName",
-              icon: "mdi-human-male",
-              text: "名前（名）",
-              placeholder: "太郎"
+              text: "名前",
+              seiText: "名前（姓）",
+              seiPlaceholder: "山田",
+              meiText: "名前（名）",
+              meiPlaceholder: "太郎",
+              value: "",
             },
             {
               type: "email",
@@ -1023,15 +1067,13 @@
             },
           ]
         },
-        prefectures: ["選択してください","北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県","新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県","徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","宮崎県","鹿児島県","沖縄県"
-        ],
+        prefectures: ["選択してください","北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県","新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県","徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","宮崎県","鹿児島県","沖縄県"],
         jobs: ["会社員","会社役員","公務員","自営業","主夫/主婦","アルバイト","学生"],
         industrys: ["選択してください","小売(店舗・通販を含む)","メーカー","医療・福祉・介護","建築・設計・塗装","コンサルティング","人材サービス","冠婚葬祭","飲食","運輸","教育・スクール","士業","システム開発","Web・アプリ制作","IT・通信","マスコミ・メディア","広告代理店","出版・印刷","公的機関","美容・エステ","スポーツ・レジャー・観光","金融・保険","不動産","農業・林業・漁業","電気・ガス・水道"],
         sources: ["テレビ","ラジオ","新聞","雑誌","Webメディア","企業HP","ネット広告","メルマガ","SNS・ブログ","交通広告・看板","知人・友人"],
         departments: ["情報システム部","マーケティング部","営業・販売部","経営企画部","広報・PR部","人事部","総務・法務部","経理・財務部"],
         positions: ["経営者","役員（取締）","部長・課長 / マネージャー","係長・主任 / エリアマネージャー","一般社員・職員 / スタッフ","契約・委託・派遣"],
         employees: ["1人","2〜10人","2〜10人","31〜50人","51〜100人","101〜300人","301〜500人","501〜1000人","1001人〜"],
-
 
         editItems:[],
         width: 50,
@@ -1054,8 +1096,65 @@
           description: "お気軽にご相談ください"
         }
 
-
       }
     ),
+    methods: {
+      async submitData() {
+        this.$store.dispatch("activateLoadingDialog");
+        const convs = []
+        for(let item of this.editItems) {
+          if(item.type == 'name') {
+            convs.push(
+              {
+                type: item.type,
+                title: item.title,
+                seiTitle: item.seiTitle,
+                seiValue: item.seiValue,
+                meiTitle: item.meiTitle,
+                meiValue: item.meiValue,
+              }
+            )
+          } else {
+            convs.push({
+              title: item.title,
+              type: item.type,
+              value: item.value,
+            })
+          }
+        }
+
+        const seiData = this.editItems.find( (item) => item.type == 'name')
+        const meiData = this.editItems.find( (item) => item.type == 'name')
+        const emailData = this.editItems.find( (item) => item.type == 'email')
+        const companyData = this.editItems.find( (item) => item.type == 'company')
+        const telData = this.editItems.find( (item) => item.type == 'tel')
+
+        const postData = {
+          sei: seiData.seiValue,
+          mei: meiData.meiValue,
+          email: emailData.value,
+          company: companyData.value,
+          tel: telData.value,
+          step: 0,
+          workflowData: this.workflows,
+          convs: convs
+        }
+
+        const res = await this.$functions.httpsCallable("addFormAnswers")(
+          {
+            postData: postData
+          }
+        )
+
+        if (res.data.status == 200) {
+          this.$store.dispatch("deactivateLoadingDialog");
+          this.$router.push("/users");
+        } else {
+          alert("失敗");
+          this.$store.dispatch("deactivateLoadingDialog");
+        }
+
+      }
+    },
   }
 </script>

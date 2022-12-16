@@ -1,55 +1,24 @@
 <template>
-  <!-- <v-app style="background-color: #f4f4f8;">
-
-    <v-app-bar
-      fixed 
-      app 
-      color="#ffffff" 
-      style="box-shadow:none!important; border-bottom:1px solid #c8c8c8;"
+  <v-app>
+    <div
+      v-if="$store.state.loadingDialog"
+      class="d-flex align-center justify-center"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #00000060;
+        z-index: 1000;
+      "
     >
+      <v-progress-circular indeterminate color="#315fb5" size="64" width="8" />
+    </div>
       
-      <v-btn
-        tile
-        color="primary"
-        text
-        to="/"
-        class="font-weight-black"
-      >
-        <v-icon left>
-          mdi-chevron-left
-        </v-icon>
-        戻る
-      </v-btn>
+    <Nuxt />
 
-      <v-spacer></v-spacer>
-
-      <div>
-        <input class="c-input_border p-form_nav-input-text" type="text" style="width:300px;" value="お問い合わせフォーム">
-        <v-icon left>
-          mdi-pencil
-        </v-icon>
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <div>
-        <v-btn
-          color="primary"
-          class="font-weight-bold"
-        >
-          公開・更新
-        </v-btn>
-      </div>
-
-    </v-app-bar>
-
-    <v-main> -->
-      
-      <Nuxt />
-      
-    <!-- </v-main>
-
-  </v-app> -->
+  </v-app>
 </template>
 
 <script>

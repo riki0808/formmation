@@ -111,12 +111,16 @@
           const inputForms = {
             formItems: [
               {
-                type: "firstName",
-                title: "名前（姓）",
+                type: "name",
+                title: "名前",
+                seiTitle: "名前（姓）",
+                seiPlaceholder: "山田",
+                meiTitle: "名前（名）",
+                meiPlaceholder: "太郎",
                 description: "",
-                placeholder: "山田",
                 required: true,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "company",
@@ -125,6 +129,7 @@
                 placeholder: "株式会社◯◯◯◯",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "department",
@@ -133,6 +138,7 @@
                 placeholder: "",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "position",
@@ -141,6 +147,7 @@
                 placeholder: "",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "email",
@@ -149,6 +156,7 @@
                 placeholder: "-----@formmation.com",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "tel",
@@ -157,6 +165,7 @@
                 placeholder: "000-0000-0000",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "textarea",
@@ -165,6 +174,7 @@
                 placeholder: "テキストを入力してください",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
             ],
             width: 50,
@@ -185,7 +195,8 @@
             formHead: {
               title: "お問い合わせ",
               description: "お気軽にご相談ください"
-            }
+            },
+            workflowId: postData.workflowId
           }
           const res = await this.$functions.httpsCallable("addForms")(
           {
@@ -199,12 +210,16 @@
           const inputForms = {
             formItems: [
               {
-                type: "firstName",
-                title: "名前（姓）",
+                type: "name",
+                title: "名前",
+                seiTitle: "名前（姓）",
+                seiPlaceholder: "山田",
+                meiTitle: "名前（名）",
+                meiPlaceholder: "太郎",
                 description: "",
-                placeholder: "山田",
                 required: true,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "company",
@@ -213,6 +228,7 @@
                 placeholder: "株式会社◯◯◯◯",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "department",
@@ -221,6 +237,7 @@
                 placeholder: "",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "position",
@@ -229,6 +246,7 @@
                 placeholder: "",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "employees",
@@ -237,6 +255,7 @@
                 placeholder: "",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "email",
@@ -245,6 +264,7 @@
                 placeholder: "-----@formmation.com",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "tel",
@@ -253,6 +273,7 @@
                 placeholder: "000-0000-0000",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "source",
@@ -261,6 +282,7 @@
                 placeholder: "",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
               {
                 type: "textarea",
@@ -269,6 +291,7 @@
                 placeholder: "テキストを入力してください",
                 required: false,
                 imageUrl: "",
+                value: "",
               },
             ],
             width: 50,
@@ -289,7 +312,8 @@
             formHead: {
               title: "お問い合わせ",
               description: "お気軽にご相談ください"
-            }
+            },
+            workflowId: postData.workflowId
           }
           const res = await this.$functions.httpsCallable("addForms")(
           {

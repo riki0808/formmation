@@ -152,7 +152,7 @@
 
 <script>
   export default {
-    props: ["formId","workflows","workflowId","inputForms"],
+    props: ["formId","workflows","workflowId","inputForms","inputFormId"],
     // async asyncData(ctx) {
     //   if(ctx.params.id) {
     //     const res = await ctx.$function.httpsCallable("getInputFormItem")({
@@ -165,9 +165,16 @@
       // inputFormsのtitleだけの配列を作成
       const inputForms = this.inputForms.formItems
       for(let inputForm of inputForms) {
-        this.targetContentNames.push(
-          inputForm.title
-        )
+        if(inputForm.type == 'name') {
+          this.targetContentNames.push(
+            inputForm.seiTitle,
+            inputForm.meiTitle,
+          )
+        } else {
+          this.targetContentNames.push(
+            inputForm.title
+          )
+        }
       }
 
       console.log('いけてる？',this.targetContentNames)
@@ -245,23 +252,22 @@
       },
       async submitsave() {
         const actions = this.charts
-
-        // console.log(actions)
-
         if (this.workflows) {
           const res = await this.$functions.httpsCallable("updateWorkflows")(
             {
               postData:{
                 actions:actions
               },
-              workflowId: this.workflowId
+              workflowId: this.workflowId,
+              
             }
           )
         } else {
           const res = await this.$functions.httpsCallable("addWorkflows2Forms")(
             {
               postData:{
-                actions:actions
+                actions:actions,
+                inputFormId: this.inputFormId
               },
               workflowId: this.workflowId
             }

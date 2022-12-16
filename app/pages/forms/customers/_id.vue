@@ -47,10 +47,30 @@
 <script>
 export default {
   async asyncData(ctx) {
-
+    if(ctx.params.id) {
+      const res = await ctx.$functions.httpsCallable('getInputFormsItem') ({
+        formId: ctx.params.id
+      })
+      return {
+        inputForms: res.data.res
+      }
+    }
+  },
+  mounted() {
+    const formItems = this.inputForms.formItems
+    for(let item of formItems) {
+      if (item.type == 'name') {
+        this.InputFormTitles.push(item.seiTitle, item.meiTitle)
+      } else {
+        this.InputFormTitles.push(item.title)
+      }
+    }
+    console.log('新しく配列できた？？',this.InputFormTitles)
   },
   data(){
     return{
+      
+      InputFormTitles: [],
     }
   },
   methods:{
