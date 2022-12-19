@@ -48,9 +48,10 @@
 export default {
   async asyncData(ctx) {
     if(ctx.params.id) {
-      const res = await ctx.$functions.httpsCallable('getInputFormsItem') ({
-        formId: ctx.params.id
+      const res = await ctx.$functions.httpsCallable('getForm') ({
+        teamId: ctx.store.state.user.teamId
       })
+      
       return {
         inputForms: res.data.res
       }

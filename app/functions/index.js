@@ -587,3 +587,23 @@ exports.addFormAnswers = functions.https.onCall(async (data, context) => {
     };
   }
 });
+
+function doSended() {
+  // 次のSTEPへ進めるだけ
+}
+function doDelay() {
+  // delayを進める
+}
+function doMail() {
+  // メールを送る
+}
+
+exports.onProcessObserver = functions
+  .runWith({ memory: "2GB", timeoutSeconds: 90 })
+  .pubsub.schedule("0 * * * *")
+  .timeZone("Asia/Tokyo")
+  .onRun(async (context) => {
+    // まず、未処理の送信データを全て取得する
+    // for文で全てのデータを見ていく
+    // switchとかの条件分けで実行する関数を切り替える
+  });

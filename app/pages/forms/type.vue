@@ -121,6 +121,7 @@
                 required: true,
                 imageUrl: "",
                 value: "",
+                role: 1,
               },
               {
                 type: "company",
@@ -130,6 +131,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
               {
                 type: "department",
@@ -139,6 +141,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 3,
               },
               {
                 type: "position",
@@ -148,6 +151,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 3,
               },
               {
                 type: "email",
@@ -157,6 +161,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
               {
                 type: "tel",
@@ -166,6 +171,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
               {
                 type: "textarea",
@@ -175,6 +181,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
             ],
             width: 50,
@@ -220,6 +227,7 @@
                 required: true,
                 imageUrl: "",
                 value: "",
+                role: 1,
               },
               {
                 type: "company",
@@ -229,6 +237,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
               {
                 type: "department",
@@ -238,6 +247,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 3,
               },
               {
                 type: "position",
@@ -247,6 +257,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 3,
               },
               {
                 type: "employees",
@@ -256,6 +267,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 3,
               },
               {
                 type: "email",
@@ -265,6 +277,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
               {
                 type: "tel",
@@ -274,6 +287,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
               {
                 type: "source",
@@ -283,6 +297,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 4,
               },
               {
                 type: "textarea",
@@ -292,6 +307,7 @@
                 required: false,
                 imageUrl: "",
                 value: "",
+                role: 2,
               },
             ],
             width: 50,

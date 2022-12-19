@@ -23,12 +23,6 @@
           <div class="c-form-group-item-overray">
             <div class="c-form-group-item-overray-sub">
               <div class="c-form-group-item-overray-icon">
-                <!-- <v-btn class="mx-1" fab dark small color="#475a74">
-                  <v-icon>mdi-chevron-up</v-icon>
-                </v-btn>
-                <v-btn class="mx-1" fab dark small color="#475a74">
-                  <v-icon>mdi-chevron-down</v-icon>
-                </v-btn> -->
                 <v-btn class="mx-1" fab dark small color="#475a74">
                   <v-icon>mdi-trash-can</v-icon>
                 </v-btn>
@@ -43,12 +37,6 @@
           <div class="c-form-group-item-overray">
             <div class="c-form-group-item-overray-sub">
               <div class="c-form-group-item-overray-icon">
-                <!-- <v-btn class="mx-1" fab dark small color="#475a74">
-                  <v-icon>mdi-chevron-up</v-icon>
-                </v-btn>
-                <v-btn class="mx-1" fab dark small color="#475a74">
-                  <v-icon>mdi-chevron-down</v-icon>
-                </v-btn> -->
                 <v-btn class="mx-1" fab dark small color="#475a74">
                   <v-icon>mdi-trash-can</v-icon>
                 </v-btn>
