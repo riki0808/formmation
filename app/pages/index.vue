@@ -172,7 +172,7 @@ export default {
           alert("失敗！")
         }
       }
-    }
+    },
   }
 }
 </script>

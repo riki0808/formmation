@@ -165,8 +165,8 @@ export default {
         type: this.type1,
         action: '',
         // ディレイのパート
-        day: '',
-        hour: '',
+        day: null,
+        hour: null,
         // メールパート
         mailName: '',
         sender: '',
@@ -194,8 +194,8 @@ export default {
         type: this.type2,
         action: '',
         // ディレイのパート
-        day: '',
-        hour: '',
+        day: null,
+        hour: null,
         // メールパート
         mailName: '',
         sender: '',

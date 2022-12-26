@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const sgMail = require("@sendgrid/mail");
 admin.initializeApp();
 const {
   firestoreJoin2ArrayRef,
@@ -449,24 +450,56 @@ exports.getForm = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.getAnswersInfo = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth) {
+      const { teamId } = data;
+
+      const snapshotAnswers = await db
+        .collection("formAnswers")
+        .where("teamId", "==", teamId)
+        .get();
+
+      const answers = snapshotAnswers.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      return {
+        status: 200,
+        res: answers,
+      };
+    } else {
+      throw new functions.https.HttpsError("permission-denied", "Auth Error");
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 999,
+      error: err,
+    };
+  }
+});
+
 exports.getFormInfo = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
       const { teamId } = data;
 
-      const snapshot = await db
+      const snapshotForms = await db
         .collection("forms")
         .where("teamId", "==", teamId)
         .get();
 
-      // console.log("snapshot", snapshot);
-      // console.log("snapshot.docs", snapshot.docs[0]);
-
-      const forms = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const forms = snapshotForms.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
 
       return {
         status: 200,
         res: forms,
+        // anss: answers
       };
     } else {
       throw new functions.https.HttpsError("permission-denied", "Auth Error");
@@ -569,9 +602,9 @@ exports.getInputFormsItem = functions.https.onCall(async (data, context) => {
 exports.addFormAnswers = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
-      const { postData } = data;
+      const { postData, formAnswersId } = data;
 
-      await db.collection("formAnswers").add(postData);
+      await db.collection("formAnswers").doc(formAnswersId).set(postData);
 
       return {
         status: 200,
@@ -588,21 +621,130 @@ exports.addFormAnswers = functions.https.onCall(async (data, context) => {
   }
 });
 
-function doSended() {
-  // 次のSTEPへ進めるだけ
-}
-function doDelay() {
-  // delayを進める
-}
-function doMail() {
+function doMail(ans, step) {
+  console.log("??????");
+  const workflow = ans.workflowData.actions;
+  const targetEmail = ans.email;
+  console.log("誰宛てのメールだ？？→", targetEmail);
+  const { senderAddress, body, footer, sender, subject } = workflow[step];
+  console.log("送信者のアドレス", senderAddress);
+  console.log("本文", body);
+  console.log("署名", footer);
+  console.log("件名", subject);
   // メールを送る
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: targetEmail,
+    from: senderAddress,
+    subject: subject,
+    text: `${body}\n${footer}`,
+    html: body,
+  };
+  console.log("メール送信だよおお");
+  sgMail.send(msg);
+  console.log("??????");
 }
+
+async function doDelay(ans, step) {
+  const workflow = ans.workflowData.actions;
+  // delayを進める
+  let hours = Number(workflow[step].day * 24) + Number(workflow[step].hour);
+  console.log("!!!!!");
+  console.log("現在のhours→", hours);
+  hours -= 1;
+  console.log("hoursを-1→", hours);
+  let day = Math.floor(hours / 24);
+  let hour = hours % 24;
+  // DBに保存する
+  let workflowData = ans.workflowData;
+  workflowData.actions[step].day = day;
+  workflowData.actions[step].hour = hour;
+  await db.collection("formAnswers").doc(ans.id).update({
+    workflowData: workflowData,
+  });
+  if (hours > 0) {
+    console.log("hoursが0より大きかったからtrue(現在のhours→", hours);
+    console.log("!!!!!");
+    return true;
+  }
+  console.log("hoursが0より小さかったからfalse(現在のhours→", hours);
+  console.log("!!!!!");
+  return false;
+}
+
+async function doStep(ans, step) {
+  const workflow = ans.workflowData.actions;
+  if (step >= workflow.length) return;
+
+  let isDelay = false;
+  console.log("isDelayの初期値", isDelay);
+
+  if (workflow[step].action == "start") {
+    console.log("actionがstartの時(ちなみに現在のstepは→)", step);
+    step += 1;
+    console.log("actionがstartのstep増加(増加後→)", step);
+  } else if (workflow[step].action == "delay") {
+    // delayの処理をする関数
+    console.log("actionがdelayの時(ちなみに現在のstepは→)", step);
+    isDelay = await doDelay(ans, step);
+    console.log("doDelayの結果現在のisDelay→", isDelay);
+
+    if (!isDelay) {
+      console.log("isDleayがfalseやったから発火、現在のisDelay→", isDelay);
+      step += 1;
+      console.log("isDleayがfalseやったからstep増加→", step);
+    }
+  } else if (workflow[step].action == "mail") {
+    console.log("actionがmailの時(ちなみに現在のstepは→)", step);
+    doMail(ans, step);
+    step += 1;
+    console.log("actionがmailのstep増加(増加後→)", step);
+  }
+
+  console.log("------");
+  console.log("------");
+  console.log("------");
+  console.log("doStepの現在のstepは→", step);
+  console.log("workflow.lengthの数値は→", workflow.length);
+  // ここら辺に終了の条件を書く;
+  if (isDelay) return;
+  console.log("isDelayがfalseだった(現在のisDelay→", isDelay);
+
+  console.log("ここまできたのでstepをDBに書き込んでいこう", step);
+  //stepをDBに上書き
+  await db.collection("formAnswers").doc(ans.id).update({ step: step });
+  if (step >= workflow.length) return;
+  console.log("stepがworkflow.lengthより小さかった(現在のstep→", step);
+
+  console.log("じゃあもう一回doStep関数行ってみよう(現在のstep→", step);
+
+  console.log("------");
+  console.log("------");
+  console.log("------");
+  doStep(ans, step);
+}
+
+exports.onProcessObserver1 = functions.https.onCall(async (context) => {
+  const ansSnapshots = await db.collection("formAnswers").get();
+  // 全てのformAnswerデータにidを追加させる
+  const anss = ansSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  // console.log("anss", anss);
+  for (const ans of anss) {
+    let step = ans.step;
+    doStep(ans, step);
+  }
+  // const ansSnapshots = await db.collection("formAnswers").where(/* 終了していないものだけ */).get();
+
+  return {
+    status: 200,
+  };
+});
 
 exports.onProcessObserver = functions
   .runWith({ memory: "2GB", timeoutSeconds: 90 })
   .pubsub.schedule("0 * * * *")
   .timeZone("Asia/Tokyo")
-  .onRun(async (context) => {
+  .onRun(async (data, context) => {
     // まず、未処理の送信データを全て取得する
     // for文で全てのデータを見ていく
     // switchとかの条件分けで実行する関数を切り替える

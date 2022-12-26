@@ -192,10 +192,10 @@
           index: 0,
           title: "お問合せ完了後",
           type: 0,
-          action: '',
+          action: 'start',
           // ディレイのパート
-          day: '',
-          hour: '',
+          day: null,
+          hour: null,
           // メールパート
           mailName: '',
           sender: '',
@@ -267,7 +267,7 @@
             {
               postData:{
                 actions:actions,
-                inputFormId: this.inputFormId
+                // inputFormId: this.inputFormId
               },
               workflowId: this.workflowId
             }

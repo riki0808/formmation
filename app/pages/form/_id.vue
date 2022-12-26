@@ -3,6 +3,8 @@
 
     <div class="c-main-form-inner mb-15" :style="{width: width + '%'}">
 
+      <v-btn @click="onClick">バッチテスト</v-btn>
+
       <!-- ↓↓お問い合わせのタイトルとディスクリプション↓↓ -->
       <div class="p-form-input-title">
         <h2 class="text-center mb-5">{{formHead.title}}</h2>
@@ -869,6 +871,7 @@
         });
         console.log(res.data.res)
         return {
+          teamId: res.data.res.teamId,
           formId: ctx.params.id,
           formTitle: res.data.res.title,
           inputFormId: res.data.res.inputFormId,
@@ -880,6 +883,7 @@
         };
       }else{
         return {
+          teamId: "",
           formId:"",
           inputFormId: "",
           inputForms: "",
@@ -902,6 +906,9 @@
       } else {
         console.log("formsのid取れてないんちゃう？");
       }
+      this.formAnswersId = Math.random().toString(32).substring(2)
+      console.log(this.formAnswersId)
+      console.log('teamId取れてる？？',this.teamId)
     },  
     data: () => (
       {
@@ -1094,7 +1101,8 @@
         formHead: {
           title: "お問い合わせ",
           description: "お気軽にご相談ください"
-        }
+        },
+        formAnswersId: '',
 
       }
     ),
@@ -1137,12 +1145,14 @@
           tel: telData.value,
           step: 0,
           workflowData: this.workflows,
-          convs: convs
+          convs: convs,
+          teamId: this.teamId,
+          inputFormId: this.inputFormId,
         }
-
         const res = await this.$functions.httpsCallable("addFormAnswers")(
           {
-            postData: postData
+            postData: postData,
+            formAnswersId: this.formAnswersId
           }
         )
 
@@ -1154,6 +1164,14 @@
           this.$store.dispatch("deactivateLoadingDialog");
         }
 
+      },
+      async onClick() {
+        const res = await this.$functions.httpsCallable("onProcessObserver1") (
+          {
+            // formAnswersId: this.formAnswersId
+          }
+        );
+        console.log('テスト成功')
       }
     },
   }

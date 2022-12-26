@@ -48,30 +48,30 @@
 export default {
   async asyncData(ctx) {
     if(ctx.params.id) {
-      const res = await ctx.$functions.httpsCallable('getForm') ({
-        teamId: ctx.store.state.user.teamId
+      const res = await ctx.$functions.httpsCallable('getAnswersInfo') ({
+        teamId: ctx.params.id
       })
-      
       return {
-        inputForms: res.data.res
+        answers: res.data.res
       }
     }
   },
   mounted() {
-    const formItems = this.inputForms.formItems
-    for(let item of formItems) {
-      if (item.type == 'name') {
-        this.InputFormTitles.push(item.seiTitle, item.meiTitle)
-      } else {
-        this.InputFormTitles.push(item.title)
-      }
-    }
-    console.log('新しく配列できた？？',this.InputFormTitles)
+    const answers = this.answers
+    console.log('answers',answers)
+    // for(let item of formItems) {
+    //   if (item.type == 'name') {
+    //     this.InputFormTitles.push(item.seiTitle, item.meiTitle)
+    //   } else {
+    //     this.InputFormTitles.push(item.title)
+    //   }
+    // }
+    // console.log('新しく配列できた？？',this.InputFormTitles)
+    // console.log(this.answers)
   },
   data(){
     return{
-      
-      InputFormTitles: [],
+      // answers: [],
     }
   },
   methods:{
