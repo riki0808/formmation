@@ -724,22 +724,6 @@ async function doStep(ans, step) {
   doStep(ans, step);
 }
 
-exports.onProcessObserver1 = functions.https.onCall(async (context) => {
-  const ansSnapshots = await db.collection("formAnswers").get();
-  // 全てのformAnswerデータにidを追加させる
-  const anss = ansSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  // console.log("anss", anss);
-  for (const ans of anss) {
-    let step = ans.step;
-    doStep(ans, step);
-  }
-  // const ansSnapshots = await db.collection("formAnswers").where(/* 終了していないものだけ */).get();
-
-  return {
-    status: 200,
-  };
-});
-
 exports.onProcessObserver = functions
   .runWith({ memory: "2GB", timeoutSeconds: 90 })
   .pubsub.schedule("0 * * * *")
@@ -748,4 +732,18 @@ exports.onProcessObserver = functions
     // まず、未処理の送信データを全て取得する
     // for文で全てのデータを見ていく
     // switchとかの条件分けで実行する関数を切り替える
+    const ansSnapshots = await db.collection("formAnswers").get();
+    // 全てのformAnswerデータにidを追加させる
+    const anss = ansSnapshots.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    for (const ans of anss) {
+      let step = ans.step;
+      doStep(ans, step);
+    }
+    return {
+      status: 200,
+      success: true,
+    };
   });

@@ -20,29 +20,11 @@
 
         <!-- 埋め込み(日程調整ツール推奨)の画面表示 -->
         <div v-if="html" style="position:relative;">
-          <div class="c-form-group-item-overray">
-            <div class="c-form-group-item-overray-sub">
-              <div class="c-form-group-item-overray-icon">
-                <v-btn class="mx-1" fab dark small color="#475a74">
-                  <v-icon>mdi-trash-can</v-icon>
-                </v-btn>
-              </div>
-            </div>
-          </div>
           <div class="mb-4" v-html="html"></div>
         </div>
 
         <!-- 外部ページリンクの画面表示 -->
         <div v-if="thanksRedirect.url" class="text-center" style="position:relative;">
-          <div class="c-form-group-item-overray">
-            <div class="c-form-group-item-overray-sub">
-              <div class="c-form-group-item-overray-icon">
-                <v-btn class="mx-1" fab dark small color="#475a74">
-                  <v-icon>mdi-trash-can</v-icon>
-                </v-btn>
-              </div>
-            </div>
-          </div>
           <a class="pa-4 font-weight-bold" style="display:inline-block;" :href="thanksRedirect.url">{{thanksRedirect.label}}</a>
         </div>
 
