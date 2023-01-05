@@ -560,13 +560,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -630,13 +630,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -676,13 +676,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -725,13 +725,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -778,13 +778,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -833,13 +833,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -888,13 +888,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -933,13 +933,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -989,13 +989,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1035,13 +1035,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1081,13 +1081,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1136,13 +1136,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1187,13 +1187,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1242,13 +1242,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1293,13 +1293,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1343,13 +1343,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1392,13 +1392,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1444,13 +1444,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1512,13 +1512,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1576,13 +1576,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -1624,13 +1624,13 @@
               <div class="c-form-group-item-overray">
                 <div class="c-form-group-item-overray-sub">
                   <div class="c-form-group-item-overray-icon">
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
                       <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
                       <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
-                    <v-btn class="mx-1" fab dark small color="#475a74">
+                    <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
                       <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
                   </div>
@@ -2010,17 +2010,35 @@
         }
       },
       onSelectEditFormItem(item) {
-        this.editView = !this.editView
+        this.editView = true
         this.selectItem = item
       },
       onClickOpenEditDrawer() {
-        this.editView = !this.editView
+        this.editView = false
       },
       openEditTitleDrawer() {
         this.editTitleView = !this.editTitleView
       },
       openButtonEditor() {
         this.buttonEditView = !this.buttonEditView
+      },
+      deleteEditItem(i) {
+        this.editItems.splice(i, 1)
+        this.editView = false
+      },
+      editItemUpSell(i) {
+        if(i == 0) return;
+        const newList = this.editItems
+        newList.splice(i - 1, 2, newList[i], newList[i - 1])
+        this.editView = false
+        this.editItems = newList
+      },
+      editItemDownSell(i) {
+        if(i == this.editItems.length - 1) return;
+        const newList = this.editItems
+        newList.splice(i, 2, newList[i + 1], newList[i])
+        this.editView = false
+        this.editItems = newList
       },
       async submitSave() {
         const formItems = []
