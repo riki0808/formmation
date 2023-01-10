@@ -24,7 +24,7 @@
       color="primary"
     >
       <v-list>
-        <v-list-item to="/" class="justify-center">
+        <v-list-item to="/" class="justify-center pb-10">
           <img src="~/static/img/logo.svg" alt="" width="200" />
         </v-list-item>
         <v-list-item

@@ -18,8 +18,7 @@
         </v-icon>
         戻る
       </v-btn>
-      <v-spacer></v-spacer>
-      <div>
+      <div class="ml-5">
         <input class="c-input_border p-form_nav-input-text" type="text" style="width:300px;" v-model="title">
         <v-icon left @click="updateFormTitle">
           mdi-pencil
@@ -37,56 +36,33 @@
     </v-app-bar>
     <v-main>
 
+      <section class="c-edit-formarea" :class="{active:formareaView}">
 
-
-      <section style="overflow: hidden;position: fixed;width: 100%;">
-
-        <div class="white">
-          <div class="l-tab-container">
-            <v-tabs
-              v-model="formSelect"
-              fixed-tabs
-              background-color="white"
-              class="grey--text"
-            >
-              <v-tab
-                v-for="(formTypeTab, i) in formTypeTabs"
-                :key="i"
-                class="font-weight-bold"
-              >
-                {{ formTypeTab.name }}
-              </v-tab>
-            </v-tabs>
-          </div>
+        <div style="height:64px; background-color:#fff; border-bottom:1px solid #c3c3c3" class="d-flex align-center px-4">
+          <v-btn
+            tile
+            color="primary"
+            text
+            class="font-weight-black"
+            @click="formareaView=false"
+          >
+            <v-icon left>
+              mdi-chevron-left
+            </v-icon>
+            戻る
+          </v-btn>
         </div>
-
-        <v-tabs-items v-model="formSelect" class="c-bd-top">
-
-          <!-- 以下【入力画面】のUI -->
-          <v-tab-item transition="fade-transition">
-            <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId" :workflowId="workflowId"></form-input-edit>
-          </v-tab-item><!-- 以上【入力画面】のUI -->
-          
-          <!-- 以下【完了画面】のUI -->
-          <v-tab-item transition="fade-transition">
-            <form-input-thanks :completeForms="completeForms" :formId="formId" :completeFormId="completeFormId"></form-input-thanks>
-          </v-tab-item><!-- 以上【完了画面】のUI -->
-
-          <!-- 以下【自動化】のUI -->
-          <v-tab-item transition="fade-transition">
-            <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms" :inputFormId="inputFormId"></form-input-workflow>
-          </v-tab-item><!-- 以上【自動化】のUI -->
-
-          <!-- 以下【その他設定】のUI -->
-          <v-tab-item transition="fade-transition">
-            <form-input-setting></form-input-setting>
-          </v-tab-item><!-- 以上【その他設定】のUI -->
-
-        </v-tabs-items>
+        <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId" :workflowId="workflowId"></form-input-edit>
 
       </section>
 
+      <section style="overflow: hidden;position: fixed;width: 100%;">
 
+        <div>
+          <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms" :inputFormId="inputFormId"></form-input-workflow>
+        </div>
+
+      </section>
 
     </v-main>
   </v-app>
@@ -95,24 +71,15 @@
 <script>
 export default {
   layout: "form_default",
+  created() {
+    this.$nuxt.$on('formareaEvent', () => {
+      this.formareaView = !this.formareaView
+    })
+  },
   data() {
     return {
-      formSelect: 0,
-      formTypeTabs: [
-        {
-          name: "入力画面"
-        },
-        {
-          name: "完了画面"
-        },
-        {
-          name: "自動化"
-        },
-        {
-          name: "その他設定"
-        },
-      ],
-      title: ""
+      title: "",
+      formareaView: false,
     }
   },
   async asyncData(ctx) {
@@ -146,6 +113,14 @@ export default {
   },
   mounted() {
     this.title = this.formTitle
+    console.log('formId', this.formId)
+    console.log('formTitle', this.formTitle)
+    console.log('inputFormId', this.inputFormId)
+    console.log('inputForms', this.inputForms)
+    console.log('completeFormId', this.completeFormId)
+    console.log('completeForms', this.completeForms)
+    console.log('workflowId', this.workflowId)
+    console.log('workflows', this.workflows)
   },
   methods:{
     async updateFormTitle() {

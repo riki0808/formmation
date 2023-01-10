@@ -59,7 +59,7 @@
     </div><!-- フォーム編集の左サイドバー -->
 
     <!-- タイトルとリード分用のドロワー -->
-    <div class="c-forms-select-item-edit" :class="{active:editTitleView}">
+    <div class="c-forms-select-item-edit" :class="{active:editTitleThanksView}">
       <nav class="c-forms-select-item-edit-nav">
         <v-btn
           tile
@@ -77,7 +77,7 @@
       <div class="c-forms-select-item-edit-main">
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">タイトル</p>
-          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formHead.title">
+          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formThanksHead.title">
         </div>
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">補足説明</p>
@@ -87,7 +87,7 @@
             id=""
             cols="30"
             rows="10"
-            v-model="formHead.description"
+            v-model="formThanksHead.description"
           >
           </textarea>
         </div>
@@ -112,7 +112,7 @@
       </nav>
 
       <!-- コンテンツ(資料)のドロワー -->
-      <div class="c-forms-select-item-edit-main" v-if="selectItem.type == 'contents'">
+      <div class="c-forms-select-item-edit-main" v-if="selectThanksItem.type == 'contents'">
         <div class="d-flex align-center mb-4">
           <span class="mr-6">回答者にダウンロードを許可する</span>
           <v-switch
@@ -130,7 +130,7 @@
       </div>
 
       <!-- 埋め込み(日程調整ツール推奨)のドロワー -->
-      <div class="c-forms-select-item-edit-main" v-else-if="selectItem.type == 'inport'">
+      <div class="c-forms-select-item-edit-main" v-else-if="selectThanksItem.type == 'inport'">
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">埋め込み</p>
           <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="html" placeholder="埋め込みコードを入力してください"></textarea>
@@ -138,7 +138,7 @@
       </div>
 
       <!-- 外部ページへのリンクのドロワー -->
-      <div class="c-forms-select-item-edit-main" v-else-if="selectItem.type == 'link'">
+      <div class="c-forms-select-item-edit-main" v-else-if="selectThanksItem.type == 'link'">
         <div class="c-forms-select-item-edit-main-item">
           <p class="mb-1">外部ページのリンク</p>
           <input v-model="thanksRedirect.url" class="c-form-group-item-inp inp--type3 type--1" type="text" placeholder="URLを入力">
@@ -164,9 +164,9 @@
 
             <div class="p-form-input-title" @click="openEditTitleDrawer">
               <div class="p-form-input-title-overray"></div>
-              <h2 class="text-center mb-5">{{ formHead.title }}</h2>
+              <h2 class="text-center mb-5">{{ formThanksHead.title }}</h2>
               <p class="text-center">
-                {{ formHead.description }}
+                {{ formThanksHead.description }}
               </p>
             </div>
 
@@ -258,7 +258,7 @@ export default {
       // linkのデータ
       this.thanksRedirect = this.completeForms.thanksRedirect
       // titleとdescのデータ
-      this.formHead = this.completeForms.formHead
+      this.formThanksHead = this.completeForms.formThanksHead
     }
   },
   data:()=>({
@@ -281,9 +281,9 @@ export default {
         type: "link"
       },
     ],
-    selectItem: "",
+    selectThanksItem: "",
     thanksView: false,
-    editTitleView: false,
+    editTitleThanksView: false,
 
     // 全体横幅のデータ
     innerWidth: 50,
@@ -298,7 +298,7 @@ export default {
       label: "ホームページへ戻る"
     },
     // titleとdescのデータ
-    formHead: {
+    formThanksHead: {
       title: "お問い合わせいただきありがとございます",
       description: "お問い合わせいただきありがとうございました\nお送りした内容をご確認の上、担当者より折り返しご連絡させていただきます。"
     },
@@ -306,17 +306,17 @@ export default {
   methods: {
     onClickThanksItem(item) {
       this.thanksView = !this.thanksView
-      this.selectItem = item
+      this.selectThanksItem = item
     },
     onClickOpenThanksDrawer() {
       this.thanksView = !this.thanksView
     },
     openEditTitleDrawer() {
-      this.editTitleView = !this.editTitleView
+      this.editTitleThanksView = !this.editTitleThanksView
     },
     //ストレージにアップロードしてるんだぞっ
     async onSelectContent(e){
-      console.log(e);
+      // console.log(e);
       const file = e.target.files[0]
       if (file) {
         this.thanksPDF = file
@@ -325,7 +325,7 @@ export default {
         const storageRef = this.$fireStorage.ref().child("file.pdf")
         await storageRef.put(file)
         const url = await storageRef.getDownloadURL()
-        console.log(url)
+        // console.log(url)
       }
     },
     async submitSave() {
@@ -338,9 +338,9 @@ export default {
           url: this.thanksRedirect.url,
           label: this.thanksRedirect.label,
         },
-        formHead: {
-          title: this.formHead.title,
-          description: this.formHead.description
+        formThanksHead: {
+          title: this.formThanksHead.title,
+          description: this.formThanksHead.description
         }
       }
       if (this.completeForms) {
@@ -358,7 +358,7 @@ export default {
           }
         )
       }
-      console.log(postData);
+      // console.log(postData);
     }
   }
 }

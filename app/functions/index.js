@@ -403,6 +403,8 @@ exports.getForm = functions.https.onCall(async (data, context) => {
       const doc = await db.collection("forms").doc(formId).get();
       let form = doc.data();
 
+      console.log("form", form);
+
       // inputFormsのデータを取得
       const inputDoc = await db
         .collection("inputForms")
