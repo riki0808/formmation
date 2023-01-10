@@ -1,1737 +1,1748 @@
 <template>
-
-
-<!-- ここに完了ボタンを入れる -->
-
-
-  <div class="c-forms_main d-flex">
-
-    <!-- フォーム編集の左サイドバー -->
-    <div class="c-forms_side-bar c-bd-right">
-      
-      <v-tabs
-        v-model="formEdit"
-        fixed-tabs
-        background-color="main"
-        hide-slider
+  <div>
+    <!-- ここに完了ボタンを入れる -->
+    <div style="height:64px; background-color:#fff; border-bottom:1px solid #c3c3c3" class="d-flex align-center px-4">
+      <v-btn
+        tile
+        color="primary"
+        text
+        class="font-weight-black"
+        @click="submitSave()"
       >
-
-        <v-tab
-          v-for="(formEditTab, i) in formEditTabs"
-          :key="i"
-          active-class="form-edit-tab-active"
-          class="c-bd-all grey--text font-weight-bold"
-        >
-          {{ formEditTab.name }}
-        </v-tab>
-      </v-tabs>
-
-      <v-tabs-items v-model="formEdit">
-
-        <!-- 以下【入力画面】のUI -->
-        <v-tab-item transition="fade-transition">
-          <div class="px-8 py-5 overflow-auto" style="height:calc(100vh - 100px);">
-
-            <!-- よく使う項目 -->
-            <div class="mb-5">
-              <p class="font-weight-bold text-body-2">よく使う項目</p>
-              <v-btn
-                v-for="(fav, n) in formEditItems.favs"
-                :key="n"
-                @click="onClickFormItem(fav)"
-                tile
-                class="text-caption justify-start grey--text shadow-none main mb-3"
-                style="width:100%;"
-              >
-                <v-icon left>
-                  {{ fav.icon }}
-                </v-icon>
-                {{ fav.text }}
-              </v-btn>
-            </div>
-
-            <!-- 便利な項目 -->
-            <div class="mb-5">
-              <p class="font-weight-bold text-body-2">便利な項目</p>
-              <v-btn
-                v-for="(conv, n) in formEditItems.convs"
-                :key="n"
-                @click="onClickFormItem(conv)"
-                tile
-                class="text-caption justify-start grey--text shadow-none main mb-3"
-                style="width:100%;"
-              >
-                <v-icon left>
-                  {{ conv.icon }}
-                </v-icon>
-                {{ conv.text }}
-              </v-btn>
-            </div>
-
-            <!-- ブロック -->
-            <div class="mb-5">
-              <p class="font-weight-bold text-body-2">ブロック</p>
-              <v-btn
-                v-for="(block, n) in formEditItems.blocks"
-                :key="n"
-                @click="onClickFormItem(block)"
-                tile
-                class="text-caption justify-start grey--text shadow-none main mb-3"
-                style="width:100%;"
-              >
-                <v-icon left>
-                  {{ block.icon }}
-                </v-icon>
-                {{ block.text }}
-              </v-btn>
-            </div>
-
-          </div>
-        </v-tab-item>
-
-        <!-- 以下【完了画面】のUI -->
-        <v-tab-item transition="fade-transition">
-          <div class="px-8 py-5 overflow-auto" style="height:calc(100vh - 100px);">
-            <div class="mb-5">
-              <v-btn
-                v-for="(formThanksItem, i) in formThanksItems"
-                :key="i"
-                tile
-                class="text-caption justify-start grey--text shadow-none main mb-3"
-                style="width:100%;"
-                @click="onClickThanksItem(formThanksItem)"
-              >
-                <v-icon left>
-                  {{ formThanksItem.icon }}
-                </v-icon>
-                {{ formThanksItem.text }}
-              </v-btn>
-            </div>
-          </div>
-        </v-tab-item>
-        
-      </v-tabs-items>
-      
+        <v-icon left>
+          mdi-chevron-left
+        </v-icon>
+        戻る
+      </v-btn>
     </div>
 
-    <v-tabs-items v-model="formEdit" class="c-forms_container">
-    
-      <!-- 入力画面用のメインパート -->
-      <v-tab-item transition="fade-transition">
-        <v-btn @click="submitSave">保存ボタン</v-btn>
-        <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
-          <div class="c-main-form-edit-contents-inner mb-15">
-            <!-- !!!!!!!この下部分をコンポーネント化させた方がいいかも？？!!!!!!!!!!! -->
-            <!-- ↓↓お問い合わせのタイトルとディスクリプション↓↓ -->
-            <div class="p-form-input-title" @click="editTitleView = true">
-              <div class="p-form-input-title-overray"></div>
-              <h2 class="text-center mb-5">{{formHead.title}}</h2>
-              <p class="text-center mb-15">{{formHead.description}}</p>
-            </div>
-            <!-- ↑↑お問い合わせのタイトルとディスクリプション↑↑ -->
+    <div class="c-forms_main d-flex">
 
-            <!-- ↓↓フォーム項目をどんどん表示していく所↓↓ -->
-            <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
-  
-              <div class="c-form-group-item" v-if="editItem.type == 'name'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex justify-space-between">
-                  <div class="c-form-group-item-sub">
-                    <div class="c-form-group-item-label-flex">
-                      <p
-                        class="c-form-group-item-label"
-                        :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                      >
-                        {{editItem.seiTitle}}
-                      </p>
-                      <span
-                        class="c-form-group-item-val"
-                        :class="{required:editItem.required}"
-                      >
-                        {{editItem.required ? "必須" : "任意"}}
-                      </span>
-                    </div>
-                    <div class="c-form-group-item-inp-frame">
-                      <input
-                        type="text"
-                        class="c-form-group-item-inp type--1"
-                        :class="styleTemplate"
-                        :placeholder="editItem.seiPlaceholder"
-                        v-model="editItem.value"
-                      >
-                    </div>
-                  </div>
-                  <div class="c-form-group-item-sub">
-                    <div class="c-form-group-item-label-flex">
-                      <p
-                        class="c-form-group-item-label"
-                        :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                      >
-                        {{editItem.meiTitle}}
-                      </p>
-                      <span
-                        class="c-form-group-item-val"
-                        :class="{required:editItem.required}"
-                      >
-                        {{editItem.required ? "必須" : "任意"}}
-                      </span>
-                    </div>
-                    <div class="c-form-group-item-inp-frame">
-                      <input
-                        type="text"
-                        class="c-form-group-item-inp type--1"
-                        :class="styleTemplate"
-                        :placeholder="editItem.meiPlaceholder"
-                        v-model="editItem.value"
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'email'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <input
-                  type="email"
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  :placeholder="editItem.placeholder"
-                  v-model="editItem.value">
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+      <!-- フォーム編集の左サイドバー -->
+      <div class="c-forms_side-bar c-bd-right">
+        
+        <v-tabs
+          v-model="formEdit"
+          fixed-tabs
+          background-color="main"
+          hide-slider
+        >
+
+          <v-tab
+            v-for="(formEditTab, i) in formEditTabs"
+            :key="i"
+            active-class="form-edit-tab-active"
+            class="c-bd-all grey--text font-weight-bold"
+          >
+            {{ formEditTab.name }}
+          </v-tab>
+        </v-tabs>
+
+        <v-tabs-items v-model="formEdit">
+
+          <!-- 以下【入力画面】のUI -->
+          <v-tab-item transition="fade-transition">
+            <div class="px-8 py-5 overflow-auto" style="height:calc(100vh - 100px);">
+
+              <!-- よく使う項目 -->
+              <div class="mb-5">
+                <p class="font-weight-bold text-body-2">よく使う項目</p>
+                <v-btn
+                  v-for="(fav, n) in formEditItems.favs"
+                  :key="n"
+                  @click="onClickFormItem(fav)"
+                  tile
+                  class="text-caption justify-start grey--text shadow-none main mb-3"
+                  style="width:100%;"
                 >
-                  {{editItem.description}}
-                </div>
+                  <v-icon left>
+                    {{ fav.icon }}
+                  </v-icon>
+                  {{ fav.text }}
+                </v-btn>
               </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'company'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
+
+              <!-- 便利な項目 -->
+              <div class="mb-5">
+                <p class="font-weight-bold text-body-2">便利な項目</p>
+                <v-btn
+                  v-for="(conv, n) in formEditItems.convs"
+                  :key="n"
+                  @click="onClickFormItem(conv)"
+                  tile
+                  class="text-caption justify-start grey--text shadow-none main mb-3"
+                  style="width:100%;"
+                >
+                  <v-icon left>
+                    {{ conv.icon }}
+                  </v-icon>
+                  {{ conv.text }}
+                </v-btn>
+              </div>
+
+              <!-- ブロック -->
+              <div class="mb-5">
+                <p class="font-weight-bold text-body-2">ブロック</p>
+                <v-btn
+                  v-for="(block, n) in formEditItems.blocks"
+                  :key="n"
+                  @click="onClickFormItem(block)"
+                  tile
+                  class="text-caption justify-start grey--text shadow-none main mb-3"
+                  style="width:100%;"
+                >
+                  <v-icon left>
+                    {{ block.icon }}
+                  </v-icon>
+                  {{ block.text }}
+                </v-btn>
+              </div>
+
+            </div>
+          </v-tab-item>
+
+          <!-- 以下【完了画面】のUI -->
+          <v-tab-item transition="fade-transition">
+            <div class="px-8 py-5 overflow-auto" style="height:calc(100vh - 100px);">
+              <div class="mb-5">
+                <v-btn
+                  v-for="(formThanksItem, i) in formThanksItems"
+                  :key="i"
+                  tile
+                  class="text-caption justify-start grey--text shadow-none main mb-3"
+                  style="width:100%;"
+                  @click="onClickThanksItem(formThanksItem)"
+                >
+                  <v-icon left>
+                    {{ formThanksItem.icon }}
+                  </v-icon>
+                  {{ formThanksItem.text }}
+                </v-btn>
+              </div>
+            </div>
+          </v-tab-item>
+          
+        </v-tabs-items>
+        
+      </div>
+
+      <v-tabs-items v-model="formEdit" class="c-forms_container">
+      
+        <!-- 入力画面用のメインパート -->
+        <v-tab-item transition="fade-transition">
+          <!-- <v-btn @click="submitSave">保存ボタン</v-btn> -->
+          <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
+            <div class="c-main-form-edit-contents-inner mb-15">
+              <!-- !!!!!!!この下部分をコンポーネント化させた方がいいかも？？!!!!!!!!!!! -->
+              <!-- ↓↓お問い合わせのタイトルとディスクリプション↓↓ -->
+              <div class="p-form-input-title" @click="editTitleView = true">
+                <div class="p-form-input-title-overray"></div>
+                <h2 class="text-center mb-5">{{formHead.title}}</h2>
+                <p class="text-center mb-15">{{formHead.description}}</p>
+              </div>
+              <!-- ↑↑お問い合わせのタイトルとディスクリプション↑↑ -->
+
+              <!-- ↓↓フォーム項目をどんどん表示していく所↓↓ -->
+              <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
+    
+                <div class="c-form-group-item" v-if="editItem.type == 'name'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-space-between">
+                    <div class="c-form-group-item-sub">
+                      <div class="c-form-group-item-label-flex">
+                        <p
+                          class="c-form-group-item-label"
+                          :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                        >
+                          {{editItem.seiTitle}}
+                        </p>
+                        <span
+                          class="c-form-group-item-val"
+                          :class="{required:editItem.required}"
+                        >
+                          {{editItem.required ? "必須" : "任意"}}
+                        </span>
+                      </div>
+                      <div class="c-form-group-item-inp-frame">
+                        <input
+                          type="text"
+                          class="c-form-group-item-inp type--1"
+                          :class="styleTemplate"
+                          :placeholder="editItem.seiPlaceholder"
+                          v-model="editItem.value"
+                        >
+                      </div>
+                    </div>
+                    <div class="c-form-group-item-sub">
+                      <div class="c-form-group-item-label-flex">
+                        <p
+                          class="c-form-group-item-label"
+                          :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                        >
+                          {{editItem.meiTitle}}
+                        </p>
+                        <span
+                          class="c-form-group-item-val"
+                          :class="{required:editItem.required}"
+                        >
+                          {{editItem.required ? "必須" : "任意"}}
+                        </span>
+                      </div>
+                      <div class="c-form-group-item-inp-frame">
+                        <input
+                          type="text"
+                          class="c-form-group-item-inp type--1"
+                          :class="styleTemplate"
+                          :placeholder="editItem.meiPlaceholder"
+                          v-model="editItem.value"
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <input
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'email'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                    type="email"
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
-                    type="text"
-                    name="source"
                     :placeholder="editItem.placeholder"
-                    v-model="editItem.value"
+                    v-model="editItem.value">
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
                   >
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'department'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
+                    {{editItem.description}}
                   </div>
                 </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <select
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  v-model="editItem.value"
-                  >
-                    <option 
-                      v-for="(department, i) in departments" 
-                      :key="i"
-                      :value="department"
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'company'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                     >
-                      {{department}}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'position'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <select
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  name=""
-                  id=""
-                  v-model="editItem.value"
-                  >
-                    <option 
-                      v-for="(position, i) in positions" 
-                      :key="i"
-                      :value="position"
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
                     >
-                      {{position}}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'employees'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
                   </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <select
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  name=""
-                  id=""
-                  v-model="editItem.value"
-                  >
-                    <option 
-                      v-for="(employee, i) in employees" 
-                      :key="i"
-                      :value="employee"
-                    >
-                      {{employee}}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'tel'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <input
-                  type="tel"
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  :placeholder="editItem.placeholder"
-                  v-model="editItem.value">
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'gender'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <div class="c-form-group-item-inp-wrap">
-                    <label
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
-                    >
-                      <input type="radio" name="gender" value="男性" v-model="editItem.value">
-                      男性
-                    </label>
-                    <label
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
-                    >
-                      <input type="radio" name="gender" value="女性" v-model="editItem.value">
-                      女性
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'birthday'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <input
-                  type="date"
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  :placeholder="editItem.placeholder"
-                  v-model="editItem.value">
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'address'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <input
-                  type="text"
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  :placeholder="editItem.placeholder"
-                  v-model="editItem.value">
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'prefecture'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <select
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  name=""
-                  id=""
-                  v-model="editItem.value"
-                  >
-                    <option 
-                      v-for="(prefecture, i) in prefectures" 
-                      :key="i"
-                      :value="prefecture"
-                    >
-                      {{prefecture}}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'job'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <div class="c-form-group-item-inp-wrap">
-                    <label
-                      v-for="(job, i) in jobs"
-                      :key="i"
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
-                    >
-                      <input type="radio" name="job" :value="job" v-model="editItem.value">
-                      {{job}}
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'industry'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <select
-                  class="c-form-group-item-inp type--1"
-                  :class="styleTemplate"
-                  name=""
-                  id=""
-                  v-model="editItem.value"
-                  >
-                    <option 
-                      v-for="(industry, i) in industrys" 
-                      :key="i"
-                      :value="industry"
-                    >
-                      {{industry}}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'source'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div class="c-form-group-item-inp-frame">
-                  <div class="c-form-group-item-inp-wrap">
-                    <label
-                      v-for="(source, i) in sources"
-                      :key="i"
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
-                    >
-                      <input type="checkbox" name="source" :value="source" v-model="editItem.value">
-                      {{source}}
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'check'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <div class="c-form-group-item-inp-wrap">
-                    <label
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <input
                       class="c-form-group-item-inp type--1"
                       :class="styleTemplate"
+                      type="text"
+                      name="source"
+                      :placeholder="editItem.placeholder"
+                      v-model="editItem.value"
                     >
-                      <input type="checkbox" name="source" value="同意する" v-model="editItem.value">
-                      同意する
-                    </label>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
                   </div>
                 </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'text'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'department'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <input
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <select
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
-                    type="text"
-                    name="source"
-                    :placeholder="editItem.placeholder"
                     v-model="editItem.value"
+                    >
+                      <option 
+                        v-for="(department, i) in departments" 
+                        :key="i"
+                        :value="department"
+                      >
+                        {{department}}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
                   >
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'textarea'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
+                  {{editItem.description}}
                   </div>
                 </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <textarea
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'position'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <select
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
                     name=""
                     id=""
-                    cols="30"
-                    rows="10"
-                    :placeholder="editItem.placeholder"
                     v-model="editItem.value"
+                    >
+                      <option 
+                        v-for="(position, i) in positions" 
+                        :key="i"
+                        :value="position"
+                      >
+                        {{position}}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
                   >
-                  </textarea>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'number'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
+                  {{editItem.description}}
                   </div>
                 </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <input
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'employees'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <select
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
-                    type="number"
-                    :placeholder="editItem.placeholder"
+                    name=""
+                    id=""
                     v-model="editItem.value"
+                    >
+                      <option 
+                        v-for="(employee, i) in employees" 
+                        :key="i"
+                        :value="employee"
+                      >
+                        {{employee}}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
                   >
+                  {{editItem.description}}
+                  </div>
                 </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'choice'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'tel'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <div class="c-form-group-item-inp-wrap">
-                    <label
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
                     >
-                      <input type="radio" name="choice" v-model="editItem.value">
-                      選択肢１
-                    </label>
-                    <label
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
                     >
-                      <input type="radio" name="choice" v-model="editItem.value">
-                      選択肢２
-                    </label>
-                    <label
-                      class="c-form-group-item-inp type--2"
-                      :class="styleTemplate"
-                    >
-                      <input type="radio" name="choice" v-model="editItem.value">
-                      選択肢３
-                    </label>
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
                   </div>
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <div class="c-form-group-item" v-else-if="editItem.type == 'day'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <input
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                    type="tel"
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
+                    :placeholder="editItem.placeholder"
+                    v-model="editItem.value">
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'gender'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <div class="c-form-group-item-inp-wrap">
+                      <label
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="radio" name="gender" value="男性" v-model="editItem.value">
+                        男性
+                      </label>
+                      <label
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="radio" name="gender" value="女性" v-model="editItem.value">
+                        女性
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'birthday'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <input
                     type="date"
-                    v-model="editItem.value"
-                  >
-                </div>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
-                >
-                {{editItem.description}}
-                </div>
-              </div>
-  
-              <!-- こいつv-modelどうしたらええにゃろ -->
-              <div class="c-form-group-item" v-else-if="editItem.type == 'file'" @click="onSelectEditFormItem(editItem)">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
-                        <v-icon>mdi-chevron-up</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="c-form-group-item-label-flex">
-      <!-- フォーム編集のメイン画面 -->
-                  <p
-                    class="c-form-group-item-label"
-                    :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
-                  >
-                    {{editItem.title}}
-                  </p>
-                  <span
-                    class="c-form-group-item-val"
-                    :class="{required:editItem.required}"
-                  >
-                    {{editItem.required ? "必須" : "任意"}}
-                  </span>
-                </div>
-                <div></div><!-- ←規約説明を記入するスペース -->
-                <div class="c-form-group-item-inp-frame">
-                  <input
                     class="c-form-group-item-inp type--1"
                     :class="styleTemplate"
-                    type="file"
+                    :placeholder="editItem.placeholder"
+                    v-model="editItem.value">
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
                   >
+                  {{editItem.description}}
+                  </div>
                 </div>
-                <p class="c-form-group-item-label mt-2">ファイルサイズは50MB以下</p>
-                <div
-                  class="mt-2"
-                  :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'address'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                    type="text"
+                    class="c-form-group-item-inp type--1"
+                    :class="styleTemplate"
+                    :placeholder="editItem.placeholder"
+                    v-model="editItem.value">
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'prefecture'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <select
+                    class="c-form-group-item-inp type--1"
+                    :class="styleTemplate"
+                    name=""
+                    id=""
+                    v-model="editItem.value"
+                    >
+                      <option 
+                        v-for="(prefecture, i) in prefectures" 
+                        :key="i"
+                        :value="prefecture"
+                      >
+                        {{prefecture}}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'job'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <div class="c-form-group-item-inp-wrap">
+                      <label
+                        v-for="(job, i) in jobs"
+                        :key="i"
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="radio" name="job" :value="job" v-model="editItem.value">
+                        {{job}}
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'industry'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <select
+                    class="c-form-group-item-inp type--1"
+                    :class="styleTemplate"
+                    name=""
+                    id=""
+                    v-model="editItem.value"
+                    >
+                      <option 
+                        v-for="(industry, i) in industrys" 
+                        :key="i"
+                        :value="industry"
+                      >
+                        {{industry}}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'source'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div class="c-form-group-item-inp-frame">
+                    <div class="c-form-group-item-inp-wrap">
+                      <label
+                        v-for="(source, i) in sources"
+                        :key="i"
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="checkbox" name="source" :value="source" v-model="editItem.value">
+                        {{source}}
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'check'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <div class="c-form-group-item-inp-wrap">
+                      <label
+                        class="c-form-group-item-inp type--1"
+                        :class="styleTemplate"
+                      >
+                        <input type="checkbox" name="source" value="同意する" v-model="editItem.value">
+                        同意する
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'text'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      type="text"
+                      name="source"
+                      :placeholder="editItem.placeholder"
+                      v-model="editItem.value"
+                    >
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'textarea'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <textarea
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="10"
+                      :placeholder="editItem.placeholder"
+                      v-model="editItem.value"
+                    >
+                    </textarea>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'number'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      type="number"
+                      :placeholder="editItem.placeholder"
+                      v-model="editItem.value"
+                    >
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'choice'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <div class="c-form-group-item-inp-wrap">
+                      <label
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="radio" name="choice" v-model="editItem.value">
+                        選択肢１
+                      </label>
+                      <label
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="radio" name="choice" v-model="editItem.value">
+                        選択肢２
+                      </label>
+                      <label
+                        class="c-form-group-item-inp type--2"
+                        :class="styleTemplate"
+                      >
+                        <input type="radio" name="choice" v-model="editItem.value">
+                        選択肢３
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <div class="c-form-group-item" v-else-if="editItem.type == 'day'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      type="date"
+                      v-model="editItem.value"
+                    >
+                  </div>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <!-- こいつv-modelどうしたらええにゃろ -->
+                <div class="c-form-group-item" v-else-if="editItem.type == 'file'" @click="onSelectEditFormItem(editItem)">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemUpSell(i)">
+                          <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="editItemDownSell(i)">
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                        <v-btn class="mx-1" fab dark small color="#475a74" @click="deleteEditItem(i)">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-form-group-item-label-flex">
+        <!-- フォーム編集のメイン画面 -->
+                    <p
+                      class="c-form-group-item-label"
+                      :style="{color:textDesign.labelFontColor, fontSize:textDesign.labelFontSize + 'px'}"
+                    >
+                      {{editItem.title}}
+                    </p>
+                    <span
+                      class="c-form-group-item-val"
+                      :class="{required:editItem.required}"
+                    >
+                      {{editItem.required ? "必須" : "任意"}}
+                    </span>
+                  </div>
+                  <div></div><!-- ←規約説明を記入するスペース -->
+                  <div class="c-form-group-item-inp-frame">
+                    <input
+                      class="c-form-group-item-inp type--1"
+                      :class="styleTemplate"
+                      type="file"
+                    >
+                  </div>
+                  <p class="c-form-group-item-label mt-2">ファイルサイズは50MB以下</p>
+                  <div
+                    class="mt-2"
+                    :style="{color:textDesign.descriptionColor, fontSize:textDesign.descriptionSize + 'px'}"
+                  >
+                  {{editItem.description}}
+                  </div>
+                </div>
+    
+                <!-- まだv-modelでvalue入れてない -->
+                <div class="c-form-group-item" v-else-if="editItem.type == 'intro-text'" @click="onSelectEditFormItem(editItem)">
+                  <div>説明テキスト</div>
+                </div>
+    
+                
+              </div>
+              <!-- ↑↑フォーム項目をどんどん表示していく所↑↑ -->
+
+              <!-- ↓↓送信ボタンの部分↓↓ -->
+              <div class="p-form-button" @click="buttonEditView = true">
+                <div class="c-form-group-item-overray"></div>
+                <button
+                  type="submit"
+                  class="w-100 d-flex justify-center py-2 font-weight-bold"
+                  :style="{
+                    background: submitButton.buttonColor,
+                    color: submitButton.buttonFontColor,
+                    fontSize: submitButton.buttonFontSize + 'px'
+                  }"
                 >
-                {{editItem.description}}
-                </div>
+                  {{submitButton.buttonText}}
+                </button>
               </div>
-  
-              <!-- まだv-modelでvalue入れてない -->
-              <div class="c-form-group-item" v-else-if="editItem.type == 'intro-text'" @click="onSelectEditFormItem(editItem)">
-                <div>説明テキスト</div>
-              </div>
-  
-              
+              <!-- ↑↑送信ボタンの部分↑↑ -->
             </div>
-            <!-- ↑↑フォーム項目をどんどん表示していく所↑↑ -->
+          </div>
+        </v-tab-item>
 
-            <!-- ↓↓送信ボタンの部分↓↓ -->
-            <div class="p-form-button" @click="buttonEditView = true">
-              <div class="c-form-group-item-overray"></div>
-              <button
-                type="submit"
-                class="w-100 d-flex justify-center py-2 font-weight-bold"
-                :style="{
-                  background: submitButton.buttonColor,
-                  color: submitButton.buttonFontColor,
-                  fontSize: submitButton.buttonFontSize + 'px'
-                }"
-              >
-                {{submitButton.buttonText}}
-              </button>
+        <!-- 完了画面用のメインパート -->
+        <v-tab-item transition="fade-transition">
+          <!-- <v-btn @click="submitThanksSave">保存ボタン</v-btn> -->
+          <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
+            <div class="c-main-form-edit-contents-inner mb-15">
+              <div>
+                <div class="p-form-input-title" @click="editTitleThanksView = true">
+                  <div class="p-form-input-title-overray"></div>
+                  <h2 class="text-center mb-5">{{ formThanksHead.title }}</h2>
+                  <p class="text-center">
+                    {{ formThanksHead.description }}
+                  </p>
+                </div>
+                <!-- コンテンツ(資料)の画面表示 -->
+                <div v-if="pdf" style="position:relative;" @click="onClickThanksItem(formThanksItems[0])">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-4">{{pdf}}</div>
+                </div>
+                <!-- 埋め込み(日程調整ツール推奨)の画面表示 -->
+                <div v-if="html" style="position:relative;" @click="onClickThanksItem(formThanksItems[1])">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-4" v-html="html"></div>
+                </div>
+                <!-- 外部ページリンクの画面表示 -->
+                <div v-if="thanksRedirect.url" class="text-center" style="position:relative;" @click="onClickThanksItem(formThanksItems[2])">
+                  <div class="c-form-group-item-overray">
+                    <div class="c-form-group-item-overray-sub">
+                      <div class="c-form-group-item-overray-icon">
+                        <v-btn class="mx-1" fab dark small color="#475a74">
+                          <v-icon>mdi-trash-can</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                  <a class="pa-4 font-weight-bold" style="display:inline-block;" :href="thanksRedirect.url">{{thanksRedirect.label}}</a>
+                </div>
+              </div><!-- inner -->
             </div>
-            <!-- ↑↑送信ボタンの部分↑↑ -->
           </div>
-        </div>
-      </v-tab-item>
+        </v-tab-item>
+      </v-tabs-items>
 
-      <!-- 完了画面用のメインパート -->
-      <v-tab-item transition="fade-transition">
-        <v-btn @click="submitThanksSave">保存ボタン</v-btn>
-        <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
-          <div class="c-main-form-edit-contents-inner mb-15">
-            <div>
-              <div class="p-form-input-title" @click="editTitleThanksView = true">
-                <div class="p-form-input-title-overray"></div>
-                <h2 class="text-center mb-5">{{ formThanksHead.title }}</h2>
-                <p class="text-center">
-                  {{ formThanksHead.description }}
-                </p>
-              </div>
-              <!-- コンテンツ(資料)の画面表示 -->
-              <div v-if="pdf" style="position:relative;" @click="onClickThanksItem(formThanksItems[0])">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-4">{{pdf}}</div>
-              </div>
-              <!-- 埋め込み(日程調整ツール推奨)の画面表示 -->
-              <div v-if="html" style="position:relative;" @click="onClickThanksItem(formThanksItems[1])">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-4" v-html="html"></div>
-              </div>
-              <!-- 外部ページリンクの画面表示 -->
-              <div v-if="thanksRedirect.url" class="text-center" style="position:relative;" @click="onClickThanksItem(formThanksItems[2])">
-                <div class="c-form-group-item-overray">
-                  <div class="c-form-group-item-overray-sub">
-                    <div class="c-form-group-item-overray-icon">
-                      <v-btn class="mx-1" fab dark small color="#475a74">
-                        <v-icon>mdi-trash-can</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-                <a class="pa-4 font-weight-bold" style="display:inline-block;" :href="thanksRedirect.url">{{thanksRedirect.label}}</a>
-              </div>
-            </div><!-- inner -->
-          </div>
-        </div>
-      </v-tab-item>
-    </v-tabs-items>
+      <!-- !!!!!!!formInputEdit用のドロワーメニュー!!!!!!! -->
 
-    <!-- !!!!!!!formInputEdit用のドロワーメニュー!!!!!!! -->
-
-    <!-- タイトルとリード分用のドロワー -->
-    <div class="c-forms-select-item-edit" :class="{active:editTitleView}">
-      <nav class="c-forms-select-item-edit-nav">
-        <v-btn
-          tile
-          color="grey"
-          text
-          class="font-weight-black"
-          @click="editTitleView = false"
-        >
-          <v-icon left>
-            mdi-chevron-left
-          </v-icon>
-          完了
-        </v-btn>
-      </nav>
-      <div class="c-forms-select-item-edit-main">
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">タイトル</p>
-          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formHead.title">
-        </div>
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">補足説明</p>
-          <textarea
-            class="c-form-group-item-inp type--1 inp--type4"
-            :class="styleTemplate"
-            name=""
-            id=""
-            cols="30"
-            rows="10"
-            v-model="formHead.description"
+      <!-- タイトルとリード分用のドロワー -->
+      <div class="c-forms-select-item-edit" :class="{active:editTitleView}">
+        <nav class="c-forms-select-item-edit-nav">
+          <v-btn
+            tile
+            color="grey"
+            text
+            class="font-weight-black"
+            @click="editTitleView = false"
           >
-          </textarea>
+            <v-icon left>
+              mdi-chevron-left
+            </v-icon>
+            完了
+          </v-btn>
+        </nav>
+        <div class="c-forms-select-item-edit-main">
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">タイトル</p>
+            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formHead.title">
+          </div>
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">補足説明</p>
+            <textarea
+              class="c-form-group-item-inp type--1 inp--type4"
+              :class="styleTemplate"
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+              v-model="formHead.description"
+            >
+            </textarea>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <!-- editドロワーメニュー -->
-    <div class="c-forms-select-item-edit" :class="{active:editView}">
-      <nav class="c-forms-select-item-edit-nav">
-        <v-btn
-          tile
-          color="grey"
-          text
-          class="font-weight-black"
-          @click="editView = false"
-        >
-          <v-icon left>
-            mdi-chevron-left
-          </v-icon>
-          完了
-        </v-btn>
-      </nav>
-      <div class="c-forms-select-item-edit-main">
+      
+      <!-- editドロワーメニュー -->
+      <div class="c-forms-select-item-edit" :class="{active:editView}">
+        <nav class="c-forms-select-item-edit-nav">
+          <v-btn
+            tile
+            color="grey"
+            text
+            class="font-weight-black"
+            @click="editView = false"
+          >
+            <v-icon left>
+              mdi-chevron-left
+            </v-icon>
+            完了
+          </v-btn>
+        </nav>
+        <div class="c-forms-select-item-edit-main">
 
-        <div v-if="selectItem">
+          <div v-if="selectItem">
 
-          <div class="d-flex align-center mb-4">
-            <span class="mr-6">この項目を必須にする</span>
-            <v-switch inset v-model="selectItem.required"></v-switch>
-          </div>
-          
-          <!-- selectItemのタイプによって表示を変更させる -->
-          <!-- selectItem.typeがnameの時 -->
-          <div v-if="selectItem.role == 1">
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">お名前(姓)タイトル</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.seiTitle">
+            <div class="d-flex align-center mb-4">
+              <span class="mr-6">この項目を必須にする</span>
+              <v-switch inset v-model="selectItem.required"></v-switch>
             </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">お名前(姓)プレースホルダー</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.seiPlaceholder">
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">お名前(名)タイトル</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.meiTitle">
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">お名前(名)プレースホルダー</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.meiPlaceholder">
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">補足説明</p>
-              <textarea
-                class="c-form-group-item-inp type--1 inp--type4"
-                v-model="selectItem.description"
-              >
-              </textarea>
-            </div>
-          </div>
-
-          <!-- selectItemのinpuTypeがtextのとき -->
-          <div v-else-if="selectItem.role == 2">
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">タイトル</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">補足説明</p>
-              <textarea
-                class="c-form-group-item-inp type--1 inp--type4"
-                v-model="selectItem.description"
-              >
-              </textarea>
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">プレースホルダー</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.placeholder">
-            </div>
-          </div>
-
-          <!-- selectItemのinpTypeがselectの時 -->
-          <div v-else-if="selectItem.role == 3">
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">タイトル</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">補足説明</p>
-              <textarea
-                class="c-form-group-item-inp type--1 inp--type4"
-                v-model="selectItem.description"
-              >
-              </textarea>
-            </div>
-            <div class="d-flex flex-column">
-              <p class="mb-1">選択肢</p>
-
-              <!-- 部署の項目 -->
-              <div v-if="selectItem.type == 'department'">
-                <div
-                  class="c-select_item"
-                  v-for="(department, i) in departments"
-                  :key="i"
-                >
-                  <v-icon small>mdi-pencil</v-icon>
-                  <input
-                    class="text-caption c-select_item-inp"
-                    type="text"
-                    :value="department"
-                  >
-                  <v-btn icon class="c-select_item-trash">
-                    <v-icon small>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </div>
+            
+            <!-- selectItemのタイプによって表示を変更させる -->
+            <!-- selectItem.typeがnameの時 -->
+            <div v-if="selectItem.role == 1">
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">お名前(姓)タイトル</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.seiTitle">
               </div>
-              
-              <!-- 役職の項目 -->
-              <div v-else-if="selectItem.type == 'position'">
-                <div
-                  class="c-select_item"
-                  v-for="(position, i) in positions"
-                  :key="i"
-                >
-                  <v-icon small>mdi-pencil</v-icon>
-                  <input
-                    class="text-caption c-select_item-inp"
-                    type="text"
-                    :value="position"
-                  >
-                  <v-btn icon class="c-select_item-trash">
-                    <v-icon small>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </div>
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">お名前(姓)プレースホルダー</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.seiPlaceholder">
               </div>
-
-              <!-- 従業員数の項目 -->
-              <div v-else-if="selectItem.type == 'employees'">
-                <div
-                  class="c-select_item"
-                  v-for="(employee, i) in employees"
-                  :key="i"
-                >
-                  <v-icon small>mdi-pencil</v-icon>
-                  <input
-                    class="text-caption c-select_item-inp"
-                    type="text"
-                    :value="employee"
-                  >
-                  <v-btn icon class="c-select_item-trash">
-                    <v-icon small>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </div>
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">お名前(名)タイトル</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.meiTitle">
               </div>
-              
-              <!-- 都道府県の項目 -->
-              <div v-else-if="selectItem.type == 'prefecture'">
-                <div
-                  class="c-select_item"
-                  v-for="(prefecture, i) in prefectures"
-                  :key="i"
-                >
-                  <v-icon small>mdi-pencil</v-icon>
-                  <input
-                    class="text-caption c-select_item-inp"
-                    type="text"
-                    :value="prefecture"
-                  >
-                  <v-btn icon class="c-select_item-trash">
-                    <v-icon small>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </div>
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">お名前(名)プレースホルダー</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.meiPlaceholder">
               </div>
-
-              <!-- 業種の項目 -->
-              <div v-else-if="selectItem.type == 'industry'">
-                <div
-                  class="c-select_item"
-                  v-for="(industry, i) in industrys"
-                  :key="i"
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">補足説明</p>
+                <textarea
+                  class="c-form-group-item-inp type--1 inp--type4"
+                  v-model="selectItem.description"
                 >
-                  <v-icon small>mdi-pencil</v-icon>
-                  <input
-                    class="text-caption c-select_item-inp"
-                    type="text"
-                    :value="industry"
-                  >
-                  <v-btn icon class="c-select_item-trash">
-                    <v-icon small>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </div>
+                </textarea>
               </div>
-
             </div>
-          </div>
 
-          <!-- selectItemのinpTypeがcehckbox or radioの時 -->
-          <div v-else-if="selectItem.role == 4">
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">タイトル</p>
-              <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
-            </div>
-            <div class="c-forms-select-item-edit-main-item">
-              <p class="mb-1">補足説明</p>
-              <textarea
-                class="c-form-group-item-inp type--1 inp--type4"
-                v-model="selectItem.description"
-              >
-              </textarea>
-            </div>
-            <div class="d-flex flex-column">
-              <p class="mb-1">選択肢</p>
-
-              <!-- 部署の項目 -->
-              <div v-if="selectItem.type == 'gender'">
-                <div
-                  class="c-select_item"
-                  v-for="(department, i) in departments"
-                  :key="i"
+            <!-- selectItemのinpuTypeがtextのとき -->
+            <div v-else-if="selectItem.role == 2">
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">タイトル</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
+              </div>
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">補足説明</p>
+                <textarea
+                  class="c-form-group-item-inp type--1 inp--type4"
+                  v-model="selectItem.description"
                 >
-                  <v-icon small>mdi-pencil</v-icon>
-                  <input
-                    class="text-caption c-select_item-inp"
-                    type="text"
-                    :value="department"
-                  >
-                  <v-btn icon class="c-select_item-trash">
-                    <v-icon small>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </div>
+                </textarea>
               </div>
-
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">プレースホルダー</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.placeholder">
+              </div>
             </div>
-          </div>
 
-        </div><!-- v-if -->
-      </div><!-- c-forms-select-item-edit-main -->
-    </div>
-    
-    <!-- Buttonドロワーメニュー -->
-    <div class="c-forms-select-item-edit" :class="{active:buttonEditView}">
-      <nav class="c-forms-select-item-edit-nav">
-        <v-btn
-          tile
-          color="grey"
-          text
-          class="font-weight-black"
-          @click="buttonEditView = false"
-        >
-          <v-icon left>
-            mdi-chevron-left
-          </v-icon>
-          完了
-        </v-btn>
-      </nav>
-      <div class="c-forms-select-item-edit-main">
+            <!-- selectItemのinpTypeがselectの時 -->
+            <div v-else-if="selectItem.role == 3">
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">タイトル</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
+              </div>
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">補足説明</p>
+                <textarea
+                  class="c-form-group-item-inp type--1 inp--type4"
+                  v-model="selectItem.description"
+                >
+                </textarea>
+              </div>
+              <div class="d-flex flex-column">
+                <p class="mb-1">選択肢</p>
 
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">ボタンテキスト</p>
-          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="submitButton.buttonText">
-        </div>
+                <!-- 部署の項目 -->
+                <div v-if="selectItem.type == 'department'">
+                  <div
+                    class="c-select_item"
+                    v-for="(department, i) in departments"
+                    :key="i"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                    <input
+                      class="text-caption c-select_item-inp"
+                      type="text"
+                      :value="department"
+                    >
+                    <v-btn icon class="c-select_item-trash">
+                      <v-icon small>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+                
+                <!-- 役職の項目 -->
+                <div v-else-if="selectItem.type == 'position'">
+                  <div
+                    class="c-select_item"
+                    v-for="(position, i) in positions"
+                    :key="i"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                    <input
+                      class="text-caption c-select_item-inp"
+                      type="text"
+                      :value="position"
+                    >
+                    <v-btn icon class="c-select_item-trash">
+                      <v-icon small>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
 
-        <!-- 「ボタン」部分 -->
-        <div class="mb-10">
+                <!-- 従業員数の項目 -->
+                <div v-else-if="selectItem.type == 'employees'">
+                  <div
+                    class="c-select_item"
+                    v-for="(employee, i) in employees"
+                    :key="i"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                    <input
+                      class="text-caption c-select_item-inp"
+                      type="text"
+                      :value="employee"
+                    >
+                    <v-btn icon class="c-select_item-trash">
+                      <v-icon small>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+                
+                <!-- 都道府県の項目 -->
+                <div v-else-if="selectItem.type == 'prefecture'">
+                  <div
+                    class="c-select_item"
+                    v-for="(prefecture, i) in prefectures"
+                    :key="i"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                    <input
+                      class="text-caption c-select_item-inp"
+                      type="text"
+                      :value="prefecture"
+                    >
+                    <v-btn icon class="c-select_item-trash">
+                      <v-icon small>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
 
-          <div class="c-font-10 mb-3">
-            <p style="margin-bottom:4px!important">ボタンの色</p>
-            <div class="d-flex justify-left align-center">
-              <span>#</span>
-              <input v-model="submitButton.buttonColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
-              <input v-model="submitButton.buttonColor" class="c-form_edit_style-color-picker" type="color">
+                <!-- 業種の項目 -->
+                <div v-else-if="selectItem.type == 'industry'">
+                  <div
+                    class="c-select_item"
+                    v-for="(industry, i) in industrys"
+                    :key="i"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                    <input
+                      class="text-caption c-select_item-inp"
+                      type="text"
+                      :value="industry"
+                    >
+                    <v-btn icon class="c-select_item-trash">
+                      <v-icon small>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+
+              </div>
             </div>
+
+            <!-- selectItemのinpTypeがcehckbox or radioの時 -->
+            <div v-else-if="selectItem.role == 4">
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">タイトル</p>
+                <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="selectItem.title">
+              </div>
+              <div class="c-forms-select-item-edit-main-item">
+                <p class="mb-1">補足説明</p>
+                <textarea
+                  class="c-form-group-item-inp type--1 inp--type4"
+                  v-model="selectItem.description"
+                >
+                </textarea>
+              </div>
+              <div class="d-flex flex-column">
+                <p class="mb-1">選択肢</p>
+
+                <!-- 部署の項目 -->
+                <div v-if="selectItem.type == 'gender'">
+                  <div
+                    class="c-select_item"
+                    v-for="(department, i) in departments"
+                    :key="i"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                    <input
+                      class="text-caption c-select_item-inp"
+                      type="text"
+                      :value="department"
+                    >
+                    <v-btn icon class="c-select_item-trash">
+                      <v-icon small>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div><!-- v-if -->
+        </div><!-- c-forms-select-item-edit-main -->
+      </div>
+      
+      <!-- Buttonドロワーメニュー -->
+      <div class="c-forms-select-item-edit" :class="{active:buttonEditView}">
+        <nav class="c-forms-select-item-edit-nav">
+          <v-btn
+            tile
+            color="grey"
+            text
+            class="font-weight-black"
+            @click="buttonEditView = false"
+          >
+            <v-icon left>
+              mdi-chevron-left
+            </v-icon>
+            完了
+          </v-btn>
+        </nav>
+        <div class="c-forms-select-item-edit-main">
+
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">ボタンテキスト</p>
+            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="submitButton.buttonText">
           </div>
 
-          <div class="d-flex justify-space-between align-center">
+          <!-- 「ボタン」部分 -->
+          <div class="mb-10">
 
-            <div class="c-font-10">
-              <p style="margin-bottom:4px!important">テキストの色</p>
+            <div class="c-font-10 mb-3">
+              <p style="margin-bottom:4px!important">ボタンの色</p>
               <div class="d-flex justify-left align-center">
                 <span>#</span>
-                <input v-model="submitButton.buttonFontColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
-                <input v-model="submitButton.buttonFontColor" class="c-form_edit_style-color-picker" type="color">
+                <input v-model="submitButton.buttonColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
+                <input v-model="submitButton.buttonColor" class="c-form_edit_style-color-picker" type="color">
               </div>
             </div>
 
-            <div class="c-font-10">
-              <p style="margin-bottom:4px!important">サイズ</p>
-              <div class="d-flex justify-left align-center">
-                <input v-model="submitButton.buttonFontSize" class="px-2 py-1 c-bd-all text-caption" type="number">
+            <div class="d-flex justify-space-between align-center">
+
+              <div class="c-font-10">
+                <p style="margin-bottom:4px!important">テキストの色</p>
+                <div class="d-flex justify-left align-center">
+                  <span>#</span>
+                  <input v-model="submitButton.buttonFontColor" class="px-2 py-1 c-bd-all mx-2 text-caption c-form_edit_style_color-inp" type="text">
+                  <input v-model="submitButton.buttonFontColor" class="c-form_edit_style-color-picker" type="color">
+                </div>
               </div>
+
+              <div class="c-font-10">
+                <p style="margin-bottom:4px!important">サイズ</p>
+                <div class="d-flex justify-left align-center">
+                  <input v-model="submitButton.buttonFontSize" class="px-2 py-1 c-bd-all text-caption" type="number">
+                </div>
+              </div>
+
             </div>
 
-          </div>
-
-        </div><!-- 「ボタン」部分 -->
-        
-      </div>
-    </div>
-
-    <!-- !!!!!!!formInputEdit用のドロワーメニュー!!!!!!! -->
-
-    <!-- !!!!!!!formInputThanks用のドロワーメニュー!!!!!!! -->
-
-    <!-- タイトルとリード分用のドロワー -->
-    <div class="c-forms-select-item-edit" :class="{active:editTitleThanksView}">
-      <nav class="c-forms-select-item-edit-nav">
-        <v-btn
-          tile
-          color="grey"
-          text
-          class="font-weight-black"
-          @click="editTitleThanksView = false"
-        >
-          <v-icon left>
-            mdi-chevron-left
-          </v-icon>
-          完了
-        </v-btn>
-      </nav>
-      <div class="c-forms-select-item-edit-main">
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">タイトル</p>
-          <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formThanksHead.title">
+          </div><!-- 「ボタン」部分 -->
+          
         </div>
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">補足説明</p>
-          <textarea
-            class="c-form-group-item-inp type--1 inp--type4"
-            name=""
-            id=""
-            cols="30"
-            rows="10"
-            v-model="formThanksHead.description"
+      </div>
+
+      <!-- !!!!!!!formInputEdit用のドロワーメニュー!!!!!!! -->
+
+      <!-- !!!!!!!formInputThanks用のドロワーメニュー!!!!!!! -->
+
+      <!-- タイトルとリード分用のドロワー -->
+      <div class="c-forms-select-item-edit" :class="{active:editTitleThanksView}">
+        <nav class="c-forms-select-item-edit-nav">
+          <v-btn
+            tile
+            color="grey"
+            text
+            class="font-weight-black"
+            @click="editTitleThanksView = false"
           >
-          </textarea>
-        </div>
-      </div>
-    </div>
-
-    <!-- editドロワーメニュー -->
-    <div class="c-forms-select-item-edit" :class="{active:thanksView}">
-      <nav class="c-forms-select-item-edit-nav">
-        <v-btn
-          tile
-          color="grey"
-          text
-          class="font-weight-black"
-          @click="thanksView = false"
-        >
-          <v-icon left>
-            mdi-chevron-left
-          </v-icon>
-          完了
-        </v-btn>
-      </nav>
-
-      <!-- コンテンツ(資料)のドロワー -->
-      <div class="c-forms-select-item-edit-main" v-if="selectThanksItem.type == 'contents'">
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">埋め込み</p>
-          <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="pdf" placeholder="埋め込みコードを入力してください"></textarea>
+            <v-icon left>
+              mdi-chevron-left
+            </v-icon>
+            完了
+          </v-btn>
+        </nav>
+        <div class="c-forms-select-item-edit-main">
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">タイトル</p>
+            <input class="c-form-group-item-inp type--1 inp--type4" type="text" v-model="formThanksHead.title">
+          </div>
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">補足説明</p>
+            <textarea
+              class="c-form-group-item-inp type--1 inp--type4"
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+              v-model="formThanksHead.description"
+            >
+            </textarea>
+          </div>
         </div>
       </div>
 
-      <!-- 埋め込み(日程調整ツール推奨)のドロワー -->
-      <div class="c-forms-select-item-edit-main" v-else-if="selectThanksItem.type == 'inport'">
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">埋め込み</p>
-          <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="html" placeholder="埋め込みコードを入力してください"></textarea>
+      <!-- editドロワーメニュー -->
+      <div class="c-forms-select-item-edit" :class="{active:thanksView}">
+        <nav class="c-forms-select-item-edit-nav">
+          <v-btn
+            tile
+            color="grey"
+            text
+            class="font-weight-black"
+            @click="thanksView = false"
+          >
+            <v-icon left>
+              mdi-chevron-left
+            </v-icon>
+            完了
+          </v-btn>
+        </nav>
+
+        <!-- コンテンツ(資料)のドロワー -->
+        <div class="c-forms-select-item-edit-main" v-if="selectThanksItem.type == 'contents'">
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">埋め込み</p>
+            <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="pdf" placeholder="埋め込みコードを入力してください"></textarea>
+          </div>
         </div>
+
+        <!-- 埋め込み(日程調整ツール推奨)のドロワー -->
+        <div class="c-forms-select-item-edit-main" v-else-if="selectThanksItem.type == 'inport'">
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">埋め込み</p>
+            <textarea class="c-form-group-item-inp inp--type1 type--1" name="" id="" cols="30" rows="10" v-model="html" placeholder="埋め込みコードを入力してください"></textarea>
+          </div>
+        </div>
+
+        <!-- 外部ページへのリンクのドロワー -->
+        <div class="c-forms-select-item-edit-main" v-else-if="selectThanksItem.type == 'link'">
+          <div class="c-forms-select-item-edit-main-item">
+            <p class="mb-1">外部ページのリンク</p>
+            <input v-model="thanksRedirect.url" class="c-form-group-item-inp inp--type3 type--1" type="text" placeholder="URLを入力">
+            <input v-model="thanksRedirect.label" class="c-form-group-item-inp inp--type3 type--1" type="text">
+          </div>
+        </div>
+
       </div>
 
-      <!-- 外部ページへのリンクのドロワー -->
-      <div class="c-forms-select-item-edit-main" v-else-if="selectThanksItem.type == 'link'">
-        <div class="c-forms-select-item-edit-main-item">
-          <p class="mb-1">外部ページのリンク</p>
-          <input v-model="thanksRedirect.url" class="c-form-group-item-inp inp--type3 type--1" type="text" placeholder="URLを入力">
-          <input v-model="thanksRedirect.label" class="c-form-group-item-inp inp--type3 type--1" type="text">
-        </div>
-      </div>
+      <!-- !!!!!!!formInputThanks用のドロワーメニュー!!!!!!! -->
 
-    </div>
-
-    <!-- !!!!!!!formInputThanks用のドロワーメニュー!!!!!!! -->
-
-
-
-  </div><!-- c-forms_main -->
+    </div><!-- c-forms_main -->
+  </div>
 </template>
 <script>
   export default {
@@ -2051,7 +2062,6 @@
         // inportのデータ
         html: "",
         // contentsのデータ
-        // allowDownload: false,
         pdf: "",
         // linkのデータ
         thanksRedirect: {
@@ -2123,6 +2133,105 @@
       },
 
 
+      // async submitSave() {
+      //   const formItems = []
+      //   for(const editItem of this.editItems){
+      //     if (editItem.type == 'name') {
+      //       formItems.push({
+      //         type: editItem.type,
+      //         title: editItem.title,
+      //         seiTitle: editItem.seiTitle,
+      //         seiPlaceholder: editItem.seiPlaceholder,
+      //         meiTitle: editItem.meiTitle,
+      //         meiPlaceholder: editItem.meiPlaceholder,
+      //         description: editItem.description,
+      //         required: editItem.required,
+      //         value: editItem.value
+      //       })
+      //     } else {
+      //       formItems.push({
+      //         type: editItem.type,
+      //         title: editItem.title,
+      //         description: editItem.description,
+      //         required: editItem.required,
+      //         placeholder: editItem.placeholder,
+      //         imageUrl: editItem.imgUrl,
+      //         value: editItem.value
+      //       })
+      //     }
+      //   }
+      //   const postData = {
+      //     formHead: {
+      //       title: this.formHead.title,
+      //       description: this.formHead.description,
+      //     },
+      //     width: this.width,
+      //     styleTemplate: this.styleTemplate,
+      //     submitButton: {
+      //       buttonColor: this.submitButton.buttonColor,
+      //       buttonFontColor: this.submitButton.buttonFontColor,
+      //       buttonFontSize: this.submitButton.buttonFontSize,
+      //       buttonText: this.submitButton.buttonText,
+      //     },
+      //     textDesign: {
+      //       textFont: this.textDesign.textFont,
+      //       labelFontColor: this.textDesign.labelFontColor,
+      //       labelFontSize: this.textDesign.labelFontSize,
+      //       descriptionColor: this.textDesign.descriptionColor,
+      //       descriptionSize: this.textDesign.descriptionSize,
+      //     },
+      //     formItems: formItems,
+      //   }
+      //   if (this.inputForms) {
+      //     const res = await this.$functions.httpsCallable("updateInputForms")(
+      //       {
+      //         inputFormId:this.inputFormId,
+      //         postData:postData
+      //       }
+      //     )
+      //   } else {
+      //     const res = await this.$functions.httpsCallable("addInputForms2Forms")(
+      //       {
+      //         inputFormId:this.inputFormId,
+      //         postData:postData
+      //       }
+      //     )
+      //   }
+      // },
+
+      // async submitThanksSave() {
+      //   const postData = {
+      //     innerWidth: this.innerWidth,
+      //     html: this.html,
+      //     pdf: this.pdf, 
+      //     thanksRedirect: {
+      //       url: this.thanksRedirect.url,
+      //       label: this.thanksRedirect.label,
+      //     },
+      //     formThanksHead: {
+      //       title: this.formThanksHead.title,
+      //       description: this.formThanksHead.description
+      //     }
+      //   }
+      //   if (this.completeForms) {
+      //     const res = await this.$functions.httpsCallable("updateCompleteForms")(
+      //       {
+      //         postData:postData,
+      //         completeFormId: this.completeFormId
+      //       }
+      //     )
+      //   } else {
+      //     const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
+      //       {
+      //         postData:postData,
+      //         completeFormId: this.completeFormId
+      //       }
+      //     )
+      //   }
+      // },
+
+
+
       async submitSave() {
         const formItems = []
         for(const editItem of this.editItems){
@@ -2150,7 +2259,7 @@
             })
           }
         }
-        const postData = {
+        const inputFormData = {
           formHead: {
             title: this.formHead.title,
             description: this.formHead.description,
@@ -2171,30 +2280,10 @@
             descriptionSize: this.textDesign.descriptionSize,
           },
           formItems: formItems,
-          // workflowId: this.workflowId
         }
-        if (this.inputForms) {
-          const res = await this.$functions.httpsCallable("updateInputForms")(
-            {
-              inputFormId:this.inputFormId,
-              postData:postData
-            }
-          )
-        } else {
-          const res = await this.$functions.httpsCallable("addInputForms2Forms")(
-            {
-              inputFormId:this.inputFormId,
-              postData:postData
-            }
-          )
-        }
-      },
-
-      async submitThanksSave() {
-        const postData = {
+        const completeFormData = {
           innerWidth: this.innerWidth,
           html: this.html,
-          // allowDownload: this.allowDownload,
           pdf: this.pdf, 
           thanksRedirect: {
             url: this.thanksRedirect.url,
@@ -2205,25 +2294,28 @@
             description: this.formThanksHead.description
           }
         }
-        if (this.completeForms) {
-          const res = await this.$functions.httpsCallable("updateCompleteForms")(
+        if (this.inputForms && this.completeForms) {
+          const res = await this.$functions.httpsCallable("updateFormData")(
             {
-              postData:postData,
-              completeFormId: this.completeFormId
+              inputFormId:this.inputFormId,
+              completeFormId:this.completeFormId,
+              inputFormData:inputFormData,
+              completeFormData:completeFormData,
             }
           )
         } else {
-          const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
+          const res = await this.$functions.httpsCallable("addFormData")(
             {
-              postData:postData,
-              completeFormId: this.completeFormId
+              inputFormId:this.inputFormId,
+              completeFormId:this.completeFormId,
+              inputFormData:inputFormData,
+              completeFormData:completeFormData,
             }
           )
         }
+        this.$router.go({path: this.$router.currentRoute.path, force: true})
+        await this.$nuxt.$emit('formareaView')
       }
-
-
-
 
 
     }

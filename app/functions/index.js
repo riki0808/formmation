@@ -219,12 +219,17 @@ exports.addForms = functions.https.onCall(async (data, context) => {
   }
 });
 
-exports.addInputForms2Forms = functions.https.onCall(async (data, context) => {
+exports.addFormData = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
-      const { postData, inputFormId } = data;
+      const { inputFormId, completeFormId, inputFormData, completeFormData } =
+        data;
 
-      await db.collection("inputForms").doc(inputFormId).set(postData);
+      await db.collection("inputForms").doc(inputFormId).set(inputFormData);
+      await db
+        .collection("completeForms")
+        .doc(completeFormId)
+        .set(completeFormData);
 
       return {
         status: 200,
@@ -241,68 +246,30 @@ exports.addInputForms2Forms = functions.https.onCall(async (data, context) => {
   }
 });
 
-exports.updateInputForms = functions.https.onCall(async (data, context) => {
+exports.updateFormData = functions.https.onCall(async (data, context) => {
   try {
     if (context.auth) {
-      const { inputFormId, postData } = data;
+      const { inputFormId, completeFormId, inputFormData, completeFormData } =
+        data;
+
+      console.log("あああああ");
 
       await db
         .collection("inputForms")
         .doc(inputFormId)
         .update({
-          ...postData,
+          ...inputFormData,
         });
-
-      return {
-        status: 200,
-      };
-    } else {
-      throw new functions.https.HttpsError("permission-denied", "Auth Error");
-    }
-  } catch (err) {
-    console.log(err);
-    return {
-      status: 999,
-      error: err,
-    };
-  }
-});
-
-exports.addCompleteForms2Forms = functions.https.onCall(
-  async (data, context) => {
-    try {
-      if (context.auth) {
-        const { postData, completeFormId } = data;
-
-        await db.collection("completeForms").doc(completeFormId).set(postData);
-
-        return {
-          status: 200,
-        };
-      } else {
-        throw new functions.https.HttpsError("permission-denied", "Auth Error");
-      }
-    } catch (err) {
-      console.log(err);
-      return {
-        status: 999,
-        error: err,
-      };
-    }
-  }
-);
-
-exports.updateCompleteForms = functions.https.onCall(async (data, context) => {
-  try {
-    if (context.auth) {
-      const { completeFormId, postData } = data;
+      console.log("良いいいい");
 
       await db
         .collection("completeForms")
         .doc(completeFormId)
         .update({
-          ...postData,
+          ...completeFormData,
         });
+
+      console.log("うううううう");
 
       return {
         status: 200,
@@ -318,6 +285,106 @@ exports.updateCompleteForms = functions.https.onCall(async (data, context) => {
     };
   }
 });
+
+// exports.addInputForms2Forms = functions.https.onCall(async (data, context) => {
+//   try {
+//     if (context.auth) {
+//       const { postData, inputFormId } = data;
+
+//       await db.collection("inputForms").doc(inputFormId).set(postData);
+
+//       return {
+//         status: 200,
+//       };
+//     } else {
+//       throw new functions.https.HttpsError("permission-denied", "Auth Error");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     return {
+//       status: 999,
+//       error: err,
+//     };
+//   }
+// });
+
+// exports.updateInputForms = functions.https.onCall(async (data, context) => {
+//   try {
+//     if (context.auth) {
+//       const { inputFormId, postData } = data;
+
+//       await db
+//         .collection("inputForms")
+//         .doc(inputFormId)
+//         .update({
+//           ...postData,
+//         });
+
+//       return {
+//         status: 200,
+//       };
+//     } else {
+//       throw new functions.https.HttpsError("permission-denied", "Auth Error");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     return {
+//       status: 999,
+//       error: err,
+//     };
+//   }
+// });
+
+// exports.addCompleteForms2Forms = functions.https.onCall(
+//   async (data, context) => {
+//     try {
+//       if (context.auth) {
+//         const { postData, completeFormId } = data;
+
+//         await db.collection("completeForms").doc(completeFormId).set(postData);
+
+//         return {
+//           status: 200,
+//         };
+//       } else {
+//         throw new functions.https.HttpsError("permission-denied", "Auth Error");
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       return {
+//         status: 999,
+//         error: err,
+//       };
+//     }
+//   }
+// );
+
+// exports.updateCompleteForms = functions.https.onCall(async (data, context) => {
+//   try {
+//     if (context.auth) {
+//       const { completeFormId, postData } = data;
+
+//       await db
+//         .collection("completeForms")
+//         .doc(completeFormId)
+//         .update({
+//           ...postData,
+//         });
+
+//       return {
+//         status: 200,
+//       };
+//     } else {
+//       throw new functions.https.HttpsError("permission-denied", "Auth Error");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     return {
+//       status: 999,
+//       error: err,
+//     };
+//   }
+// });
 
 exports.addWorkflows2Forms = functions.https.onCall(async (data, context) => {
   try {

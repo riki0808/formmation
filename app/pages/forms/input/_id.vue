@@ -37,20 +37,7 @@
     <v-main>
 
       <section class="c-edit-formarea" :class="{active:formareaView}">
-        <div style="height:64px; background-color:#fff; border-bottom:1px solid #c3c3c3" class="d-flex align-center px-4">
-          <v-btn
-            tile
-            color="primary"
-            text
-            class="font-weight-black"
-            @click="formareaView=false"
-          >
-            <v-icon left>
-              mdi-chevron-left
-            </v-icon>
-            戻る
-          </v-btn>
-        </div>
+
         <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId" :workflowId="workflowId" :completeForms="completeForms" :completeFormId="completeFormId"></form-input-edit>
       </section>
 
@@ -71,6 +58,9 @@ export default {
   layout: "form_default",
   created() {
     this.$nuxt.$on('formareaEvent', () => {
+      this.formareaView = !this.formareaView
+    })
+    this.$nuxt.$on('formareaView', () => {
       this.formareaView = !this.formareaView
     })
   },
