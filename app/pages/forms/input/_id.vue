@@ -37,7 +37,6 @@
     <v-main>
 
       <section class="c-edit-formarea" :class="{active:formareaView}">
-
         <div style="height:64px; background-color:#fff; border-bottom:1px solid #c3c3c3" class="d-flex align-center px-4">
           <v-btn
             tile
@@ -52,8 +51,7 @@
             戻る
           </v-btn>
         </div>
-        <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId" :workflowId="workflowId"></form-input-edit>
-
+        <form-input-edit :inputForms="inputForms" :formId="formId" :inputFormId="inputFormId" :workflowId="workflowId" :completeForms="completeForms" :completeFormId="completeFormId"></form-input-edit>
       </section>
 
       <section style="overflow: hidden;position: fixed;width: 100%;">

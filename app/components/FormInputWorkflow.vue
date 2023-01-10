@@ -254,7 +254,6 @@
       }
     },
     mounted() {
-      console.log('inputForms', this.inputForms )
     },
     methods: {
       drawerOff() {

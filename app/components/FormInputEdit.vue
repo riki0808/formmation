@@ -129,6 +129,7 @@
               <p class="text-center mb-15">{{formHead.description}}</p>
             </div>
             <!-- ↑↑お問い合わせのタイトルとディスクリプション↑↑ -->
+
             <!-- ↓↓フォーム項目をどんどん表示していく所↓↓ -->
             <div class="c-form-group" v-for="(editItem, i) in editItems" :key="i">
   
@@ -1230,8 +1231,9 @@
               </div>
   
               
-            </div><!-- c-form-group -->
+            </div>
             <!-- ↑↑フォーム項目をどんどん表示していく所↑↑ -->
+
             <!-- ↓↓送信ボタンの部分↓↓ -->
             <div class="p-form-button" @click="buttonEditView = true">
               <div class="c-form-group-item-overray"></div>
@@ -1254,7 +1256,7 @@
 
       <!-- 完了画面用のメインパート -->
       <v-tab-item transition="fade-transition">
-        <!-- <v-btn @click="submitSave">保存ボタン</v-btn> -->
+        <v-btn @click="submitThanksSave">保存ボタン</v-btn>
         <div class="white c-main-form-edit-contents overflow-auto" style="width:100%; height:100%;">
           <div class="c-main-form-edit-contents-inner mb-15">
             <div>
@@ -1733,7 +1735,7 @@
 </template>
 <script>
   export default {
-    props: ["inputForms", "formId", "inputFormId", "workflowId"],
+    props: ["inputForms", "formId", "inputFormId", "workflowId", "completeForms", "completeFormId"],
     mounted(){
       if (this.inputForms) {
         this.formHead = this.inputForms.formHead
@@ -1743,7 +1745,14 @@
         this.width = this.inputForms.width
         this.editItems = this.inputForms.formItems
       } else {
-        // console.log("formsのid取れてないんちゃう？");
+        console.log("formsのid取れてないんちゃう？");
+      }
+      if (this.completeForms) {
+        this.innerWidth = this.completeForms.innerWidth
+        this.html = this.completeForms.html
+        this.pdf = this.completeForms.pdf
+        this.thanksRedirect = this.completeForms.thanksRedirect
+        this.formThanksHead = this.completeForms.formThanksHead
       }
     },
     data() {
@@ -2179,7 +2188,44 @@
             }
           )
         }
+      },
+
+      async submitThanksSave() {
+        const postData = {
+          innerWidth: this.innerWidth,
+          html: this.html,
+          // allowDownload: this.allowDownload,
+          pdf: this.pdf, 
+          thanksRedirect: {
+            url: this.thanksRedirect.url,
+            label: this.thanksRedirect.label,
+          },
+          formThanksHead: {
+            title: this.formThanksHead.title,
+            description: this.formThanksHead.description
+          }
+        }
+        if (this.completeForms) {
+          const res = await this.$functions.httpsCallable("updateCompleteForms")(
+            {
+              postData:postData,
+              completeFormId: this.completeFormId
+            }
+          )
+        } else {
+          const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
+            {
+              postData:postData,
+              completeFormId: this.completeFormId
+            }
+          )
+        }
       }
+
+
+
+
+
     }
   }//export default
 </script>
