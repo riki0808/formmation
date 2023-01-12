@@ -27,6 +27,7 @@ if (process.env.NODE_ENV != "production") {
 //ここいじるよ！！
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+// export const storage = getStorage(firebase);
 
 export default function (app, inject) {
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);

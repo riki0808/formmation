@@ -25,7 +25,7 @@
       <nuxt-link
         to="/"
       >
-        <img src="~/static/img/logo-simple.svg" alt="" width="35">
+        <img src="~/static/img/logo-simple.svg" alt="" width="25">
       </nuxt-link>
 
     </v-app-bar>

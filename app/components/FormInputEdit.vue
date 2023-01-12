@@ -2125,112 +2125,11 @@
         this.editItems = newList
       },
 
-
       // ここからthanksパート
       onClickThanksItem(item) {
         this.thanksView = !this.thanksView
         this.selectThanksItem = item
       },
-
-
-      // async submitSave() {
-      //   const formItems = []
-      //   for(const editItem of this.editItems){
-      //     if (editItem.type == 'name') {
-      //       formItems.push({
-      //         type: editItem.type,
-      //         title: editItem.title,
-      //         seiTitle: editItem.seiTitle,
-      //         seiPlaceholder: editItem.seiPlaceholder,
-      //         meiTitle: editItem.meiTitle,
-      //         meiPlaceholder: editItem.meiPlaceholder,
-      //         description: editItem.description,
-      //         required: editItem.required,
-      //         value: editItem.value
-      //       })
-      //     } else {
-      //       formItems.push({
-      //         type: editItem.type,
-      //         title: editItem.title,
-      //         description: editItem.description,
-      //         required: editItem.required,
-      //         placeholder: editItem.placeholder,
-      //         imageUrl: editItem.imgUrl,
-      //         value: editItem.value
-      //       })
-      //     }
-      //   }
-      //   const postData = {
-      //     formHead: {
-      //       title: this.formHead.title,
-      //       description: this.formHead.description,
-      //     },
-      //     width: this.width,
-      //     styleTemplate: this.styleTemplate,
-      //     submitButton: {
-      //       buttonColor: this.submitButton.buttonColor,
-      //       buttonFontColor: this.submitButton.buttonFontColor,
-      //       buttonFontSize: this.submitButton.buttonFontSize,
-      //       buttonText: this.submitButton.buttonText,
-      //     },
-      //     textDesign: {
-      //       textFont: this.textDesign.textFont,
-      //       labelFontColor: this.textDesign.labelFontColor,
-      //       labelFontSize: this.textDesign.labelFontSize,
-      //       descriptionColor: this.textDesign.descriptionColor,
-      //       descriptionSize: this.textDesign.descriptionSize,
-      //     },
-      //     formItems: formItems,
-      //   }
-      //   if (this.inputForms) {
-      //     const res = await this.$functions.httpsCallable("updateInputForms")(
-      //       {
-      //         inputFormId:this.inputFormId,
-      //         postData:postData
-      //       }
-      //     )
-      //   } else {
-      //     const res = await this.$functions.httpsCallable("addInputForms2Forms")(
-      //       {
-      //         inputFormId:this.inputFormId,
-      //         postData:postData
-      //       }
-      //     )
-      //   }
-      // },
-
-      // async submitThanksSave() {
-      //   const postData = {
-      //     innerWidth: this.innerWidth,
-      //     html: this.html,
-      //     pdf: this.pdf, 
-      //     thanksRedirect: {
-      //       url: this.thanksRedirect.url,
-      //       label: this.thanksRedirect.label,
-      //     },
-      //     formThanksHead: {
-      //       title: this.formThanksHead.title,
-      //       description: this.formThanksHead.description
-      //     }
-      //   }
-      //   if (this.completeForms) {
-      //     const res = await this.$functions.httpsCallable("updateCompleteForms")(
-      //       {
-      //         postData:postData,
-      //         completeFormId: this.completeFormId
-      //       }
-      //     )
-      //   } else {
-      //     const res = await this.$functions.httpsCallable("addCompleteForms2Forms")(
-      //       {
-      //         postData:postData,
-      //         completeFormId: this.completeFormId
-      //       }
-      //     )
-      //   }
-      // },
-
-
 
       async submitSave() {
         const formItems = []

@@ -19,10 +19,11 @@
         戻る
       </v-btn>
       <div class="ml-5">
-        <input class="c-input_border p-form_nav-input-text" type="text" style="width:300px;" v-model="title">
-        <v-icon left @click="updateFormTitle">
+        <span class="p-form_nav-input-text">{{ formData.title }}</span>
+        <!-- <input class="c-input_border p-form_nav-input-text" type="text" style="width:300px;" v-model="formData.title"> -->
+        <!-- <v-icon left>
           mdi-pencil
-        </v-icon>
+        </v-icon> -->
       </div>
       <v-spacer></v-spacer>
       <div>
@@ -44,7 +45,7 @@
       <section style="overflow: hidden;position: fixed;width: 100%;">
 
         <div>
-          <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms" :inputFormId="inputFormId"></form-input-workflow>
+          <form-input-workflow :formId="formId" :workflows="workflows" :workflowId="workflowId" :inputForms="inputForms" :inputFormId="inputFormId" :formData="formData"></form-input-workflow>
         </div>
 
       </section>
@@ -76,10 +77,9 @@ export default {
       const res = await ctx.$functions.httpsCallable("getForm")({
         formId: ctx.params.id,
       });
-      console.log(res.data.res)
       return {
         formId: ctx.params.id,
-        formTitle: res.data.res.title,
+        formData: res.data.res,
         inputFormId: res.data.res.inputFormId,
         inputForms: res.data.res.inputForm,
         completeFormId: res.data.res.completeFormId,
@@ -100,25 +100,17 @@ export default {
     }
   },
   mounted() {
-    this.title = this.formTitle
-    console.log('formId', this.formId)
-    console.log('formTitle', this.formTitle)
-    console.log('inputFormId', this.inputFormId)
-    console.log('inputForms', this.inputForms)
-    console.log('completeFormId', this.completeFormId)
-    console.log('completeForms', this.completeForms)
-    console.log('workflowId', this.workflowId)
-    console.log('workflows', this.workflows)
+    console.log('formData', this.formData)
+    // console.log('formId', this.formId)
+    // console.log('formTitle', this.formTitle)
+    // console.log('inputFormId', this.inputFormId)
+    // console.log('inputForms', this.inputForms)
+    // console.log('completeFormId', this.completeFormId)
+    // console.log('completeForms', this.completeForms)
+    // console.log('workflowId', this.workflowId)
+    // console.log('workflows', this.workflows)
   },
   methods:{
-    async updateFormTitle() {
-      const res = await this.$functions.httpsCallable("updateFormTitle")(
-        {
-          formId: this.formId,
-          title: this.title
-        }
-      )
-    }
   }
 }
 </script>

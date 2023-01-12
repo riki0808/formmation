@@ -1,44 +1,60 @@
 <template>
   <section class="l-main_container">
     <div class="c-main">
-      <div class="c-textbox">
-        <h1 class="c-title">フォームのタイプの選択</h1>
-        <p class="c-desc">ご希望の使い方からフォームを作成します</p>
+      <div class="text-left mt-3 mb-8">
+        <v-btn
+          tile
+          color="primary"
+          text
+          class="font-weight-black"
+          to="/"
+        >
+          <v-icon left>
+            mdi-chevron-left
+          </v-icon>
+          戻る
+        </v-btn>
+        <h1 class="text-h6 font-weight-black">テンプレート一覧</h1>
       </div>
-      <div class="d-flex justify-space-between" style="width:100%;">
+
+      <div class="" style="width:100%;">
 
         <v-card
           v-for="(template, i) in templates"
           :key="i"
-          width="31%"
+          flat
+          elevation="1"
+          class="py-6 px-8 mb-5"
           @click="onClickFormType(template.type)"
         >
-          <v-card-title
-            v-text="template.title"
-            :class="template.css"
-          >
-          </v-card-title>
+          <div class="d-flex align-center justify-space-between mb-3">
+            <div class="">
+              <div class="d-flex align-center mb-1">
+                <p class="mb-0 text-body-1 font-weight-black" style="color:#4a4a51;">{{template.title}}</p>
+              </div>
+              <p class="c-sm-fs mb-0">
+                {{ template.description }}
+              </p>
+            </div>
+          </div>
 
-          <ul
-            class="d-flex flex-column p-form-type_ul-height pl-15 pt-9 text-caption"
-          >
-            <li
-              v-for="(item, n) in template.items"
-              :key="n"
-            >
-              {{item}}
-            </li>
-          </ul>
+          <div class="d-flex justify-space-between align-end">
+            <div>
+              <v-icon>mdi-account-circle</v-icon>
+              <v-icon>mdi-account-circle</v-icon>
+            </div>
+            <p class="mb-0 primary--text text-caption">このテンプレートで作成する</p>
+          </div>
 
         </v-card>
-
       </div>
+
     </div>
   </section>
 </template>
 <script>
   export default {
-    layout: "simple_default",
+    layout: "default",
     async asyncData(ctx) {
       const res = await ctx.$functions.httpsCallable("getTeamInfo")({
         teamId: ctx.store.state.user.teamId,
@@ -54,45 +70,14 @@
       return {
         templates: [
           {
-            type: "new",
-            title: "新規作成",
-            css: "white grey--text d-flex align-center justify-center font-weight-bold text-body-2",
-            items: [
-              "テンプレートを使わず作成"
-            ],
-            to: "/forms/input",
-          },
-          {
             type: "contact",
-            title: "お問い合わせ",
-            css: "primary white--text d-flex align-center justify-center font-weight-bold text-body-2",
-            items: [
-              "名前",
-              "会社名",
-              "部署名",
-              "役職",
-              "メールアドレス",
-              "電話番号",
-              "お問い合わせ内容",
-            ],
-            to: "/forms/input",
+            title: "【お問い合わせフォーム】受信した相手に自動返信とステップメールを送信",
+            description: "お問い合わせフォームを作成し、フォームを送信した顧客のメールアドレス宛に自動返信とステップメールを送信します。",
           },
           {
-            type: "download",
-            title: "資料ダウンロード",
-            css: "primary white--text d-flex align-center justify-center font-weight-bold text-body-2",
-            items: [
-              "名前",
-              "会社名",
-              "部署名",
-              "役職",
-              "従業員数",
-              "メールアドレス",
-              "電話番号",
-              "認知経路",
-              "その他相談内容",
-            ],
-            to: "/forms/input",
+            type: "mf",
+            title: "MFで請求書を発行し、取引先にメール送信〜GoogleDriveに格納",
+            description: "フォームに入力した金額と取引先をもとにMoneyForwardで請求書を作成し、取引先に送信。その請求書を指定のグーグルドライブに格納します。",
           },
         ]
       }
@@ -106,6 +91,8 @@
           inputFormId: Math.random().toString(32).substring(2),
           completeFormId: Math.random().toString(32).substring(2),
           workflowId: Math.random().toString(32).substring(2),
+          description: "このフォームの詳細説明",
+          isShow: false,
         }
         if (type == "contact") {
           const inputForms = {

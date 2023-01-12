@@ -29,20 +29,30 @@
 }
 
 
-
 .p-form-button {
   position: relative;
+}
+.p-workflow-chose-card {
+  transition: .3s;
+}
+.p-workflow-chose-card:hover {
+  background-color: #f4f4f8 !important;
+  transition: .3s;
 }
 
 
 .p-workflow_side-bar {
   height: 100%;
-  width: 400px;
+  width: 450px;
   background-color: #fff;
   transition: .3s;
   position: fixed;
-  transform: translateX(-400px);
+  transform: translateX(-450px);
 }
+.p-workflow_side-bar.active {
+  transform: translateX(0px);
+}
+
 .p-workflow_container {
   padding: 30px 30px 52px 30px;
   width: 100%;
@@ -53,24 +63,14 @@
   overflow: auto;
 }
 
-.p-workflow_side-bar.nonActive {
-  transform: translateX(0px);
-}
-.p-workflow_container.nonActive {
-  width: calc(100% - 400px);
-  // margin-left: auto;
-}
-
-
-
 .p-workflow-mail-side-bar {
   height: 100%;
-  width: 400px;
+  width: 450px;
   background-color: #fff;
   transition: .3s;
   position: fixed;
-  transform: translateX(-400px);
-  top: 112px;
+  transform: translateX(-450px);
+  top: 63px;
 }
 .p-workflow-mail-side-bar.active {
   transform: translateX(0px);
@@ -89,17 +89,51 @@
 
 .p-workflow-delay-side-bar {
   height: 100%;
-  width: 400px;
+  width: 450px;
   background-color: #fff;
   transition: .3s;
   position: fixed;
-  transform: translateX(-400px);
+  transform: translateX(-450px);
 }
 .p-workflow-delay-side-bar.active {
   transform: translateX(0px);
 }
 
+.p-workflow-setting-drawer {
+  width: 170px;
+  height: 100%;
+  position: fixed;
+  top: 63px;
+  right: 0;
+  background-color: #fff;
+  padding-top: 15px;
+  border-left: 1px solid #c3c3c3;
+  transition: .3s;
+}
+.p-workflow-setting-drawer.active {
+  transform: translateX(-225px);
+}
+.p-workflow-setting-item-active i {
+  color: #2237df!important;
+}
+.p-workflow-setting-edit {
+  width: 340px;
+  height: calc(100vh - 63px);
+  position: fixed;
+  top: 63px;
+  right: 0;
+  background-color: #fff;
+  border-left: 1px solid #c3c3c3;
+  transform: translateX(340px);
+  transition: .3s;
+}
+.p-workflow-setting-edit.active {
+  transform: translateX(0px);
+}
 
+.isNone {
+  display: none!important;
+}
 
 
 // workflowのcss
@@ -167,4 +201,3 @@
   background-color: #f4f4f8;
   left: 32px;
 }
-
